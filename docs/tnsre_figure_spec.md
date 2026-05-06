@@ -11,8 +11,8 @@ Allowed figure wording:
 - agency-budgeted intervention benchmark
 - matched-budget policy comparison
 - model-implied agency-loss accounting
-- performance-agency frontier
-- external EMG robustness check
+- performance-agency trade-off
+- external EMG stress-test check
 - fixed operating-point instability
 
 Disallowed figure wording:
@@ -28,11 +28,11 @@ Disallowed figure wording:
 
 | ID | File stem | Role |
 |---|---|---|
-| Fig. 1 | `fig1_benchmark_flow` | Dataset contract, split hierarchy, policy layer, and claim gate. |
-| Fig. 2 | `fig2_db10_frontier` | DB10 primary performance-agency frontier. |
-| Fig. 3 | `fig3_setacsa_pairwise` | DB10 agency-margin versus matched SetACSA unit-level paired comparisons. |
-| Fig. 4 | `fig4_exact_budget_audit` | Exact-budget confidence-threshold audit and operating-point instability. |
-| Fig. 5 | `fig5_external_robustness` | Hyser and CEMHSEY supporting robustness composite. |
+| Fig. 1 | `fig1_benchmark_flow` | Dataset contract, fixed decoders, policy layer, offline evaluation, and evidence boundary. |
+| Fig. 2 | `fig2_db10_frontier` | DB10 primary performance-agency trade-off curves. |
+| Fig. 3 | `fig3_setacsa_pairwise` | DB10 agency-margin versus matched SetACSA paired comparisons with nominal CIs and Holm-adjusted beneficial tests. |
+| Fig. 4 | `fig4_exact_budget_audit` | Exact-budget confidence-threshold benefit and exact-match audit by split and budget. |
+| Fig. 5 | `fig5_external_robustness` | Hyser and CEMHSEY external EMG stress-test trade-offs, not primary prosthetic clinical evidence. |
 | Fig. 6 | `fig6_db10_earliest_safe` | DB10 offline prefix timing diagnostics. |
 | Fig. S1-S5 | `figS_*` | Dataset-specific matched-budget and earliest-safe supplementary diagnostics. |
 
