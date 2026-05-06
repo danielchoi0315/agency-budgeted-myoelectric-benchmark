@@ -12,5 +12,5 @@
 - TNSRE author guidance: https://www.embs.org/tnsre/for-authors/submission-guidelines/
 - Selective prediction / reject option reference: https://proceedings.mlr.press/v97/geifman19a.html
 - Probability calibration / temperature scaling reference: https://proceedings.mlr.press/v70/guo17a.html
-- Prior ALI / SetACSA math: write the equations self-contained in the manuscript or supplement; do not depend on an unpublished internal manuscript.
+- Prior ALI / SetACSA math: define the equations self-contained in the manuscript or supplement and avoid relying on non-public derivations.
 

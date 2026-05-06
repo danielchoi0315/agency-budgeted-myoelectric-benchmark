@@ -275,101 +275,56 @@ policy_ordered <- function(df) {
 }
 
 make_flow_figure <- function() {
-  top_nodes <- tribble(
+  main_nodes <- tribble(
     ~x, ~heading, ~body, ~fill,
-    0.85, "Public\ndatasets", "DB10 primary\nexternal EMG checks", "#E8F1FA",
-    2.35, "Fixed\ndecoders", "dataset-specific\nuser + assistive", "#F7F7F7",
-    3.85, "Frozen\nposteriors", "calibrated traces\nfor policy replay", "#F7F7F7",
-    5.35, "Policy\ncomparison", "confidence gate\nSetACSA\nagency-margin", "#EAF6EF",
-    6.85, "Offline\nevaluation", "unit inference\nperformance + ALI", "#FFF3D8"
+    1.05, "Open data\nand splits", "DB10 primary;\nHyser/CEMHSEY\nstress tests;\npredeclared units", "#E8F1FA",
+    3.05, "Frozen\ndecoder traces", "user posterior;\nassistive/context\nposterior;\nno online adaptation", "#F7F7F7",
+    5.05, "Policy replay\nand audits", "agency-margin,\nSetACSA, confidence\ngates; matched and\nexact-budget checks", "#EAF6EF",
+    7.05, "Unit-level\ninference", "active macro-F1;\nrisk-coverage AUC;\nALI and paired\nunit tests", "#FFF3D8",
+    9.05, "Claim\nboundary", "offline evidence only;\nno online, clinical,\nhaptic, or user-study\nclaim", "#F8E9E6"
   ) %>%
-    mutate(y = 2.38, w = 1.25, h = 1.00)
+    mutate(y = 2.35, w = 1.62, h = 1.20)
 
-  lower_nodes <- tribble(
-    ~x, ~w, ~heading, ~body, ~fill,
-    1.55, 2.35, "Declared shifts", "amputee LOSO, mixed-to-amputee,\nday/session transfer", "#F8E9E6",
-    4.05, 2.35, "Comparator audits", "matched-budget SetACSA and\nexact-budget confidence gates", "#F8E9E6",
-    6.55, 2.35, "Evidence boundary", "offline benchmark; no online,\nclinical, haptic, or user-study claim", "#F8E9E6"
-  ) %>%
-    mutate(y = 0.82, h = 0.92)
-
-  arrows <- tribble(
-    ~x, ~y, ~xend, ~yend,
-    1.46, 2.22, 1.74, 2.22,
-    2.96, 2.22, 3.24, 2.22,
-    4.46, 2.22, 4.74, 2.22,
-    5.96, 2.22, 6.24, 2.22,
-    2.35, 1.88, 2.35, 1.34,
-    5.35, 1.88, 5.35, 1.34,
-    6.85, 1.88, 6.85, 1.34
+  main_arrows <- tibble(
+    x = head(main_nodes$x + main_nodes$w / 2, -1) + 0.06,
+    y = main_nodes$y[1],
+    xend = tail(main_nodes$x - main_nodes$w / 2, -1) - 0.06,
+    yend = main_nodes$y[1]
   )
 
   ggplot() +
     geom_segment(
-      data = arrows,
+      data = main_arrows,
       aes(x = x, y = y, xend = xend, yend = yend),
-      linewidth = 0.36,
-      color = "#4A4A4A",
-      arrow = arrow(type = "closed", length = unit(0.07, "in"))
-    ) +
-    geom_rect(
-      data = top_nodes,
-      aes(xmin = x - w / 2, xmax = x + w / 2, ymin = y - h / 2, ymax = y + h / 2),
-      fill = top_nodes$fill,
+      linewidth = 0.42,
       color = "#303030",
-      linewidth = 0.30
+      arrow = arrow(type = "closed", length = unit(0.075, "in"))
     ) +
     geom_rect(
-      data = lower_nodes,
+      data = main_nodes,
       aes(xmin = x - w / 2, xmax = x + w / 2, ymin = y - h / 2, ymax = y + h / 2),
-      fill = lower_nodes$fill,
+      fill = main_nodes$fill,
       color = "#303030",
       linewidth = 0.30
     ) +
     geom_text(
-      data = top_nodes,
-      aes(x = x, y = y + 0.17, label = heading),
+      data = main_nodes,
+      aes(x = x, y = y + 0.26, label = heading),
       family = figure_font_family,
-      size = 3.08,
+      size = 3.05,
       lineheight = 0.86,
       fontface = "bold",
       color = "#111111"
     ) +
     geom_text(
-      data = top_nodes,
-      aes(x = x, y = y - 0.22, label = body),
+      data = main_nodes,
+      aes(x = x, y = y - 0.24, label = body),
       family = figure_font_family,
-      size = 2.72,
-      lineheight = 0.90,
+      size = 2.28,
+      lineheight = 0.88,
       color = "#222222"
     ) +
-    geom_text(
-      data = lower_nodes,
-      aes(x = x, y = y + 0.18, label = heading),
-      family = figure_font_family,
-      size = 3.02,
-      fontface = "bold",
-      color = "#111111"
-    ) +
-    geom_text(
-      data = lower_nodes,
-      aes(x = x, y = y - 0.17, label = body),
-      family = figure_font_family,
-      size = 2.68,
-      lineheight = 0.90,
-      color = "#222222"
-    ) +
-    annotate(
-      "text",
-      x = 0.28,
-      y = 3.03,
-      hjust = 0,
-      label = "Offline open-data policy benchmark",
-      family = figure_font_family,
-      fontface = "bold",
-      size = 3.25
-    ) +
-    coord_cartesian(xlim = c(0.12, 7.85), ylim = c(0.16, 3.32), expand = FALSE, clip = "off") +
+    coord_cartesian(xlim = c(0.12, 9.90), ylim = c(1.64, 3.06), expand = FALSE, clip = "off") +
     theme_void(base_family = figure_font_family) +
     theme(plot.margin = margin(5, 6, 5, 6))
 }
@@ -777,7 +732,7 @@ hyser_aggregate <- prepare_aggregate(read_pub("hyser_publication_aggregate_polic
 cemhsey_aggregate <- prepare_aggregate(read_pub("cemhsey_publication_aggregate_policy_metrics.csv"), "cemhsey")
 
 manifest <- bind_rows(
-  save_figure(make_flow_figure(), "fig1_benchmark_flow", width = 7.16, height = 3.55),
+  save_figure(make_flow_figure(), "fig1_benchmark_flow", width = 7.16, height = 3.05),
   save_figure(
     make_frontier_plot(
       db10_aggregate,
