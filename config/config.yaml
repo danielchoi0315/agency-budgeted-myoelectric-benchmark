@@ -1,0 +1,69 @@
+project:
+  title: "Agency-Budgeted Shared Autonomy Under Distribution Shift for Myoelectric Prosthetic Grasping"
+  target_journal: "IEEE Transactions on Neural Systems and Rehabilitation Engineering"
+  literature_anchors_path: "config/literature_anchors.yaml"
+  literature_comparability_path: "config/literature_comparability.yaml"
+  raw_data_root: "<DATA_ROOT>/raw"
+  archive_data_root: "<DATA_ROOT>/archives"
+  interim_data_root: "<WORK_ROOT>/interim"
+  processed_data_root: "<WORK_ROOT>/processed"
+  cache_root: "<WORK_ROOT>/cache"
+  results_root: "results"
+  random_seed: 20260415
+
+claims:
+  allowed:
+    - "offline intent inference"
+    - "offline uncertainty calibration"
+    - "offline intervention timing"
+    - "offline robustness under population, subject, and day shift"
+    - "agency-loss-aware policy tradeoffs"
+  disallowed:
+    - "haptic effectiveness"
+    - "trust improvement"
+    - "embodiment improvement"
+    - "workload reduction"
+    - "clinical efficacy"
+    - "hardware validation"
+
+workflow:
+  strict_no_raw_data_in_repo: true
+  primary_dataset: "db10"
+  external_datasets:
+    - "hyser"
+    - "cemhsey"
+    - "grabmyo"
+    - "capgmyo_dba"
+    - "putemg"
+  excluded_main_datasets:
+    hd_fw_kin: "Future continuous force/proprioception validation only."
+
+benchmark:
+  j1:
+    build:
+      spec_path: "config/j1.yaml"
+    prepare:
+      source_root: "<WORK_ROOT>/processed/j1_source"
+    models:
+      user: "torch_mlp"
+      assist: "torch_mlp"
+  db10:
+    prepare:
+      context_mode: "annotated_object_proxy"
+      include_rest: true
+    models:
+      user: "torch_mlp"
+      assist: "torch_mlp"
+  hyser:
+    models:
+      user: "torch_mlp"
+      assist: "extra_trees"
+  cemhsey:
+    models:
+      user: "extra_trees"
+      assist: "extra_trees"
+  grabmyo:
+    models:
+      user: "extra_trees"
+      assist: "torch_mlp"
+

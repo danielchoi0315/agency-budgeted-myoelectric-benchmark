@@ -1,0 +1,131 @@
+{
+  "dataset_id": "cemhsey",
+  "root": "<DATA_ROOT>/raw/cemhsey",
+  "generated_at": "2026-04-18T20:46:49.182282+00:00",
+  "status": "PASS",
+  "file_count": 20,
+  "total_bytes": 330471439983,
+  "extensions": {
+    ".zip": 20
+  },
+  "checks": [
+    {
+      "name": "has_archives_or_mat_files",
+      "passed": true,
+      "detail": "CEMHSEY may be stored as extracted MATLAB files or raw Zenodo zip archives"
+    },
+    {
+      "name": "has_required_grasp_archives",
+      "passed": true,
+      "detail": "Expected all GRASP_S1..GRASP_S13 archives, observed ['GRASP_S1.zip', 'GRASP_S10.zip', 'GRASP_S11.zip', 'GRASP_S12.zip', 'GRASP_S13.zip', 'GRASP_S2.zip', 'GRASP_S3.zip', 'GRASP_S4.zip', 'GRASP_S5.zip', 'GRASP_S6.zip', 'GRASP_S7.zip', 'GRASP_S8.zip', 'GRASP_S9.zip']"
+    },
+    {
+      "name": "has_day_structure_or_complete_archives",
+      "passed": true,
+      "detail": "Expected extracted day structure or the full GRASP archive set required by the benchmark"
+    }
+  ],
+  "files": [
+    {
+      "path": "14224328\\GRASP_S1.zip",
+      "size_bytes": 18935994387,
+      "sha256": "959f19db607a4377863638ea32efa33632de3aaf70c516c20c6a244c1ac409e9"
+    },
+    {
+      "path": "14224328\\GRASP_S10.zip",
+      "size_bytes": 18929285173,
+      "sha256": "1a762551ca6ba7eeaa34b913321874e5ffdf05fdd034a73c442a3040413bcff5"
+    },
+    {
+      "path": "14224328\\GRASP_S2.zip",
+      "size_bytes": 19659584926,
+      "sha256": "19d31f0b7be7ecf236f36be099094364095fcfa8a20f9001b0a7dcd8f5b9d417"
+    },
+    {
+      "path": "14224328\\GRASP_S3.zip",
+      "size_bytes": 19617330155,
+      "sha256": "a3f00a2109bfaf0e36c9ffb2e760c645750fa3785334e197c7820bb99444fe89"
+    },
+    {
+      "path": "14224328\\GRASP_S4.zip",
+      "size_bytes": 19588802076,
+      "sha256": "1e1b516736e0c213464a1ec5650c9ac2d6e9c57969faa265bbd060bb576cea2f"
+    },
+    {
+      "path": "14224328\\GRASP_S5.zip",
+      "size_bytes": 19154808597,
+      "sha256": "f1bc6e955423ad93b996e4c7a56d7c70e80a26156775ba66a5d2df5e9f8ef4f8"
+    },
+    {
+      "path": "14224328\\GRASP_S6.zip",
+      "size_bytes": 18818234079,
+      "sha256": "9212e87eb4274007055a2d5e44041676275719dae46f701764a87f1ea0080b23"
+    },
+    {
+      "path": "14224328\\GRASP_S7.zip",
+      "size_bytes": 18419834520,
+      "sha256": "49c2214a1740038a64d26172e1a161c7ebff77bc29b329f4407f5384cf69aade"
+    },
+    {
+      "path": "14224328\\GRASP_S8.zip",
+      "size_bytes": 18502695321,
+      "sha256": "02526efabc4b3297b1ca0c50e21337a152faafaebba2122e22380030d92a67a2"
+    },
+    {
+      "path": "14224328\\GRASP_S9.zip",
+      "size_bytes": 19016364731,
+      "sha256": "506c6a6ae7588d1382944c07c2f46144ebbc55c579dfb09a57f0419103c73708"
+    },
+    {
+      "path": "14272463\\GESTURE_S1.zip",
+      "size_bytes": 14088342472,
+      "sha256": "0465221615b853cdd63739d6c9b02f910eb262afe9f5602c94a7b690e33513d8"
+    },
+    {
+      "path": "14272463\\GESTURE_S2.zip",
+      "size_bytes": 13582886938,
+      "sha256": "2aa035afabee792727f20b02922ad188c26063a1fe4480683a6d0325aa81ce9e"
+    },
+    {
+      "path": "14272463\\GESTURE_S3.zip",
+      "size_bytes": 13936648516,
+      "sha256": "8eec0694acbbf65238a7974277696a3147c5a8497c742267687b15a83daba7b2"
+    },
+    {
+      "path": "14272463\\GESTURE_S4.zip",
+      "size_bytes": 12946525137,
+      "sha256": "49fe62f049ad163d2ff5eee29d1efc93f53a026fd1fff56491f4fa5cc73dcff3"
+    },
+    {
+      "path": "14272463\\GESTURE_S5.zip",
+      "size_bytes": 14316031877,
+      "sha256": "cfab3c2f9ed779f1eb0b4807441154dc5edcc76547f10f689e9b7626a9d83293"
+    },
+    {
+      "path": "14272463\\GESTURE_S6.zip",
+      "size_bytes": 13961978734,
+      "sha256": "b16e9bf8d772608caf8a8daae2628792d87fb41378738e9604477d6a6952660b"
+    },
+    {
+      "path": "14272463\\GRASP_S11.zip",
+      "size_bytes": 18498573207,
+      "sha256": "ec475e0f9461afbac7a777d2d0f6920dd09116f5ed40c811831dab2ad80d537c"
+    },
+    {
+      "path": "14272463\\GRASP_S12.zip",
+      "size_bytes": 19615951964,
+      "sha256": "4b71b0d0bab1be10b70a0592476057b9aa0f4941f75be2b52feaab60418598cb"
+    },
+    {
+      "path": "14272463\\GRASP_S13.zip",
+      "size_bytes": 18881562763,
+      "sha256": "f1e2897140d2664268b8e1f5cb25db342dfa8eba5856b0d2b59a7aa8c76a452b"
+    },
+    {
+      "path": "14272463\\MyFunction.zip",
+      "size_bytes": 4410,
+      "sha256": "1cc78b079102b7c10131c1e5f650cd0e41db4af0ab95e9e2d0580afbeb6f1fd7"
+    }
+  ],
+  "warnings": []
+}

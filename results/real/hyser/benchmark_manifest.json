@@ -1,0 +1,14 @@
+{
+  "dataset": "hyser",
+  "prepared_root": "<WORK_ROOT>/processed/hyser",
+  "prepared_success_file": "<WORK_ROOT>/processed/hyser/_SUCCESS",
+  "user_model": "torch_mlp",
+  "assist_model": "extra_trees",
+  "assist_context_modes": [],
+  "available_sequence_payload_roles": [],
+  "sequence_payload_sources": {},
+  "split_family_allowlist": [],
+  "split_id_allowlist": [],
+  "max_splits_per_family": null,
+  "n_rows": 40340
+}

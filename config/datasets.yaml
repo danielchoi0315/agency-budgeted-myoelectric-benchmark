@@ -1,0 +1,291 @@
+datasets:
+  j1:
+    name: "J1 Open Benchmark Bundle"
+    role: "open_data_meta_bundle"
+    official_page: "docs/j1_open_plan.md"
+    access_date: "2026-04-21"
+    data_sources:
+      local_prepared_bundle: "Prepared benchmark bundle generated or handed off from other open-data workflows."
+    expected_modalities:
+      - "prepared_user_features"
+      - "prepared_assist_features"
+      - "optional_sequence_payloads"
+    expected_groups:
+      - "able_bodied"
+      - "amputee"
+      - "unknown"
+    paper_anchor:
+      citation: "J1-open internal bundle"
+      role: "First-class open-data benchmark bundle for the J1-open paper path."
+
+  db10:
+    name: "NinaPro DB10 / MeganePro"
+    role: "primary"
+    official_page: "https://ninapro.hevs.ch/instructions/DB10.html"
+    canonical_doi: "10.1038/s41597-020-0380-3"
+    access_date: "2026-04-15"
+    data_sources:
+      mds1_required_for_j2: "https://doi.org/10.7910/DVN/1Z3IOM"
+    optional_or_excluded:
+      mds2: "https://doi.org/10.7910/DVN/78QFZH"
+      mds4: "https://doi.org/10.7910/DVN/F9R33N"
+      mdsinfo: "clinical interview/neurocognitive data; excluded from J2 controller benchmark"
+    expected_counts:
+      amputee_subjects: 15
+      able_bodied_subjects: 30
+      grasp_classes: 10
+    official_manifest: "DatasetContentCRC.sfv"
+    file_patterns:
+      - "*.mat"
+      - "*.csv"
+    expected_modalities:
+      - "sEMG"
+      - "gaze"
+      - "first_person_video"
+      - "head_inertial"
+      - "behavioral"
+    expected_groups:
+      - "able_bodied"
+      - "transradial_amputee"
+    paper_anchor:
+      citation: "Cognolato et al., Scientific Data 2020; DB10/MeganePro"
+      role: "Primary multimodal anchor and cross-population validation."
+
+  hyser:
+    name: "Hyser HD-sEMG"
+    role: "external_robustness"
+    official_page: "https://physionet.org/content/hd-semg/2.0.0/"
+    canonical_doi: "10.13026/3w0p-qt15"
+    access_date: "2026-04-15"
+    data_sources:
+      physionet: "https://physionet.org/content/hd-semg/2.0.0/"
+    expected_counts:
+      subjects: 20
+      days: 2
+    required_file_pairs:
+      - ".hea"
+      - ".dat"
+    expected_modalities:
+      - "HD-sEMG"
+      - "force"
+    expected_groups:
+      - "able_bodied"
+    paper_anchor:
+      citation: "Jiang et al., PhysioNet Hyser"
+      role: "Two-day external shift and force-related task robustness."
+
+  cemhsey:
+    name: "CEMHSEY Consecutive Multi-Day HD-sEMG"
+    role: "external_robustness"
+    official_page: "https://www.nature.com/articles/s41597-025-05733-y"
+    canonical_doi: "10.1038/s41597-025-05733-y"
+    access_date: "2026-04-15"
+    data_sources:
+      zenodo_part_i: "https://doi.org/10.5281/zenodo.14224328"
+      zenodo_part_ii: "https://doi.org/10.5281/zenodo.14272463"
+    citation_page: "https://www.nature.com/articles/s41597-025-05733-y"
+    expected_counts:
+      grasp_subjects: 13
+      gesture_subjects: 6
+      days: 11
+      hd_semg_channels: 320
+      grasp_classes: 7
+      gesture_classes: 11
+    required_subdatasets:
+      - "GRASP"
+      - "GESTURE"
+    file_patterns:
+      - "*.mat"
+    expected_modalities:
+      - "HD-sEMG"
+      - "force"
+    expected_groups:
+      - "able_bodied"
+    paper_anchor:
+      citation: "Yang et al., Scientific Data 2025"
+      role: "Eleven-day longitudinal HD-sEMG drift validation."
+
+  grabmyo:
+    name: "GRABMyo"
+    role: "external_robustness_large_multiday"
+    official_page: "https://physionet.org/content/grabmyo/1.1.0/"
+    canonical_doi: "10.13026/89dm-f662"
+    access_date: "2026-04-15"
+    data_sources:
+      physionet: "https://physionet.org/files/grabmyo/1.1.0/"
+      aws_open: "s3://physionet-open/grabmyo/1.1.0/"
+    expected_modalities:
+      - "sEMG"
+    expected_groups:
+      - "able_bodied"
+    expected_counts:
+      subjects: 43
+      days: 3
+      gestures: 16
+      uncompressed_gb: 9.4
+    required_files:
+      - "RECORDS"
+      - "SHA256SUMS.txt"
+      - "LICENSE.txt"
+    paper_anchor:
+      citation: "Pradhan et al., Scientific Data 2022 / PhysioNet GRABMyo 2024"
+      role: "Large-subject, three-day gesture-recognition stress test."
+
+  capgmyo_dba:
+    name: "CapgMyo DB-a"
+    role: "external_robustness_hd_semg_spatial"
+    official_page: "https://figshare.com/articles/dataset/Data_from_Gesture_Recognition_by_Instantaneous_Surface_EMG_Images_CapgMyo-DBa/7210397/1"
+    canonical_doi: "10.6084/m9.figshare.7210397"
+    access_date: "2026-04-15"
+    data_sources:
+      figshare: "https://doi.org/10.6084/m9.figshare.7210397"
+    expected_modalities:
+      - "HD-sEMG"
+    expected_groups:
+      - "able_bodied"
+    expected_counts:
+      subjects_total: 23
+      dba_subjects_used: 18
+      gestures: 8
+      channels: 128
+      download_gb: 1.31
+    paper_anchor:
+      citation: "Geng et al., Scientific Reports 2016 / Figshare CapgMyo DB-a"
+      role: "Small but useful 128-channel HD-sEMG spatial-map stress test."
+
+  putemg:
+    name: "putEMG / putEMG-Force"
+    role: "external_robustness_week_shift_force"
+    official_page: "https://biolab.put.poznan.pl/putemg-dataset/"
+    canonical_doi: "10.3390/s19163548"
+    access_date: "2026-04-15"
+    data_sources:
+      manual_download: "https://biolab.put.poznan.pl/putemg-dataset/"
+      downloader: "https://github.com/biolab-put/putemg-downloader"
+    expected_modalities:
+      - "sEMG"
+      - "video"
+      - "depth"
+      - "force"
+    expected_groups:
+      - "able_bodied"
+    expected_counts:
+      subjects: 44
+      sessions_minimum_spacing: "one week"
+      active_gestures: 7
+      electrodes: 24
+    paper_anchor:
+      citation: "Kaczmarek et al., Sensors 2019"
+      role: "Week-spaced session shift and force-estimation optional validation."
+
+  ninapro_db2:
+    name: "NinaPro DB2"
+    role: "optional_ninapro_intact_baseline"
+    official_page: "https://ninapro.hevs.ch/instructions/DB2.html"
+    access_date: "2026-04-15"
+    data_sources:
+      ninapro: "https://ninapro.hevs.ch/instructions/DB2.html"
+    expected_modalities:
+      - "sEMG"
+      - "kinematic"
+      - "inertial"
+      - "force"
+    expected_groups:
+      - "able_bodied"
+    expected_counts:
+      subjects: 40
+      movements: 49
+      electrodes: 12
+    paper_anchor:
+      citation: "Atzori et al., Scientific Data 2014"
+      role: "NinaPro intact-subject anchor; optional if reviewers ask for NinaPro breadth."
+
+  ninapro_db3:
+    name: "NinaPro DB3"
+    role: "optional_ninapro_amputee_baseline"
+    official_page: "https://ninapro.hevs.ch/instructions/DB3.html"
+    access_date: "2026-04-15"
+    data_sources:
+      ninapro: "https://ninapro.hevs.ch/instructions/DB3.html"
+    expected_modalities:
+      - "sEMG"
+      - "inertial"
+      - "kinematic"
+    expected_groups:
+      - "transradial_amputee"
+    expected_counts:
+      subjects: 11
+      movements: 49
+      electrodes: 12
+    paper_anchor:
+      citation: "Atzori et al., Scientific Data 2014"
+      role: "Optional amputee-only NinaPro baseline."
+
+  ninapro_db6:
+    name: "NinaPro DB6"
+    role: "optional_repeatability_eye_tracking"
+    official_page: "https://ninapro.hevs.ch/instructions/DB6.html"
+    access_date: "2026-04-15"
+    data_sources:
+      ninapro: "https://ninapro.hevs.ch/instructions/DB6.html"
+    expected_modalities:
+      - "sEMG"
+      - "inertial"
+      - "eye_tracking_scene_camera"
+    expected_groups:
+      - "able_bodied"
+    expected_counts:
+      subjects: 10
+      movements: 7
+      days: 5
+      acquisitions_per_day: 2
+    paper_anchor:
+      citation: "NinaPro DB6 repeatability dataset"
+      role: "Optional repeatability plus eye-tracking stress test."
+
+  seeds_65:
+    name: "65-gesture HD-sEMG / SEEDS-style dataset"
+    role: "optional_hd_semg_many_gestures"
+    official_page: "https://www.nature.com/articles/s41597-021-00843-9"
+    canonical_doi: "10.1038/s41597-021-00843-9"
+    access_date: "2026-04-15"
+    data_sources:
+      figshare_metadata: "https://doi.org/10.6084/m9.figshare.13625828"
+    expected_modalities:
+      - "HD-sEMG"
+      - "force"
+    expected_groups:
+      - "able_bodied"
+    expected_counts:
+      subjects: 20
+      gestures_unique: 65
+      channels: 128
+      repetitions: 5
+    paper_anchor:
+      citation: "Malesevic et al., Scientific Data 2021"
+      role: "Optional many-class HD-sEMG classifier stress test."
+
+  hd_fw_kin:
+    name: "HD-FW KIN"
+    role: "restricted_optional_force_kinematics"
+    official_page: "https://physionet.org/content/hand-kinematics-semg/1.0.0/"
+    canonical_doi: "10.13026/ch3e-c195"
+    access_date: "2026-04-15"
+    access_policy: "restricted PhysioNet DUA"
+    data_sources:
+      physionet_restricted: "https://physionet.org/content/hand-kinematics-semg/1.0.0/"
+    expected_modalities:
+      - "HD-sEMG"
+      - "finger_joint_angles"
+      - "finger_flexion_forces"
+    expected_groups:
+      - "able_bodied"
+    expected_counts:
+      subjects: 21
+      channels: 448
+      gestures: 20
+      force_tasks: 9
+    paper_anchor:
+      citation: "Zhao et al., PhysioNet 2025"
+      role: "Restricted optional continuous force/kinematics validation, not main-paper dependency."
+

@@ -1,0 +1,12 @@
+cemhsey:
+  source:
+    paper: "Yang et al., Scientific Data 2025"
+    doi: "10.1038/s41597-025-05733-y"
+    note: "Failed trials listed in Table 2 of the published data descriptor."
+  grasp_failed_trials:
+    - "S4_Day1_Session1_Task1_Trial1.mat"
+  gesture_failed_trials:
+    - "S2_Day3_Trial3.mat"
+    - "S3_Day6_Trial2.mat"
+    - "S3_Day10_Trial5.mat"
+

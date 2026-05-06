@@ -1,0 +1,57 @@
+# Environments and caches
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.snakemake/
+.coverage
+htmlcov/
+
+# Raw/intermediate data
+data/
+raw/
+interim/
+processed/
+archives/
+cache/
+downloads/
+results/downloads/
+
+# Large/generated binary artifacts
+*.mat
+*.h5
+*.hdf5
+*.edf
+*.bdf
+*.npy
+*.npz
+*.parquet
+*.pkl
+*.joblib
+*.dat
+*.hea
+*.avi
+*.mp4
+*.mov
+*.zip
+*.rar
+*.7z
+
+# LaTeX build products
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.toc
+*.synctex.gz
+manuscript/tnsre_overleaf/main.pdf
+manuscript/tnsre_overleaf/supplement.pdf
+
+# Local OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

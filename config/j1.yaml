@@ -1,0 +1,47 @@
+version: 1
+
+bundle:
+  dataset_id: j1
+
+sources:
+  - name: db10_open
+    prepared_root: "<WORK_ROOT>/processed/db10"
+    feature_schema:
+      user_features: "db10_user_tabular_v1"
+      assist_features: "db10_assist_tabular_v1"
+    label_map:
+      "0": 0
+      "1": 1
+      "2": 2
+      "3": 3
+      "4": 4
+      "5": 5
+      "6": 6
+      "7": 7
+      "8": 8
+      "9": 9
+      "10": 10
+
+# Multi-source composition is intentionally explicit.
+# Uncomment and fill this block only when you really want to concatenate
+# multiple prepared roots into one J1 bundle.
+#
+# composition:
+#   strategy: concatenate
+#   output_feature_schema:
+#     user_features: "db10_user_tabular_v1"
+#     assist_features: "db10_assist_tabular_v1"
+#
+# A source whose schema does not match the output schema must declare an
+# explicit projection, for example:
+#
+# projection:
+#   user_features:
+#     from_schema: "other_user_schema_v1"
+#     to_schema: "db10_user_tabular_v1"
+#     columns: [0, 2, 5, 7]
+#   assist_features:
+#     from_schema: "other_assist_schema_v1"
+#     to_schema: "db10_assist_tabular_v1"
+#     columns: [0, 1, 4, 6]
+

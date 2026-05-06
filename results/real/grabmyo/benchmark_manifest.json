@@ -1,0 +1,14 @@
+{
+  "dataset": "grabmyo",
+  "prepared_root": "<WORK_ROOT>/processed/grabmyo",
+  "prepared_success_file": "<WORK_ROOT>/processed/grabmyo/_SUCCESS",
+  "user_model": "extra_trees",
+  "assist_model": "torch_mlp",
+  "assist_context_modes": [],
+  "available_sequence_payload_roles": [],
+  "sequence_payload_sources": {},
+  "split_family_allowlist": [],
+  "split_id_allowlist": [],
+  "max_splits_per_family": null,
+  "n_rows": 76755
+}

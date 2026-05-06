@@ -1,0 +1,150 @@
+metadata:
+  purpose: "Machine-readable literature anchor ledger for publication-safe J2 novelty and SOTA checks."
+  last_reviewed: "2026-04-20"
+
+guardrails:
+  disallowed_terms_without_direct_support:
+    - "state of the art"
+    - "SOTA"
+    - "best published"
+    - "best-in-class"
+  preferred_terms:
+    - "open benchmark"
+    - "reproducible policy-layer benchmark"
+    - "agency-budgeted intervention benchmark"
+    - "cross-shift robustness benchmark"
+
+targets:
+  - target_id: "db10_cross_population_policy"
+    dataset_id: "db10"
+    split_family: "db10_mixed_to_amputee"
+    claim_surface: "benchmark_primary"
+    direct_sota_eligible: false
+    local_metric_field: "best_agency_active_macro_f1"
+    baseline_metric_field: "user_only_active_macro_f1"
+    policy_field: "best_agency_policy"
+    local_metric_name: "active_macro_f1"
+    higher_is_better: true
+    priority: "primary"
+    description: "DB10 mixed-to-amputee cross-population policy benchmark."
+  - target_id: "db10_amputee_loso_policy"
+    dataset_id: "db10"
+    split_family: "db10_amputee_loso"
+    claim_surface: "benchmark_primary"
+    direct_sota_eligible: false
+    local_metric_field: "best_agency_active_macro_f1"
+    baseline_metric_field: "user_only_active_macro_f1"
+    policy_field: "best_agency_policy"
+    local_metric_name: "active_macro_f1"
+    higher_is_better: true
+    priority: "primary"
+    description: "DB10 amputee leave-one-subject-out policy benchmark."
+  - target_id: "hyser_cross_day_policy"
+    dataset_id: "hyser"
+    split_family: "hyser_within_subject_dayshift"
+    claim_surface: "supporting_external"
+    direct_sota_eligible: false
+    local_metric_field: "best_agency_active_macro_f1"
+    baseline_metric_field: "user_only_active_macro_f1"
+    policy_field: "best_agency_policy"
+    local_metric_name: "active_macro_f1"
+    higher_is_better: true
+    priority: "supporting"
+    description: "Hyser within-subject day-shift policy benchmark."
+  - target_id: "cemhsey_longitudinal_policy"
+    dataset_id: "cemhsey"
+    split_family: "cemhsey_forward_day_logo"
+    claim_surface: "supporting_external"
+    direct_sota_eligible: false
+    local_metric_field: "best_agency_active_macro_f1"
+    baseline_metric_field: "user_only_active_macro_f1"
+    policy_field: "best_agency_policy"
+    local_metric_name: "active_macro_f1"
+    higher_is_better: true
+    priority: "supporting"
+    description: "CEMHSEY forward-day longitudinal policy benchmark."
+
+anchors:
+  - anchor_id: "db10_frontiers_2022_amputee_multimodal_gain"
+    citation: "Cognolato et al., Frontiers in Artificial Intelligence, 2022"
+    url: "https://www.frontiersin.org/journals/artificial-intelligence/articles/10.3389/frai.2021.744476/full"
+    dataset_id: "db10"
+    protocol_family: "within_subject_static_dynamic_grasp_classification"
+    subject_group: "transradial_amputees"
+    metric_name: "accuracy_gain_percentage_points"
+    metric_value: 15.61
+    spread_value: 4.22
+    unit: "percentage_points"
+    comparability: "partial"
+    targets:
+      - "db10_cross_population_policy"
+      - "db10_amputee_loso_policy"
+    note: "Same dataset and prosthetic grasp task family, but not the same split family, policy layer, or macro-F1 metric."
+  - anchor_id: "db10_frontiers_2022_able_multimodal_gain"
+    citation: "Cognolato et al., Frontiers in Artificial Intelligence, 2022"
+    url: "https://www.frontiersin.org/journals/artificial-intelligence/articles/10.3389/frai.2021.744476/full"
+    dataset_id: "db10"
+    protocol_family: "within_subject_static_dynamic_grasp_classification"
+    subject_group: "able_bodied"
+    metric_name: "accuracy_gain_percentage_points"
+    metric_value: 7.37
+    spread_value: 3.52
+    unit: "percentage_points"
+    comparability: "contextual"
+    targets:
+      - "db10_cross_population_policy"
+    note: "Useful source-domain DB10 context, but not a credible comparator for amputee-only or policy-layer targets."
+  - anchor_id: "db10_frobt_2024_reaching_phase_fusion_accuracy"
+    citation: "Zandigohar et al., Frontiers in Robotics and AI, 2024"
+    url: "https://arxiv.org/abs/2104.03893"
+    dataset_id: "db10"
+    protocol_family: "reaching_phase_multimodal_fusion"
+    subject_group: "mixed"
+    metric_name: "accuracy_percent"
+    metric_value: 95.3
+    unit: "percent"
+    comparability: "contextual"
+    targets:
+      - "db10_cross_population_policy"
+      - "db10_amputee_loso_policy"
+    note: "Strong DB10 fusion result, but it is a reaching-phase fusion benchmark rather than our policy-constrained cross-population benchmark."
+  - anchor_id: "hyser_tnsre_2021_toolbox_benchmark"
+    citation: "Jiang et al., IEEE TNSRE, 2021"
+    url: "https://www.embs.org/tnsre/articles/open-access-dataset-toolbox-and-benchmark-processing-results-of-high-density-surface-electromyogram-recordings/"
+    dataset_id: "hyser"
+    protocol_family: "official_dataset_toolbox_benchmark"
+    comparability: "contextual"
+    targets:
+      - "hyser_cross_day_policy"
+    note: "Official Hyser benchmark context, but not a matched policy-layer macro-F1 day-shift comparison for this repository protocol."
+  - anchor_id: "hyser_bspc_2026_diffhgr"
+    citation: "Su et al., Biomedical Signal Processing and Control, 2026"
+    url: "https://www.sciencedirect.com/science/article/abs/pii/S1746809426002703"
+    dataset_id: "hyser"
+    protocol_family: "cross_day_with_few_shot_calibration"
+    comparability: "contextual"
+    targets:
+      - "hyser_cross_day_policy"
+    note: "Reports cross-day outperformance with a few-shot calibration protocol, so it is not directly comparable to the strict no-target-calibration benchmark here."
+  - anchor_id: "cemhsey_scidata_2025_dataset_release"
+    citation: "Huang et al., Scientific Data, 2025"
+    url: "https://www.nature.com/articles/s41597-025-05733-y"
+    dataset_id: "cemhsey"
+    protocol_family: "dataset_release_longitudinal_hd_semg"
+    comparability: "contextual"
+    targets:
+      - "cemhsey_longitudinal_policy"
+    note: "Defines the longitudinal challenge and data scale, but not a directly matched forward-day policy benchmark."
+  - anchor_id: "shared_control_natcomms_2025_boundary"
+    citation: "Nature Communications shared human-machine prosthesis control, 2025"
+    url: "https://www.nature.com/articles/s41467-025-65965-9"
+    dataset_id: "boundary"
+    protocol_family: "online_shared_control"
+    comparability: "boundary"
+    targets:
+      - "db10_cross_population_policy"
+      - "db10_amputee_loso_policy"
+      - "hyser_cross_day_policy"
+      - "cemhsey_longitudinal_policy"
+    note: "Boundary anchor only. It blocks generic claims that shared autonomy itself is novel or clinically validated here."
+

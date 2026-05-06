@@ -1,0 +1,255 @@
+{
+  "status": "provisionally_ready",
+  "checks": [
+    {
+      "name": "cemhsey_failed_trial_excluded",
+      "passed": true,
+      "critical": true,
+      "detail": "Matched exclusions: ['S4_Day1_Session1_Task1_Trial1.mat']"
+    },
+    {
+      "name": "db10_multimodal_direction",
+      "passed": true,
+      "critical": true,
+      "detail": "assist_only macro-F1 exceeds user_only on every DB10 split family"
+    },
+    {
+      "name": "db10_absolute_performance_floor",
+      "passed": true,
+      "critical": true,
+      "detail": "Best DB10 agency macro-F1 observed: 0.5722"
+    },
+    {
+      "name": "db10_active_grasp_floor",
+      "passed": true,
+      "critical": true,
+      "detail": "Best DB10 agency active-grasp macro-F1 observed: 0.6938"
+    },
+    {
+      "name": "external_agency_margin_direction",
+      "passed": true,
+      "critical": false,
+      "detail": "best agency-margin policy improves macro-F1 over user_only on external robustness datasets"
+    },
+    {
+      "name": "canonical_model_manifest_alignment",
+      "passed": true,
+      "critical": false,
+      "detail": "Benchmark manifests match config model targets: [{'dataset_id': 'db10', 'user_model': 'torch_mlp', 'assist_model': 'torch_mlp', 'matches_config': True}, {'dataset_id': 'hyser', 'user_model': 'torch_mlp', 'assist_model': 'extra_trees', 'matches_config': True}, {'dataset_id': 'cemhsey', 'user_model': 'extra_trees', 'assist_model': 'extra_trees', 'matches_config': True}]"
+    },
+    {
+      "name": "db10_primary_pairwise_significance",
+      "passed": true,
+      "critical": true,
+      "detail": "DB10 taus with beneficial Holm-significant active-F1 and active-risk results across all DB10 split families: ['0.02', '0.05', '0.10', '0.15', '0.20']"
+    }
+  ],
+  "datasets": {
+    "audits": [
+      {
+        "dataset_id": "db10",
+        "status": "PASS",
+        "file_count": 244,
+        "total_gb": 223.6
+      },
+      {
+        "dataset_id": "hyser",
+        "status": "PASS",
+        "file_count": 57501,
+        "total_gb": 142.76
+      },
+      {
+        "dataset_id": "cemhsey",
+        "status": "PASS",
+        "file_count": 20,
+        "total_gb": 307.78
+      },
+      {
+        "dataset_id": "grabmyo",
+        "status": "PASS",
+        "file_count": 5,
+        "total_gb": 0.01
+      }
+    ],
+    "prepared": [
+      {
+        "dataset_id": "db10",
+        "rows": 189000,
+        "subjects": 45,
+        "sessions": 1,
+        "days": 0,
+        "labels": 11,
+        "user_dim": 96,
+        "assist_dim": 190,
+        "assist_context_modes": "annotated_object_proxy"
+      },
+      {
+        "dataset_id": "hyser",
+        "rows": 40340,
+        "subjects": 20,
+        "sessions": 2,
+        "days": 2,
+        "labels": 34,
+        "user_dim": 1280,
+        "assist_dim": 2048,
+        "assist_context_modes": ""
+      },
+      {
+        "dataset_id": "cemhsey",
+        "rows": 24020,
+        "subjects": 13,
+        "sessions": 1,
+        "days": 11,
+        "labels": 7,
+        "user_dim": 1600,
+        "assist_dim": 2560,
+        "assist_context_modes": ""
+      }
+    ],
+    "benchmark_manifests": [
+      {
+        "dataset_id": "db10",
+        "user_model": "torch_mlp",
+        "assist_model": "torch_mlp",
+        "config_user_model": "torch_mlp",
+        "config_assist_model": "torch_mlp",
+        "matches_config": true,
+        "sequence_roles": "assist|user"
+      },
+      {
+        "dataset_id": "hyser",
+        "user_model": "torch_mlp",
+        "assist_model": "extra_trees",
+        "config_user_model": "torch_mlp",
+        "config_assist_model": "extra_trees",
+        "matches_config": true,
+        "sequence_roles": ""
+      },
+      {
+        "dataset_id": "cemhsey",
+        "user_model": "extra_trees",
+        "assist_model": "extra_trees",
+        "config_user_model": "extra_trees",
+        "config_assist_model": "extra_trees",
+        "matches_config": true,
+        "sequence_roles": ""
+      }
+    ],
+    "benchmark_observations": [
+      {
+        "dataset_id": "db10",
+        "split_family": "db10_able_to_amputee",
+        "best_overall_policy": "confidence_blend_alpha_0.75",
+        "best_overall_macro_f1": 0.5568236463939239,
+        "best_overall_active_macro_f1": 0.6901945395175738,
+        "best_overall_active_risk_coverage_auc": 0.2229716596863499,
+        "best_overall_mean_ali": 0.0947212789914998,
+        "best_agency_policy": "agency_margin_tau_0.20",
+        "best_agency_macro_f1": 0.4765102439705083,
+        "best_agency_active_macro_f1": 0.5911931610682085,
+        "best_agency_active_risk_coverage_auc": 0.2516113170917216,
+        "best_agency_mean_ali": 0.044579576808318,
+        "user_only_macro_f1": 0.1028347698846434,
+        "user_only_active_macro_f1": 0.0814182819412319,
+        "user_only_active_risk_coverage_auc": 0.8802043354559295,
+        "user_only_risk_coverage_auc": 0.8155335445292821,
+        "assist_only_macro_f1": 0.5566059254086704
+      },
+      {
+        "dataset_id": "db10",
+        "split_family": "db10_amputee_loso",
+        "best_overall_policy": "assist_only",
+        "best_overall_macro_f1": 0.5700610270776288,
+        "best_overall_active_macro_f1": 0.6805578113642629,
+        "best_overall_active_risk_coverage_auc": 0.248023994164058,
+        "best_overall_mean_ali": 0.0573554386679258,
+        "best_agency_policy": "agency_margin_tau_0.20",
+        "best_agency_macro_f1": 0.5526217802627449,
+        "best_agency_active_macro_f1": 0.6577344811517336,
+        "best_agency_active_risk_coverage_auc": 0.2540500254539725,
+        "best_agency_mean_ali": 0.0525127643907993,
+        "user_only_macro_f1": 0.0950532254108772,
+        "user_only_active_macro_f1": 0.0806035065336136,
+        "user_only_active_risk_coverage_auc": 0.8898838683495233,
+        "user_only_risk_coverage_auc": 0.8394507632546234,
+        "assist_only_macro_f1": 0.5700610270776288
+      },
+      {
+        "dataset_id": "db10",
+        "split_family": "db10_mixed_to_amputee",
+        "best_overall_policy": "confidence_blend_alpha_0.50",
+        "best_overall_macro_f1": 0.5853218647240169,
+        "best_overall_active_macro_f1": 0.710158940003744,
+        "best_overall_active_risk_coverage_auc": 0.1864470665589932,
+        "best_overall_mean_ali": 0.0497269603323481,
+        "best_agency_policy": "agency_margin_tau_0.20",
+        "best_agency_macro_f1": 0.5721588246495688,
+        "best_agency_active_macro_f1": 0.6937835625631465,
+        "best_agency_active_risk_coverage_auc": 0.1894616535487193,
+        "best_agency_mean_ali": 0.0483577485124983,
+        "user_only_macro_f1": 0.112881816947481,
+        "user_only_active_macro_f1": 0.0880473100923061,
+        "user_only_active_risk_coverage_auc": 0.8791562398712605,
+        "user_only_risk_coverage_auc": 0.8054896365994911,
+        "assist_only_macro_f1": 0.5852984742589912
+      },
+      {
+        "dataset_id": "hyser",
+        "split_family": "hyser_subject_logo",
+        "best_overall_policy": "confidence_blend_alpha_0.50",
+        "best_overall_macro_f1": 0.3579132005163251,
+        "best_overall_active_macro_f1": 0.3579132005163251,
+        "best_overall_active_risk_coverage_auc": 0.4251080911039385,
+        "best_overall_mean_ali": 0.0272994945872714,
+        "best_agency_policy": "agency_margin_tau_0.20",
+        "best_agency_macro_f1": 0.3422601262801701,
+        "best_agency_active_macro_f1": 0.3422601262801701,
+        "best_agency_active_risk_coverage_auc": 0.4502130974978078,
+        "best_agency_mean_ali": 0.0123824465158242,
+        "user_only_macro_f1": 0.3250553611607254,
+        "user_only_active_macro_f1": 0.3250553611607254,
+        "user_only_active_risk_coverage_auc": 0.4672536056318241,
+        "user_only_risk_coverage_auc": 0.4672536056318241,
+        "assist_only_macro_f1": 0.2878856597057609
+      },
+      {
+        "dataset_id": "hyser",
+        "split_family": "hyser_within_subject_dayshift",
+        "best_overall_policy": "confidence_blend_alpha_0.50",
+        "best_overall_macro_f1": 0.4460865987866256,
+        "best_overall_active_macro_f1": 0.4460865987866256,
+        "best_overall_active_risk_coverage_auc": 0.347029396695991,
+        "best_overall_mean_ali": 0.0188878105455141,
+        "best_agency_policy": "agency_margin_tau_0.20",
+        "best_agency_macro_f1": 0.4320375950646719,
+        "best_agency_active_macro_f1": 0.4320375950646719,
+        "best_agency_active_risk_coverage_auc": 0.3664625145699562,
+        "best_agency_mean_ali": 0.0134289677496657,
+        "user_only_macro_f1": 0.385725313552562,
+        "user_only_active_macro_f1": 0.385725313552562,
+        "user_only_active_risk_coverage_auc": 0.4047264901985746,
+        "user_only_risk_coverage_auc": 0.4047264901985746,
+        "assist_only_macro_f1": 0.3928631758931422
+      },
+      {
+        "dataset_id": "cemhsey",
+        "split_family": "cemhsey_forward_day_logo",
+        "best_overall_policy": "confidence_blend_alpha_0.75",
+        "best_overall_macro_f1": 0.6700943163588275,
+        "best_overall_active_macro_f1": 0.6700943163588275,
+        "best_overall_active_risk_coverage_auc": 0.222969109687535,
+        "best_overall_mean_ali": 0.0346504736634593,
+        "best_agency_policy": "agency_margin_tau_0.20",
+        "best_agency_macro_f1": 0.6502536676787999,
+        "best_agency_active_macro_f1": 0.6502536676787999,
+        "best_agency_active_risk_coverage_auc": 0.2304870095339277,
+        "best_agency_mean_ali": 0.0148141936491429,
+        "user_only_macro_f1": 0.5775596884029975,
+        "user_only_active_macro_f1": 0.5775596884029975,
+        "user_only_active_risk_coverage_auc": 0.2580279430978328,
+        "user_only_risk_coverage_auc": 0.2580279430978328,
+        "assist_only_macro_f1": 0.643596889005839
+      }
+    ]
+  }
+}

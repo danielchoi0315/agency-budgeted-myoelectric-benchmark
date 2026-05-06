@@ -1,0 +1,29 @@
+primary_endpoint:
+  name: "risk_coverage_auc_at_matched_intervention_budget"
+  family: "DB10 primary policy comparison"
+  matched_intervention_rates: [0.10, 0.20, 0.30]
+
+secondary_metrics:
+  - "macro_f1"
+  - "mean_ali"
+  - "brier"
+  - "nll"
+  - "ece"
+  - "median_decision_time_ms"
+
+diagnostic_metrics:
+  - "balanced_accuracy"
+  - "intervention_rate"
+  - "action_change_rate"
+  - "calibration_reliability_curve"
+
+policy_budgets:
+  tau_grid: [0.02, 0.05, 0.10, 0.15, 0.20, 0.30]
+  matched_intervention_rates: [0.05, 0.10, 0.20, 0.30, 0.50]
+
+statistical_rules:
+  analysis_level: "subject_session_day"
+  confidence_interval: 0.95
+  bootstrap_repeats: 2000
+  primary_pairwise_correction: "holm_bonferroni"
+

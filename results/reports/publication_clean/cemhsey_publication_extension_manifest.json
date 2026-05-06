@@ -1,0 +1,31 @@
+{
+  "dataset": "cemhsey",
+  "prepared_root": "<WORK_ROOT>/processed/cemhsey",
+  "user_model": "extra_trees",
+  "assist_model": "extra_trees",
+  "pairwise_repeats": 2000,
+  "trace_count": 21840,
+  "decision_count": 502320,
+  "split_families": [
+    "cemhsey_forward_day_logo"
+  ],
+  "artifact_inventory": {
+    "publication_metrics_by_policy_unit": "cemhsey_publication_metrics_by_policy_unit.csv",
+    "publication_aggregate_policy_metrics": "cemhsey_publication_aggregate_policy_metrics.csv",
+    "confidence_gate_match_summary": "cemhsey_confidence_gate_match_summary.csv",
+    "confidence_gate_pairwise": "cemhsey_confidence_gate_pairwise.csv",
+    "confidence_gate_iso_budget_unit_deltas": "cemhsey_confidence_gate_iso_budget_unit_deltas.csv",
+    "confidence_gate_iso_budget_pairwise": "cemhsey_confidence_gate_iso_budget_pairwise.csv",
+    "plain_conf_exact_budget_selection_by_unit": "cemhsey_plain_conf_exact_budget_selection_by_unit.csv",
+    "confidence_gate_exact_budget_pairwise": "cemhsey_confidence_gate_exact_budget_pairwise.csv",
+    "earliest_safe_by_episode": "cemhsey_earliest_safe_by_episode.csv",
+    "earliest_safe_by_unit": "cemhsey_earliest_safe_by_unit.csv",
+    "earliest_safe_summary": "cemhsey_earliest_safe_summary.csv",
+    "earliest_safe_pairwise": "cemhsey_earliest_safe_pairwise.csv",
+    "earliest_safe_iso_budget_unit_deltas": "cemhsey_earliest_safe_iso_budget_unit_deltas.csv",
+    "earliest_safe_iso_budget_pairwise": "cemhsey_earliest_safe_iso_budget_pairwise.csv",
+    "earliest_safe_exact_budget_pairwise": "cemhsey_earliest_safe_exact_budget_pairwise.csv",
+    "matched_budget_ablation_figure": "cemhsey_matched_budget_ablation.png",
+    "earliest_safe_figure": "cemhsey_earliest_safe.png"
+  }
+}

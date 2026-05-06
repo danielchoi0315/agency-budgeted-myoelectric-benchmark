@@ -1,0 +1,30 @@
+policies:
+  confidence_blend:
+    alpha_grid: [0.25, 0.50, 0.75]
+  selective_prediction:
+    user_confidence_thresholds: [0.60, 0.70, 0.80]
+    assist_confidence_thresholds: [0.60, 0.70, 0.80]
+  agency_budget:
+    tau_grid: [0.02, 0.05, 0.10, 0.15, 0.20, 0.30]
+
+stress_tests:
+  missing_modality:
+    modalities: ["gaze", "video", "context"]
+  channel_dropout:
+    rates: [0.05, 0.10, 0.20, 0.40]
+  synthetic_noise:
+    snr_db: [30, 20, 10, 5]
+  calibration_drift:
+    temperature_multipliers: [0.5, 0.75, 1.5, 2.0, 4.0]
+  latency:
+    decision_time_ms: [50, 100, 150, 250, 500]
+
+manuscript_figures:
+  - "architecture"
+  - "anchor_reproduction"
+  - "db10_cross_population"
+  - "calibration_risk_coverage"
+  - "external_robustness"
+  - "failure_analysis"
+
+

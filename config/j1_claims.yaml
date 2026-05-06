@@ -1,0 +1,111 @@
+version: 1
+program_id: j1_open
+claim_surface: benchmark_only
+
+split_families:
+  primary:
+    - j1_amputee_loso
+    - j1_mixed_to_amputee
+  boundary:
+    - j1_able_to_amputee
+
+claim_classes:
+  matched_budget_performance:
+    allowed: true
+    requires:
+      - primary_split_success
+      - comparator_support
+    description: >
+      Offline matched-budget performance claim on the primary J1 split families.
+  safe_intervention_timing:
+    allowed: true
+    requires:
+      - primary_split_success
+      - comparator_support
+    description: >
+      Offline stable-safe and earliest-safe timing claim on the primary J1 split families.
+  robustness_under_shift:
+    allowed: true
+    requires:
+      - primary_split_success
+      - comparator_support
+      - robustness_direction
+    description: >
+      Supporting robustness claim for external day and longitudinal shift datasets.
+  translational:
+    allowed: false
+    reason: >
+      J1-open is an open-data benchmark and does not directly measure online control,
+      clinical efficacy, deployment readiness, or real-world translational benefit.
+    disallowed_terms:
+      - translational
+      - clinically validated
+      - clinical efficacy
+      - deployment ready
+      - real-world readiness
+      - hardware validation
+  human_factors:
+    allowed: false
+    reason: >
+      J1-open does not measure trust, workload, embodiment, haptic effectiveness,
+      or other human-factor outcomes.
+    disallowed_terms:
+      - trust
+      - workload
+      - embodiment
+      - haptic effectiveness
+      - human factors
+
+gates:
+  primary_split_success:
+    required_split_families:
+      - j1_amputee_loso
+      - j1_mixed_to_amputee
+    min_passing_splits: 2
+    primary_metric:
+      name: active_macro_f1
+      field: ci_lower
+      operator: gt
+      value: 0.0
+    guardrails:
+      stable_safe_episode_rate:
+        field: delta
+        operator: gte
+        value: 0.0
+      earliest_safe_time_s:
+        field: delta
+        operator: lte
+        value: 0.0
+      intervention_rate_gap:
+        field: abs
+        operator: lte
+        value: 0.02
+
+  comparator_support:
+    required_split_families:
+      - j1_amputee_loso
+      - j1_mixed_to_amputee
+    min_supported_splits: 2
+    comparison_family: agency_vs_plain_conf
+    baseline_policy_prefix: plain_conf_threshold_matched_tau_
+
+  robustness_direction:
+    eligible_datasets:
+      - hyser
+      - cemhsey
+      - grabmyo
+    min_supporting_datasets: 2
+    metrics:
+      active_macro_f1:
+        field: delta
+        operator: gte
+        value: 0.0
+      active_risk_coverage_auc:
+        field: delta
+        operator: gte
+        value: 0.0
+      stable_safe_episode_rate:
+        field: delta
+        operator: gte
+        value: 0.0
+

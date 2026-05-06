@@ -1,0 +1,32 @@
+{
+  "dataset": "hyser",
+  "prepared_root": "<WORK_ROOT>/processed/hyser",
+  "user_model": "torch_mlp",
+  "assist_model": "extra_trees",
+  "pairwise_repeats": 2000,
+  "trace_count": 60530,
+  "decision_count": 1392190,
+  "split_families": [
+    "hyser_subject_logo",
+    "hyser_within_subject_dayshift"
+  ],
+  "artifact_inventory": {
+    "publication_metrics_by_policy_unit": "hyser_publication_metrics_by_policy_unit.csv",
+    "publication_aggregate_policy_metrics": "hyser_publication_aggregate_policy_metrics.csv",
+    "confidence_gate_match_summary": "hyser_confidence_gate_match_summary.csv",
+    "confidence_gate_pairwise": "hyser_confidence_gate_pairwise.csv",
+    "confidence_gate_iso_budget_unit_deltas": "hyser_confidence_gate_iso_budget_unit_deltas.csv",
+    "confidence_gate_iso_budget_pairwise": "hyser_confidence_gate_iso_budget_pairwise.csv",
+    "plain_conf_exact_budget_selection_by_unit": "hyser_plain_conf_exact_budget_selection_by_unit.csv",
+    "confidence_gate_exact_budget_pairwise": "hyser_confidence_gate_exact_budget_pairwise.csv",
+    "earliest_safe_by_episode": "hyser_earliest_safe_by_episode.csv",
+    "earliest_safe_by_unit": "hyser_earliest_safe_by_unit.csv",
+    "earliest_safe_summary": "hyser_earliest_safe_summary.csv",
+    "earliest_safe_pairwise": "hyser_earliest_safe_pairwise.csv",
+    "earliest_safe_iso_budget_unit_deltas": "hyser_earliest_safe_iso_budget_unit_deltas.csv",
+    "earliest_safe_iso_budget_pairwise": "hyser_earliest_safe_iso_budget_pairwise.csv",
+    "earliest_safe_exact_budget_pairwise": "hyser_earliest_safe_exact_budget_pairwise.csv",
+    "matched_budget_ablation_figure": "hyser_matched_budget_ablation.png",
+    "earliest_safe_figure": "hyser_earliest_safe.png"
+  }
+}

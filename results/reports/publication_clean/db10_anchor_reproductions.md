@@ -1,0 +1,16 @@
+# DB10 Anchor Reproductions
+
+## wang_frobt_2022
+
+- Match level: split_matched_phase_gated_local_reproduction
+- Note: Local reproduction uses able-bodied DB10 leave-one-repetition-out splits with early assistive evidence fused into the final user decoder decision.
+- Published: `{"emg_accuracy_percent": 85.5, "integrated_accuracy_percent": 90.06, "gain_percentage_points": 4.56}`
+- Local: `{"n_trials": 3600, "n_splits": 4, "emg_accuracy_percent": 41.91666666666667, "integrated_accuracy_percent": 87.75, "assist_early_accuracy_percent": 85.33333333333333, "gain_percentage_points": 45.833333333333336}`
+
+## cognolato_frontiers_ai_2022
+
+- Match level: within_subject_four_fold_local_reproduction
+- Note: Local reproduction builds subject-wise four-fold DB10 splits from repetition metadata and compares final-prefix EMG-only vs assistive multimodal decoders.
+- Published: `{"amputee_gain_percentage_points": 15.61, "able_bodied_gain_percentage_points": 7.37}`
+- Local: `{"groups": {"able_bodied": {"n_subjects": 30, "user_accuracy_percent": 44.46874999999999, "assist_accuracy_percent": 89.92708333333333, "gain_percentage_points": 45.458333333333336, "gain_std_percentage_points": 5.639295107152626}, "amputee": {"n_subjects": 15, "user_accuracy_percent": 35.1875, "assist_accuracy_percent": 88.6875, "gain_percentage_points": 53.5, "gain_std_percentage_points": 5.956876278721928}}, "n_splits": 180}`
+

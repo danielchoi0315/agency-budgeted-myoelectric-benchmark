@@ -1,0 +1,37 @@
+{
+  "dataset": "db10",
+  "prepared_root": "<WORK_ROOT>/processed/db10",
+  "user_model": "torch_mlp",
+  "assist_model": "torch_mlp",
+  "pairwise_repeats": 2000,
+  "trace_count": 189000,
+  "decision_count": 4347000,
+  "split_families": [
+    "db10_able_to_amputee",
+    "db10_amputee_loso",
+    "db10_mixed_to_amputee"
+  ],
+  "artifact_inventory": {
+    "publication_metrics_by_policy_unit": "db10_publication_metrics_by_policy_unit.csv",
+    "publication_aggregate_policy_metrics": "db10_publication_aggregate_policy_metrics.csv",
+    "confidence_gate_match_summary": "db10_confidence_gate_match_summary.csv",
+    "confidence_gate_pairwise": "db10_confidence_gate_pairwise.csv",
+    "confidence_gate_iso_budget_unit_deltas": "db10_confidence_gate_iso_budget_unit_deltas.csv",
+    "confidence_gate_iso_budget_pairwise": "db10_confidence_gate_iso_budget_pairwise.csv",
+    "plain_conf_exact_budget_selection_by_unit": "db10_plain_conf_exact_budget_selection_by_unit.csv",
+    "confidence_gate_exact_budget_pairwise": "db10_confidence_gate_exact_budget_pairwise.csv",
+    "earliest_safe_by_episode": "db10_earliest_safe_by_episode.csv",
+    "earliest_safe_by_unit": "db10_earliest_safe_by_unit.csv",
+    "earliest_safe_summary": "db10_earliest_safe_summary.csv",
+    "earliest_safe_pairwise": "db10_earliest_safe_pairwise.csv",
+    "earliest_safe_iso_budget_unit_deltas": "db10_earliest_safe_iso_budget_unit_deltas.csv",
+    "earliest_safe_iso_budget_pairwise": "db10_earliest_safe_iso_budget_pairwise.csv",
+    "earliest_safe_exact_budget_pairwise": "db10_earliest_safe_exact_budget_pairwise.csv",
+    "matched_budget_ablation_figure": "db10_matched_budget_ablation.png",
+    "earliest_safe_figure": "db10_earliest_safe.png"
+  },
+  "db10_anchor_payload_keys": [
+    "cognolato_frontiers_ai_2022",
+    "wang_frobt_2022"
+  ]
+}

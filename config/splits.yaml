@@ -1,0 +1,43 @@
+splits:
+  db10:
+    train_able_test_amputee:
+      train_groups: ["able_bodied"]
+      test_groups: ["transradial_amputee"]
+      strict_disjoint_keys: ["subject_id"]
+      report_keys: ["subject_id", "group"]
+    mixed_train_test_amputee:
+      strategy: "held_out_amputee_loso"
+      train_definition: "all able-bodied subjects plus all non-held-out amputee subjects"
+      test_definition: "one held-out amputee subject per outer fold"
+      strict_disjoint_keys: ["subject_id"]
+      report_keys: ["subject_id", "group"]
+    amputee_loso:
+      group: "transradial_amputee"
+      strategy: "leave_one_subject_out"
+      strict_disjoint_keys: ["subject_id"]
+      report_keys: ["subject_id", "group"]
+  hyser:
+    leave_day_out:
+      strategy: "leave_one_group_out"
+      group_key: "day"
+      strict_disjoint_keys: ["day"]
+      allowed_overlap_keys: ["subject_id"]
+      report_keys: ["subject_id", "day", "session"]
+    subject_disjoint:
+      strategy: "group_k_fold"
+      group_key: "subject_id"
+      n_splits: 5
+      strict_disjoint_keys: ["subject_id"]
+  cemhsey:
+    leave_day_out:
+      strategy: "leave_one_group_out"
+      group_key: "day"
+      strict_disjoint_keys: ["day"]
+      allowed_overlap_keys: ["subject_id"]
+      report_keys: ["subject_id", "day"]
+    longitudinal_subject_disjoint:
+      strategy: "group_k_fold"
+      group_key: "subject_id"
+      n_splits: 5
+      strict_disjoint_keys: ["subject_id"]
+
