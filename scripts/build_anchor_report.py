@@ -17,7 +17,7 @@ EXPECTED_CEMHSEY_GRASP_FAILURE = "S4_Day1_Session1_Task1_Trial1.mat"
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Build a manuscript-facing validation summary for the real-data agency-budgeted policy benchmark.")
+    parser = argparse.ArgumentParser(description="Build a publication-facing validation summary for the real-data agency-budgeted policy benchmark.")
     parser.add_argument("--config", type=Path, default=Path("config/config.yaml"))
     parser.add_argument("--processed-root", type=Path)
     parser.add_argument("--audits-root", type=Path, default=Path("results/audits"))
@@ -365,7 +365,7 @@ def build_markdown(
         lines.append(f"- Excluded member paths: {len(exclusion_report.get('excluded_member_paths', []))}")
     lines.append("")
     lines.append("## Interpretation")
-    lines.append("- The workflow now regenerates exclusion-aware prepared data, paired stats, and a manuscript-facing report from declared targets.")
+    lines.append("- The workflow now regenerates exclusion-aware prepared data, paired stats, and a publication-facing report from declared targets.")
     lines.append("- DB10 currently uses a declared annotated object-context proxy in the assistive feature block, so the result is an offline context-assisted benchmark rather than an end-to-end vision claim.")
     if overall_ready:
         lines.append("- The current blocking infrastructure issues are cleared; the remaining risk is manuscript-level framing and reviewer-facing justification, not benchmark failure.")

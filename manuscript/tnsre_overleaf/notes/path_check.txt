@@ -1,2 +1,0 @@
-All includegraphics paths exist.
-

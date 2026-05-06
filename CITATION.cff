@@ -19,5 +19,5 @@ repository-code: "https://github.com/danielchoi0315/agency-budgeted-myoelectric-
 version: "0.1.0"
 date-released: "2026-05-05"
 license: MIT
-abstract: "Code, configuration, derived outputs, and manuscript source for an offline open-data benchmark of agency-budgeted intervention policies for myoelectric prosthetic grasping under distribution shift."
+abstract: "Code, configuration, derived outputs, and figure-generation assets for an offline open-data benchmark of agency-budgeted intervention policies for myoelectric prosthetic grasping under distribution shift."
 

@@ -34,7 +34,7 @@ _No data_
 _No data_
 
 ## Interpretation
-- The workflow now regenerates exclusion-aware prepared data, paired stats, and a manuscript-facing report from declared targets.
+- The workflow now regenerates exclusion-aware prepared data, paired stats, and a publication-facing report from declared targets.
 - DB10 currently uses a declared annotated object-context proxy in the assistive feature block, so the result is an offline context-assisted benchmark rather than an end-to-end vision claim.
 - External robustness direction is positive, but at least one DB10 primary matched-budget gate still fails.
 - Until every critical DB10 gate passes, this is not a TNSRE-safe submission package.

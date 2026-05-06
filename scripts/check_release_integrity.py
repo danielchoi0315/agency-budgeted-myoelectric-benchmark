@@ -80,19 +80,12 @@ REQUIRED_PATHS = [
     "docs/DATA.md",
     "docs/SUBMISSION_CHECKLIST.md",
     "results/README.md",
-    "manuscript/README.md",
-    "manuscript/tnsre_overleaf/main.tex",
-    "manuscript/tnsre_overleaf/supplement.tex",
-    "manuscript/tnsre_overleaf/references.bib",
     "scripts/build_tnsre_figures.R",
     "scripts/check_no_raw_data.py",
     "scripts/check_tnsre_figures.py",
 ]
 
-BLOCKED_COMMITTED_PATHS = [
-    "manuscript/tnsre_overleaf/main.pdf",
-    "manuscript/tnsre_overleaf/supplement.pdf",
-]
+BLOCKED_COMMITTED_PATHS: list[str] = []
 
 
 def is_text_file(path: Path) -> bool:

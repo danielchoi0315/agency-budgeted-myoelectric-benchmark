@@ -4,14 +4,14 @@ This repository does not redistribute raw participant data. All raw datasets mus
 
 ## Datasets
 
-| Dataset | Manuscript role | Raw data source |
+| Dataset | Benchmark role | Raw data source |
 |---|---|---|
 | DB10/MeganePro | Primary amputee-relevant multimodal grasp benchmark | Original DB10/MeganePro release and associated publications |
 | Hyser | External two-day HD-sEMG robustness check | Original Hyser/PhysioNet release |
 | CEMHSEY | External 11-day HD-sEMG robustness check | Original CEMHSEY release |
 | GRABMyo | Supplementary HD-sEMG robustness check | Original GRABMyo release |
 
-See `docs/sources.md` and `manuscript/tnsre_overleaf/references.bib` for formal source citations.
+See `docs/sources.md` for formal source citations and dataset access notes.
 
 ## Expected Local Layout
 
@@ -36,7 +36,7 @@ python scripts/check_no_raw_data.py --root .
 
 ## Committed Derived Outputs
 
-The repository includes frozen manuscript-facing derived artifacts:
+The repository includes frozen publication-facing derived artifacts:
 
 - aggregate policy metrics,
 - unit-level policy metrics,
@@ -46,5 +46,5 @@ The repository includes frozen manuscript-facing derived artifacts:
 - direct-comparability and claim-boundary reports,
 - publication figures and figure QA reports.
 
-The largest excluded derived files are per-episode timing dumps named `*_earliest_safe_by_episode.csv`. They are not needed to regenerate the submitted figures/tables from the committed aggregate outputs.
+The largest excluded derived files are per-episode timing dumps named `*_earliest_safe_by_episode.csv`. They are not needed to regenerate the publication figures/tables from the committed aggregate outputs.
 

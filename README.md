@@ -4,7 +4,7 @@ Publication repository for the TNSRE manuscript:
 
 **Agency-Budgeted Policy Evaluation for Myoelectric Prosthetic Grasping Under Distribution Shift: An Offline Open-Data Benchmark**
 
-This repository contains the code, configuration, manuscript-facing derived outputs, audit manifests, and figure-generation scripts used for an offline policy-layer benchmark of agency-budgeted myoelectric prosthetic grasping under distribution shift. The repository is designed for reproducibility review: it does not redistribute raw participant data, but it includes the instructions and derived artifacts needed to inspect the benchmark claims and regenerate manuscript figures from the committed aggregate outputs.
+This repository contains the code, configuration, derived outputs, audit manifests, and figure-generation scripts used for an offline policy-layer benchmark of agency-budgeted myoelectric prosthetic grasping under distribution shift. The repository is designed for reproducibility review: it does not redistribute raw participant data, but it includes the instructions and derived artifacts needed to inspect the benchmark claims and regenerate publication figures from the committed aggregate outputs.
 
 ## Scope
 
@@ -35,13 +35,12 @@ scripts/                        Command-line entry points for audits, preparatio
 tests/                          Synthetic-data unit and integration tests
 workflow/                       Snakemake workflow rules
 results/reports/publication_clean/
-                                Frozen manuscript-facing CSV/JSON/Markdown outputs
+                                Frozen publication-facing CSV/JSON/Markdown outputs
 results/reports/tnsre_figures/  Final PDF/PNG figure assets and figure QA report
 results/reports/stats*/         Inferential statistics tables
 results/audits/                 Dataset audit manifests, no raw data
 results/real/*/benchmark_manifest.json
                                 Canonical model-lane manifests
-manuscript/tnsre_overleaf/      Overleaf-ready manuscript source package
 ```
 
 ## Quick Start
@@ -79,17 +78,13 @@ The validation record for this release is in [docs/RELEASE_QA.md](docs/RELEASE_Q
 
 Raw datasets are public but are not redistributed in this repository. To rebuild from raw data, obtain the original datasets described in [docs/DATA.md](docs/DATA.md), place them outside git, then run the preparation and benchmark commands described in [docs/REPRODUCIBILITY.md](docs/REPRODUCIBILITY.md).
 
-The committed CSV/JSON outputs in `results/reports/publication_clean/` are the frozen manuscript-facing artifacts. Large per-episode timing dumps are intentionally excluded from git; summary, unit-level, pairwise, exact-budget, and figure-generation inputs are included.
-
-## Manuscript Package
-
-The Overleaf-ready source package is in [manuscript/tnsre_overleaf](manuscript/tnsre_overleaf). It contains the LaTeX source, references, tables, figures, and submission notes used for the TNSRE package.
+The committed CSV/JSON outputs in `results/reports/publication_clean/` are the frozen publication-facing artifacts. Large per-episode timing dumps are intentionally excluded from git; summary, unit-level, pairwise, exact-budget, and figure-generation inputs are included.
 
 ## Data and Code Availability Statement
 
 Suggested manuscript text:
 
-> Code, configuration files, split and benchmark manifests, frozen aggregate outputs, figure-generation scripts, and manuscript source are available at `https://github.com/danielchoi0315/agency-budgeted-myoelectric-benchmark`. Raw public datasets are not redistributed and should be obtained from their original repositories.
+> Code, configuration files, split and benchmark manifests, frozen aggregate outputs, and figure-generation scripts are available at `https://github.com/danielchoi0315/agency-budgeted-myoelectric-benchmark`. Raw public datasets are not redistributed and should be obtained from their original repositories.
 
 ## Citation
 
