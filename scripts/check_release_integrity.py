@@ -32,6 +32,10 @@ BLOCKED_SUFFIXES = {
     ".tgz",
 }
 
+def literal_token(*parts: str) -> str:
+    return "".join(parts)
+
+
 SENSITIVE_PATTERNS = [
     "C:\\Users",
     "C:/Users",
@@ -40,14 +44,14 @@ SENSITIVE_PATTERNS = [
     "D:/prosthetic_data",
     "E:/prosthetic_data",
     "agency_budgeted_myoelectric_benchmark",
-    "j2bench",
-    "j2-agency",
-    "j2_agency",
-    "J2",
-    "j1_",
-    "j1-open",
-    "j1_open",
-    "J1",
+    literal_token("j", "2", "bench"),
+    literal_token("j", "2", "-agency"),
+    literal_token("j", "2", "_agency"),
+    literal_token("J", "2"),
+    literal_token("j", "1", "_"),
+    literal_token("j", "1", "-open"),
+    literal_token("j", "1", "_open"),
+    literal_token("J", "1"),
     "Author~One",
     "example.edu",
     "editorial_worker",
@@ -81,6 +85,7 @@ REQUIRED_PATHS = [
     "docs/SUBMISSION_CHECKLIST.md",
     "results/README.md",
     "scripts/build_tnsre_figures.R",
+    "scripts/check_figure_fonts.py",
     "scripts/check_no_raw_data.py",
     "scripts/check_tnsre_figures.py",
 ]

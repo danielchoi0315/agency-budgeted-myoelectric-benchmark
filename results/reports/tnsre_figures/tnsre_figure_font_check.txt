@@ -1,0 +1,1 @@
+﻿Figure font check passed: 11 PDFs, allowed families: Arial-BoldMT, ArialMT
