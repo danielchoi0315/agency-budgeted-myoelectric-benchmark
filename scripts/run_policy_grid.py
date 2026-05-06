@@ -11,9 +11,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 import numpy as np
 import pandas as pd
 
-from j2bench.metrics import summarize_by_policy
-from j2bench.policies import apply_policy_grid
-from j2bench.schemas import PredictionTrace
+from myoagency.metrics import summarize_by_policy
+from myoagency.policies import apply_policy_grid
+from myoagency.schemas import PredictionTrace
 
 
 def _parse_vector(value: str) -> np.ndarray:

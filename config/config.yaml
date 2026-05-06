@@ -39,14 +39,6 @@ workflow:
     hd_fw_kin: "Future continuous force/proprioception validation only."
 
 benchmark:
-  j1:
-    build:
-      spec_path: "config/j1.yaml"
-    prepare:
-      source_root: "<WORK_ROOT>/processed/j1_source"
-    models:
-      user: "torch_mlp"
-      assist: "torch_mlp"
   db10:
     prepare:
       context_mode: "annotated_object_proxy"

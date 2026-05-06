@@ -3,7 +3,7 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from j2bench.publication import (
+from myoagency.publication import (
     EXACT_BUDGET_PLAIN_CONF_POLICY_PREFIX,
     annotate_exact_budget_pairwise_diagnostics,
     build_dense_plain_confidence_threshold_bank,
@@ -17,7 +17,7 @@ from j2bench.publication import (
     summarize_earliest_safe_by_episode,
     summarize_earliest_safe_by_unit,
 )
-from j2bench.schemas import PredictionTrace
+from myoagency.schemas import PredictionTrace
 
 
 def test_summarize_earliest_safe_prefers_stable_future_correct_prefix() -> None:
@@ -160,8 +160,8 @@ def test_compute_iso_budget_pairwise_stats_interpolates_within_support_and_drops
     frame = pd.DataFrame(
         [
             {
-                "dataset_id": "j1",
-                "split_family": "j1_amputee_loso",
+                "dataset_id": "db10",
+                "split_family": "db10_amputee_loso",
                 "split_id": "fold1",
                 "subject_id": "S1",
                 "session": "day1",
@@ -172,8 +172,8 @@ def test_compute_iso_budget_pairwise_stats_interpolates_within_support_and_drops
                 "mean_ali": 0.08,
             },
             {
-                "dataset_id": "j1",
-                "split_family": "j1_amputee_loso",
+                "dataset_id": "db10",
+                "split_family": "db10_amputee_loso",
                 "split_id": "fold1",
                 "subject_id": "S1",
                 "session": "day1",
@@ -184,8 +184,8 @@ def test_compute_iso_budget_pairwise_stats_interpolates_within_support_and_drops
                 "mean_ali": 0.04,
             },
             {
-                "dataset_id": "j1",
-                "split_family": "j1_amputee_loso",
+                "dataset_id": "db10",
+                "split_family": "db10_amputee_loso",
                 "split_id": "fold1",
                 "subject_id": "S1",
                 "session": "day1",
@@ -196,8 +196,8 @@ def test_compute_iso_budget_pairwise_stats_interpolates_within_support_and_drops
                 "mean_ali": 0.03,
             },
             {
-                "dataset_id": "j1",
-                "split_family": "j1_amputee_loso",
+                "dataset_id": "db10",
+                "split_family": "db10_amputee_loso",
                 "split_id": "fold1",
                 "subject_id": "S1",
                 "session": "day1",
@@ -208,8 +208,8 @@ def test_compute_iso_budget_pairwise_stats_interpolates_within_support_and_drops
                 "mean_ali": 0.02,
             },
             {
-                "dataset_id": "j1",
-                "split_family": "j1_amputee_loso",
+                "dataset_id": "db10",
+                "split_family": "db10_amputee_loso",
                 "split_id": "fold1",
                 "subject_id": "S2",
                 "session": "day1",
@@ -220,8 +220,8 @@ def test_compute_iso_budget_pairwise_stats_interpolates_within_support_and_drops
                 "mean_ali": 0.09,
             },
             {
-                "dataset_id": "j1",
-                "split_family": "j1_amputee_loso",
+                "dataset_id": "db10",
+                "split_family": "db10_amputee_loso",
                 "split_id": "fold1",
                 "subject_id": "S2",
                 "session": "day1",
@@ -232,8 +232,8 @@ def test_compute_iso_budget_pairwise_stats_interpolates_within_support_and_drops
                 "mean_ali": 0.05,
             },
             {
-                "dataset_id": "j1",
-                "split_family": "j1_amputee_loso",
+                "dataset_id": "db10",
+                "split_family": "db10_amputee_loso",
                 "split_id": "fold1",
                 "subject_id": "S2",
                 "session": "day1",
@@ -244,8 +244,8 @@ def test_compute_iso_budget_pairwise_stats_interpolates_within_support_and_drops
                 "mean_ali": 0.04,
             },
             {
-                "dataset_id": "j1",
-                "split_family": "j1_amputee_loso",
+                "dataset_id": "db10",
+                "split_family": "db10_amputee_loso",
                 "split_id": "fold1",
                 "subject_id": "S2",
                 "session": "day1",
@@ -300,8 +300,8 @@ def test_merge_budget_into_unit_frame_attaches_intervention_rate() -> None:
     unit_frame = pd.DataFrame(
         [
             {
-                "dataset_id": "j1",
-                "split_family": "j1_amputee_loso",
+                "dataset_id": "db10",
+                "split_family": "db10_amputee_loso",
                 "split_id": "fold1",
                 "policy": "agency_margin_tau_0.10",
                 "subject_id": "S1",
@@ -314,8 +314,8 @@ def test_merge_budget_into_unit_frame_attaches_intervention_rate() -> None:
     budget_frame = pd.DataFrame(
         [
             {
-                "dataset_id": "j1",
-                "split_family": "j1_amputee_loso",
+                "dataset_id": "db10",
+                "split_family": "db10_amputee_loso",
                 "split_id": "fold1",
                 "policy": "agency_margin_tau_0.10",
                 "subject_id": "S1",
@@ -366,8 +366,8 @@ def test_merge_budget_into_unit_frame_normalizes_join_key_types() -> None:
 def test_build_dense_plain_confidence_threshold_bank_caps_size_and_keeps_bounds() -> None:
     traces = [
         PredictionTrace(
-            dataset_id="j1",
-            split_id="j1_subject_logo|fold1",
+            dataset_id="db10",
+            split_id="db10_mixed_to_amputee|fold1",
             subject_id="S1",
             session="ex1",
             day="day1",
@@ -389,8 +389,8 @@ def test_build_dense_plain_confidence_threshold_bank_caps_size_and_keeps_bounds(
 def test_materialize_exact_budget_plain_confidence_units_uses_global_bank_and_adds_pairwise_diagnostics() -> None:
     traces = [
         PredictionTrace(
-            dataset_id="j1",
-            split_id="j1_subject_logo|fold1",
+            dataset_id="db10",
+            split_id="db10_mixed_to_amputee|fold1",
             subject_id="S1",
             session="ex1",
             day="day1",
@@ -402,8 +402,8 @@ def test_materialize_exact_budget_plain_confidence_units_uses_global_bank_and_ad
             metadata={"episode_id": "ep1", "prefix_time_s": 0.1},
         ),
         PredictionTrace(
-            dataset_id="j1",
-            split_id="j1_subject_logo|fold1",
+            dataset_id="db10",
+            split_id="db10_mixed_to_amputee|fold1",
             subject_id="S1",
             session="ex1",
             day="day1",
@@ -415,8 +415,8 @@ def test_materialize_exact_budget_plain_confidence_units_uses_global_bank_and_ad
             metadata={"episode_id": "ep1", "prefix_time_s": 0.2},
         ),
         PredictionTrace(
-            dataset_id="j1",
-            split_id="j1_subject_logo|fold2",
+            dataset_id="db10",
+            split_id="db10_mixed_to_amputee|fold2",
             subject_id="S2",
             session="ex1",
             day="day1",
@@ -428,8 +428,8 @@ def test_materialize_exact_budget_plain_confidence_units_uses_global_bank_and_ad
             metadata={"episode_id": "ep2", "prefix_time_s": 0.1},
         ),
         PredictionTrace(
-            dataset_id="j1",
-            split_id="j1_subject_logo|fold2",
+            dataset_id="db10",
+            split_id="db10_mixed_to_amputee|fold2",
             subject_id="S2",
             session="ex1",
             day="day1",
@@ -441,8 +441,8 @@ def test_materialize_exact_budget_plain_confidence_units_uses_global_bank_and_ad
             metadata={"episode_id": "ep2", "prefix_time_s": 0.2},
         ),
         PredictionTrace(
-            dataset_id="j1",
-            split_id="j1_subject_logo|fold2",
+            dataset_id="db10",
+            split_id="db10_mixed_to_amputee|fold2",
             subject_id="S2",
             session="ex1",
             day="day1",
@@ -457,9 +457,9 @@ def test_materialize_exact_budget_plain_confidence_units_uses_global_bank_and_ad
     budget_frame = pd.DataFrame(
         [
             {
-                "dataset_id": "j1",
-                "split_family": "j1_subject_logo",
-                "split_id": "j1_subject_logo|fold1",
+                "dataset_id": "db10",
+                "split_family": "db10_mixed_to_amputee",
+                "split_id": "db10_mixed_to_amputee|fold1",
                 "policy": "agency_margin_tau_0.10",
                 "subject_id": "S1",
                 "session": "ex1",
@@ -467,9 +467,9 @@ def test_materialize_exact_budget_plain_confidence_units_uses_global_bank_and_ad
                 "intervention_rate": 0.5,
             },
             {
-                "dataset_id": "j1",
-                "split_family": "j1_subject_logo",
-                "split_id": "j1_subject_logo|fold2",
+                "dataset_id": "db10",
+                "split_family": "db10_mixed_to_amputee",
+                "split_id": "db10_mixed_to_amputee|fold2",
                 "policy": "agency_margin_tau_0.10",
                 "subject_id": "S2",
                 "session": "ex1",
@@ -502,7 +502,7 @@ def test_materialize_exact_budget_plain_confidence_units_uses_global_bank_and_ad
     pairwise = pd.DataFrame(
         [
             {
-                "split_family": "j1_subject_logo",
+                "split_family": "db10_mixed_to_amputee",
                 "comparison_family": "agency_vs_plain_conf_exact_budget",
                 "metric": "active_macro_f1",
                 "policy_a": "agency_margin_tau_0.10",

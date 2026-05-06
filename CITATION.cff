@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-title: "J2 Agency-Budgeted Policy Benchmark"
+title: "Agency-Budgeted Myoelectric Policy Benchmark"
 message: "If you use this repository, please cite the associated manuscript and the original public datasets."
 type: software
 authors:
@@ -15,7 +15,7 @@ authors:
     given-names: Quan
   - family-names: Park
     given-names: Junho
-repository-code: "https://github.com/danielchoi0315/j2-agency-benchmark"
+repository-code: "https://github.com/danielchoi0315/agency-budgeted-myoelectric-benchmark"
 version: "0.1.0"
 date-released: "2026-05-05"
 license: MIT

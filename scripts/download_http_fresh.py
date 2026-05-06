@@ -15,7 +15,7 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
 
-RAW_ROOT = Path(os.environ.get("J2_DATA_ROOT", "data")) / "raw"
+RAW_ROOT = Path(os.environ.get("MYOAGENCY_DATA_ROOT", "data")) / "raw"
 
 
 @dataclass(frozen=True)
@@ -45,7 +45,7 @@ def build_session() -> requests.Session:
     session = requests.Session()
     session.mount("http://", adapter)
     session.mount("https://", adapter)
-    session.headers.update({"User-Agent": "j2-agency-benchmark-downloader/0.1"})
+    session.headers.update({"User-Agent": "agency-budgeted-myoelectric-benchmark-downloader/0.1"})
     return session
 
 
@@ -165,7 +165,7 @@ def write_manifest(results: list[dict[str, Any]], path: Path) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Download fresh-link HTTP datasets used by the J2 benchmark.")
+    parser = argparse.ArgumentParser(description="Download fresh-link HTTP datasets used by the agency-budgeted myoelectric benchmark.")
     parser.add_argument("--root", type=Path, default=RAW_ROOT)
     parser.add_argument("--workers", type=int, default=2)
     parser.add_argument("--manifest", type=Path, default=Path("results/downloads/http_fresh_manifest.json"))

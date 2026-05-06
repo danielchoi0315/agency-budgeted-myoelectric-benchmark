@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "purpose": "Target-specific direct-comparability matrix for J2 claim gating.",
+    "purpose": "Target-specific direct-comparability matrix for claim gating.",
     "last_reviewed": "2026-04-20"
   },
   "rows": [
@@ -172,7 +172,7 @@
       "derived_comparability": "not_comparable",
       "claim_blocked": true,
       "blocking_fields": "task_family|split_shift|population|decision_object|metric",
-      "note": "Same dataset, but the protocol contract does not match the J2 amputee-LOSO policy claim.",
+      "note": "Same dataset, but the protocol contract does not match the amputee-LOSO policy claim.",
       "dataset": "exact",
       "task_family": "different",
       "split_shift": "different",

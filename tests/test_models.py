@@ -3,7 +3,7 @@ from __future__ import annotations
 import numpy as np
 from sklearn.base import clone
 
-from j2bench.models import fit_predict_proba, shallow_model_specs
+from myoagency.models import fit_predict_proba, shallow_model_specs
 
 
 def _make_sequence_split(

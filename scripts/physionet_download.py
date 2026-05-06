@@ -10,7 +10,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 import requests
 
 
-DEFAULT_RAW_ROOT = Path(os.environ.get("J2_DATA_ROOT", "data")) / "raw"
+DEFAULT_RAW_ROOT = Path(os.environ.get("MYOAGENCY_DATA_ROOT", "data")) / "raw"
 
 PHYSIONET_DATASETS = {
     "hyser": {
@@ -68,7 +68,7 @@ def download_records(dataset: str, root: Path, limit: int | None = None) -> None
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Download open PhysioNet metadata or WFDB records for J2 datasets.")
+    parser = argparse.ArgumentParser(description="Download open PhysioNet metadata or WFDB records for the benchmark datasets.")
     parser.add_argument("--dataset", choices=sorted(PHYSIONET_DATASETS), required=True)
     parser.add_argument("--root", type=Path)
     parser.add_argument("--metadata-only", action="store_true")

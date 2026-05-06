@@ -1,4 +1,4 @@
-# J2 Protocol
+# Benchmark Protocol
 
 ## Research Question
 

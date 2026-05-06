@@ -6,12 +6,6 @@ from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 
-import pandas as pd
-
-from .j1_contract import validate_j1_prepared_bundle
-from .realdata import validate_j1_metadata_frame
-
-
 @dataclass(frozen=True)
 class FileAudit:
     path: str
@@ -169,62 +163,6 @@ def dataset_specific_checks(
                 any(("session" in name.lower() or "emg" in name.lower()) for name in file_names),
                 "Expected session/EMG structure",
             ),
-        ]
-    if dataset_id == "j1":
-        metadata_path = root / "metadata.csv"
-        bundle_ok = False
-        bundle_detail = "J1 source bundle must satisfy the strict prepared-bundle contract"
-        metadata_ok = False
-        metadata_detail = "J1 metadata.csv must satisfy the strict handoff schema"
-        prefix_ok = False
-        prefix_detail = "J1 metadata.csv must have monotone prefix/timestamp ordering within episodes"
-        if all((root / name).exists() for name in ("metadata.csv", "user_features.npy", "assist_features.npy", "labels.npy", "label_vocab.npy", "_SUCCESS")):
-            try:
-                manifest = validate_j1_prepared_bundle(root)
-            except Exception as exc:
-                bundle_detail = f"J1 prepared-bundle validation failed: {exc}"
-            else:
-                bundle_ok = True
-                metadata_ok = True
-                prefix_ok = True
-                metadata_detail = f"validated {manifest['n_records']} metadata rows with strict J1 schema"
-                prefix_detail = f"validated monotone prefix/timestamp ordering across {manifest['n_episodes']} episodes"
-                bundle_detail = f"validated strict J1 prepared bundle with {manifest['n_records']} rows"
-        elif metadata_path.exists():
-            try:
-                validated = validate_j1_metadata_frame(pd.read_csv(metadata_path))
-            except Exception as exc:
-                metadata_detail = f"J1 metadata validation failed: {exc}"
-                prefix_detail = metadata_detail
-            else:
-                metadata_ok = True
-                prefix_ok = True
-                metadata_detail = f"validated {len(validated)} metadata rows with strict J1 schema"
-                prefix_detail = f"validated monotone prefix/timestamp ordering across {validated['episode_id'].nunique()} episodes"
-        return [
-            _check(
-                "has_metadata_csv",
-                any(Path(name).name == "metadata.csv" for name in file_names),
-                "J1 expects an already-prepared benchmark bundle with metadata.csv",
-            ),
-            _check(
-                "has_required_feature_arrays",
-                all(any(Path(name).name == required for name in file_names) for required in [
-                    "user_features.npy",
-                    "assist_features.npy",
-                    "labels.npy",
-                    "label_vocab.npy",
-                ]),
-                "J1 expects user_features.npy, assist_features.npy, labels.npy, and label_vocab.npy",
-            ),
-            _check(
-                "has_success_marker",
-                any(Path(name).name == "_SUCCESS" for name in file_names),
-                "J1 prepared bundles should include _SUCCESS",
-            ),
-            _check("prepared_bundle_contract_valid", bundle_ok, bundle_detail),
-            _check("metadata_schema_valid", metadata_ok, metadata_detail),
-            _check("causal_prefix_order_valid", prefix_ok, prefix_detail),
         ]
     return [_check("known_dataset_id", False, f"No dataset-specific checks registered for {dataset_id}")]
 

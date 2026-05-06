@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from j2bench.stats import (
+from myoagency.stats import (
     annotate_holm_bonferroni,
     holm_bonferroni,
     paired_delta_test,

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pandas as pd
 
-from j2bench.model_selection import default_db10_candidate_pairs, default_real_candidate_pairs, evaluate_candidate, evaluate_db10_candidate
+from myoagency.model_selection import default_db10_candidate_pairs, default_real_candidate_pairs, evaluate_candidate, evaluate_db10_candidate
 
 
 def test_evaluate_db10_candidate_finds_qualifying_tau() -> None:

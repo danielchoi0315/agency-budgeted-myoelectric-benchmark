@@ -1,7 +1,7 @@
 {
-  "status": "claim_safe_benchmark_only",
-  "recommendation": "No primary target is registered as a paper-matched direct-SOTA release target. Use benchmark-only wording even when comparator papers are discussed.",
-  "benchmark_prerequisite_status": "provisionally_ready",
+  "status": "blocked_benchmark_not_ready",
+  "recommendation": "Do not make a SOTA claim while the benchmark readiness gates are not satisfied.",
+  "benchmark_prerequisite_status": "not_submission_ready",
   "disallowed_terms": [
     "state of the art",
     "SOTA",
@@ -30,19 +30,10 @@
       "contextual_anchor_count": 0,
       "boundary_anchor_count": 1,
       "not_comparable_anchor_count": 1,
-      "local_observation_available": true,
-      "local_metric_value": 0.6937835625631465,
-      "baseline_metric_value": 0.0880473100923061,
-      "local_policy": "agency_margin_tau_0.20",
-      "baseline_delta": 0.6057362524708405,
-      "partial_numeric_anchor_count": 1,
-      "best_direct_anchor_id": null,
-      "best_direct_anchor_value": null,
-      "best_partial_anchor_id": "db10_frontiers_2022_amputee_multimodal_gain",
-      "best_partial_anchor_value": 15.61,
-      "status": "not_established_no_direct_anchor",
+      "local_observation_available": false,
+      "status": "missing_local_result",
       "claim_ready": false,
-      "detail": "No directly comparable published anchor is registered for this dataset/protocol/metric target."
+      "detail": "No local benchmark observation matched the configured dataset and split family."
     },
     {
       "target_id": "db10_amputee_loso_policy",
@@ -59,19 +50,10 @@
       "contextual_anchor_count": 0,
       "boundary_anchor_count": 1,
       "not_comparable_anchor_count": 1,
-      "local_observation_available": true,
-      "local_metric_value": 0.6577344811517336,
-      "baseline_metric_value": 0.0806035065336136,
-      "local_policy": "agency_margin_tau_0.20",
-      "baseline_delta": 0.57713097461812,
-      "partial_numeric_anchor_count": 1,
-      "best_direct_anchor_id": null,
-      "best_direct_anchor_value": null,
-      "best_partial_anchor_id": "db10_frontiers_2022_amputee_multimodal_gain",
-      "best_partial_anchor_value": 15.61,
-      "status": "not_established_no_direct_anchor",
+      "local_observation_available": false,
+      "status": "missing_local_result",
       "claim_ready": false,
-      "detail": "No directly comparable published anchor is registered for this dataset/protocol/metric target."
+      "detail": "No local benchmark observation matched the configured dataset and split family."
     },
     {
       "target_id": "hyser_cross_day_policy",
@@ -88,19 +70,10 @@
       "contextual_anchor_count": 0,
       "boundary_anchor_count": 1,
       "not_comparable_anchor_count": 0,
-      "local_observation_available": true,
-      "local_metric_value": 0.4320375950646719,
-      "baseline_metric_value": 0.385725313552562,
-      "local_policy": "agency_margin_tau_0.20",
-      "baseline_delta": 0.046312281512109865,
-      "partial_numeric_anchor_count": 0,
-      "best_direct_anchor_id": null,
-      "best_direct_anchor_value": null,
-      "best_partial_anchor_id": null,
-      "best_partial_anchor_value": null,
-      "status": "not_established_no_direct_anchor",
+      "local_observation_available": false,
+      "status": "missing_local_result",
       "claim_ready": false,
-      "detail": "No directly comparable published anchor is registered for this dataset/protocol/metric target."
+      "detail": "No local benchmark observation matched the configured dataset and split family."
     },
     {
       "target_id": "cemhsey_longitudinal_policy",
@@ -117,19 +90,10 @@
       "contextual_anchor_count": 1,
       "boundary_anchor_count": 1,
       "not_comparable_anchor_count": 0,
-      "local_observation_available": true,
-      "local_metric_value": 0.6502536676787999,
-      "baseline_metric_value": 0.5775596884029975,
-      "local_policy": "agency_margin_tau_0.20",
-      "baseline_delta": 0.07269397927580235,
-      "partial_numeric_anchor_count": 0,
-      "best_direct_anchor_id": null,
-      "best_direct_anchor_value": null,
-      "best_partial_anchor_id": null,
-      "best_partial_anchor_value": null,
-      "status": "not_established_no_direct_anchor",
+      "local_observation_available": false,
+      "status": "missing_local_result",
       "claim_ready": false,
-      "detail": "No directly comparable published anchor is registered for this dataset/protocol/metric target."
+      "detail": "No local benchmark observation matched the configured dataset and split family."
     }
   ],
   "literature_anchors": [
@@ -460,7 +424,7 @@
       "derived_comparability": "not_comparable",
       "claim_blocked": true,
       "blocking_fields": "task_family|split_shift|population|decision_object|metric",
-      "note": "Same dataset, but the protocol contract does not match the J2 amputee-LOSO policy claim.",
+      "note": "Same dataset, but the protocol contract does not match the amputee-LOSO policy claim.",
       "dataset": "exact",
       "task_family": "different",
       "split_shift": "different",
@@ -683,13 +647,11 @@
       "reported_metric_unit": ""
     }
   ],
-  "executed_datasets": [
-    "cemhsey",
-    "db10",
-    "grabmyo",
-    "hyser"
-  ],
+  "executed_datasets": [],
   "expansion_candidates": [
+    "hyser",
+    "cemhsey",
+    "grabmyo",
     "capgmyo_dba",
     "putemg"
   ]

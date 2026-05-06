@@ -6,21 +6,18 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from j2bench.artifact_schemas import summarize_prepared_bundle, validate_j1_prepared_bundle_summary  # noqa: E402
-from j2bench.provenance import build_prepared_bundle_manifest, write_manifest  # noqa: E402
-from j2bench.realdata import (  # noqa: E402
+from myoagency.realdata import (  # noqa: E402
     prepare_cemhsey_dataset,
     prepare_db10_dataset,
     prepare_grabmyo_dataset,
     prepare_hyser_dataset,
-    prepare_j1_dataset,
     save_prepared_dataset,
 )
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Prepare a real prosthetics dataset into benchmark features.")
-    parser.add_argument("--dataset", choices=["db10", "hyser", "cemhsey", "grabmyo", "j1"], required=True)
+    parser.add_argument("--dataset", choices=["db10", "hyser", "cemhsey", "grabmyo"], required=True)
     parser.add_argument("--root", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--limit", type=int)
@@ -63,27 +60,9 @@ def main() -> None:
         bundle = prepare_hyser_dataset(args.root, limit_records=args.limit)
     elif args.dataset == "grabmyo":
         bundle = prepare_grabmyo_dataset(args.root, limit_records=args.limit)
-    elif args.dataset == "j1":
-        bundle = prepare_j1_dataset(args.root)
     else:
         bundle = prepare_cemhsey_dataset(args.root, limit_records=args.limit)
     save_prepared_dataset(bundle, args.out)
-    if args.dataset == "j1":
-        prepared_summary = summarize_prepared_bundle(args.out)
-        validate_j1_prepared_bundle_summary(prepared_summary)
-        write_manifest(prepared_summary, args.out / "prepared_summary.json")
-        prepared_provenance = build_prepared_bundle_manifest(
-            args.out,
-            dataset_id="j1",
-            config_paths=(Path("config/config.yaml"),),
-            input_paths=(args.root,),
-            extra_metadata={
-                "builder": "prepare_real_dataset",
-                "dataset": args.dataset,
-            },
-            exclude_paths=(args.out / "prepared_provenance.json",),
-        )
-        write_manifest(prepared_provenance, args.out / "prepared_provenance.json")
     print(f"Prepared {args.dataset}: {len(bundle.metadata)} rows -> {args.out}")
 
 

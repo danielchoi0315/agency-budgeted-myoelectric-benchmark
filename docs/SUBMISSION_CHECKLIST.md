@@ -8,6 +8,6 @@
 - [ ] `manuscript/tnsre_overleaf/main.tex` compiles in Overleaf.
 - [ ] `manuscript/tnsre_overleaf/supplement.tex` compiles in Overleaf.
 - [ ] No raw dataset files, raw archives, model binaries, or local workstation paths are committed.
-- [ ] The manuscript data/code availability statement points to `https://github.com/danielchoi0315/j2-agency-benchmark`.
+- [ ] The manuscript data/code availability statement points to `https://github.com/danielchoi0315/agency-budgeted-myoelectric-benchmark`.
 - [ ] The final release is archived with a DOI after acceptance.
 

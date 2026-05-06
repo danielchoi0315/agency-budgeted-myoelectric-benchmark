@@ -16,7 +16,7 @@ from .audit import sha256_file
 
 SCHEMA_VERSION = 1
 DEFAULT_PACKAGE_NAMES = (
-    "j2-agency-benchmark",
+    "agency-budgeted-myoelectric-benchmark",
     "numpy",
     "pandas",
     "scikit-learn",

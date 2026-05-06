@@ -10,14 +10,14 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from j2bench.io import load_yaml, read_json  # noqa: E402
+from myoagency.io import load_yaml, read_json  # noqa: E402
 
 
 EXPECTED_CEMHSEY_GRASP_FAILURE = "S4_Day1_Session1_Task1_Trial1.mat"
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Build a manuscript-facing validation summary for the real-data J2 benchmark.")
+    parser = argparse.ArgumentParser(description="Build a manuscript-facing validation summary for the real-data agency-budgeted policy benchmark.")
     parser.add_argument("--config", type=Path, default=Path("config/config.yaml"))
     parser.add_argument("--processed-root", type=Path)
     parser.add_argument("--audits-root", type=Path, default=Path("results/audits"))
@@ -223,6 +223,8 @@ def build_checks(
             "detail": f"Matched exclusions: {matched_failed or ['<none>']}",
         }
     )
+    if "dataset_id" not in observations.columns:
+        observations = pd.DataFrame(columns=["dataset_id"])
     db10 = observations.loc[observations["dataset_id"] == "db10"].copy()
     if not db10.empty:
         assist_direction = bool((db10["assist_only_macro_f1"] > db10["user_only_macro_f1"]).all())
@@ -328,7 +330,7 @@ def build_markdown(
     exclusion_report: dict[str, object] | None,
 ) -> str:
     lines = [
-        "# J2 Validation Summary",
+        "# Benchmark Validation Summary",
         "",
         "## Submission Status",
     ]

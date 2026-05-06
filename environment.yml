@@ -1,4 +1,4 @@
-name: j2-agency-benchmark
+name: agency-budgeted-myoelectric-benchmark
 channels:
   - conda-forge
 dependencies:

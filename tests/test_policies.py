@@ -1,13 +1,13 @@
 import numpy as np
 
-from j2bench.policies import (
+from myoagency.policies import (
     agency_margin_policy,
     apply_rate_matched_confidence_gate,
     expected_ali,
     plain_confidence_threshold_policy,
     set_acsa,
 )
-from j2bench.schemas import PredictionTrace
+from myoagency.schemas import PredictionTrace
 
 
 def make_trace(p_user, p_assist, label=1, *, episode_id="ep0", prefix_time_s=0.2):

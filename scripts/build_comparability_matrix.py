@@ -9,13 +9,13 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from j2bench.io import load_yaml  # noqa: E402
-from j2bench.literature import build_comparability_rows, summarize_comparability_matrix  # noqa: E402
+from myoagency.io import load_yaml  # noqa: E402
+from myoagency.literature import build_comparability_rows, summarize_comparability_matrix  # noqa: E402
 
 
 def main() -> None:
     repo_root = Path(__file__).resolve().parents[1]
-    parser = argparse.ArgumentParser(description="Build a target-by-paper direct-comparability matrix for J2.")
+    parser = argparse.ArgumentParser(description="Build a target-by-paper direct-comparability matrix for the benchmark.")
     parser.add_argument("--targets", type=Path, default=Path("config/literature_anchors.yaml"))
     parser.add_argument("--comparability", type=Path, default=Path("config/literature_comparability.yaml"))
     parser.add_argument("--out-root", type=Path, default=Path("results/reports/publication_clean"))

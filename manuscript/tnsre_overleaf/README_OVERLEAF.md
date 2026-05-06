@@ -1,5 +1,5 @@
 
-# J2 TNSRE Overleaf-Ready Manuscript Package
+# TNSRE Overleaf-Ready Manuscript Package
 
 Main document: `main.tex`
 Supplement: `supplement.tex`

@@ -10,8 +10,8 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from j2bench.io import load_yaml, read_json  # noqa: E402
-from j2bench.literature import (  # noqa: E402
+from myoagency.io import load_yaml, read_json  # noqa: E402
+from myoagency.literature import (  # noqa: E402
     build_comparability_rows,
     evaluate_target,
     summarize_comparability_matrix,
@@ -21,7 +21,7 @@ from j2bench.literature import (  # noqa: E402
 
 def main() -> None:
     repo_root = Path(__file__).resolve().parents[1]
-    parser = argparse.ArgumentParser(description="Build a claim-safe SOTA comparison report for J2.")
+    parser = argparse.ArgumentParser(description="Build a claim-safe SOTA comparison report for the benchmark.")
     parser.add_argument("--config", type=Path, default=Path("config/config.yaml"))
     parser.add_argument("--anchors", type=Path, default=Path("config/literature_anchors.yaml"))
     parser.add_argument("--comparability", type=Path, default=Path("config/literature_comparability.yaml"))
@@ -105,7 +105,7 @@ def build_payload(
 
 def build_markdown(payload: dict[str, Any]) -> str:
     lines = [
-        "# J2 SOTA Status",
+        "# Benchmark Direct-Comparability Status",
         "",
         "## Overall Status",
         f"- Status: {payload['status']}",
@@ -120,26 +120,28 @@ def build_markdown(payload: dict[str, Any]) -> str:
     ]
     target_frame = pd.DataFrame(payload.get("targets", []))
     if not target_frame.empty:
-        target_frame = target_frame[
-            [
-                "target_id",
-                "dataset_id",
-                "split_family",
-                "priority",
-                "claim_surface",
-                "direct_sota_eligible",
-                "local_metric_name",
-                "local_metric_value",
-                "baseline_delta",
-                "local_policy",
-                "direct_anchor_count",
-                "partial_anchor_count",
-                "contextual_anchor_count",
-                "boundary_anchor_count",
-                "status",
-                "detail",
-            ]
-        ].copy()
+        target_columns = [
+            "target_id",
+            "dataset_id",
+            "split_family",
+            "priority",
+            "claim_surface",
+            "direct_sota_eligible",
+            "local_metric_name",
+            "local_metric_value",
+            "baseline_delta",
+            "local_policy",
+            "direct_anchor_count",
+            "partial_anchor_count",
+            "contextual_anchor_count",
+            "boundary_anchor_count",
+            "status",
+            "detail",
+        ]
+        for column in target_columns:
+            if column not in target_frame.columns:
+                target_frame[column] = None
+        target_frame = target_frame[target_columns].copy()
     lines.extend(render_table(target_frame))
     lines.append("")
     lines.append("## Literature Anchor Ledger")

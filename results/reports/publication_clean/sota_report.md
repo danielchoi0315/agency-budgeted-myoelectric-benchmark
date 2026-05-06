@@ -1,21 +1,21 @@
-# J2 SOTA Status
+# Benchmark Direct-Comparability Status
 
 ## Overall Status
-- Status: claim_safe_benchmark_only
-- Benchmark prerequisite status: provisionally_ready
-- Recommendation: No primary target is registered as a paper-matched direct-SOTA release target. Use benchmark-only wording even when comparator papers are discussed.
+- Status: blocked_benchmark_not_ready
+- Benchmark prerequisite status: not_submission_ready
+- Recommendation: Do not make a SOTA claim while the benchmark readiness gates are not satisfied.
 
 ## Claim Guardrails
 - Disallowed without direct support: state of the art, SOTA, best published, best-in-class
 - Preferred phrasing: open benchmark, reproducible policy-layer benchmark, agency-budgeted intervention benchmark, cross-shift robustness benchmark
 
 ## Target Evaluations
-| target_id                    | dataset_id   | split_family                  | priority   | claim_surface       | direct_sota_eligible   | local_metric_name   |   local_metric_value |   baseline_delta | local_policy           |   direct_anchor_count |   partial_anchor_count |   contextual_anchor_count |   boundary_anchor_count | status                           | detail                                                                                         |
-|:-----------------------------|:-------------|:------------------------------|:-----------|:--------------------|:-----------------------|:--------------------|---------------------:|-----------------:|:-----------------------|----------------------:|-----------------------:|--------------------------:|------------------------:|:---------------------------------|:-----------------------------------------------------------------------------------------------|
-| db10_cross_population_policy | db10         | db10_mixed_to_amputee         | primary    | benchmark_primary   | False                  | active_macro_f1     |             0.693784 |        0.605736  | agency_margin_tau_0.20 |                     0 |                      2 |                         0 |                       1 | not_established_no_direct_anchor | No directly comparable published anchor is registered for this dataset/protocol/metric target. |
-| db10_amputee_loso_policy     | db10         | db10_amputee_loso             | primary    | benchmark_primary   | False                  | active_macro_f1     |             0.657734 |        0.577131  | agency_margin_tau_0.20 |                     0 |                      2 |                         0 |                       1 | not_established_no_direct_anchor | No directly comparable published anchor is registered for this dataset/protocol/metric target. |
-| hyser_cross_day_policy       | hyser        | hyser_within_subject_dayshift | supporting | supporting_external | False                  | active_macro_f1     |             0.432038 |        0.0463123 | agency_margin_tau_0.20 |                     0 |                      2 |                         0 |                       1 | not_established_no_direct_anchor | No directly comparable published anchor is registered for this dataset/protocol/metric target. |
-| cemhsey_longitudinal_policy  | cemhsey      | cemhsey_forward_day_logo      | supporting | supporting_external | False                  | active_macro_f1     |             0.650254 |        0.072694  | agency_margin_tau_0.20 |                     0 |                      0 |                         1 |                       1 | not_established_no_direct_anchor | No directly comparable published anchor is registered for this dataset/protocol/metric target. |
+| target_id                    | dataset_id   | split_family                  | priority   | claim_surface       | direct_sota_eligible   | local_metric_name   | local_metric_value   | baseline_delta   | local_policy   |   direct_anchor_count |   partial_anchor_count |   contextual_anchor_count |   boundary_anchor_count | status               | detail                                                                          |
+|:-----------------------------|:-------------|:------------------------------|:-----------|:--------------------|:-----------------------|:--------------------|:---------------------|:-----------------|:---------------|----------------------:|-----------------------:|--------------------------:|------------------------:|:---------------------|:--------------------------------------------------------------------------------|
+| db10_cross_population_policy | db10         | db10_mixed_to_amputee         | primary    | benchmark_primary   | False                  | active_macro_f1     |                      |                  |                |                     0 |                      2 |                         0 |                       1 | missing_local_result | No local benchmark observation matched the configured dataset and split family. |
+| db10_amputee_loso_policy     | db10         | db10_amputee_loso             | primary    | benchmark_primary   | False                  | active_macro_f1     |                      |                  |                |                     0 |                      2 |                         0 |                       1 | missing_local_result | No local benchmark observation matched the configured dataset and split family. |
+| hyser_cross_day_policy       | hyser        | hyser_within_subject_dayshift | supporting | supporting_external | False                  | active_macro_f1     |                      |                  |                |                     0 |                      2 |                         0 |                       1 | missing_local_result | No local benchmark observation matched the configured dataset and split family. |
+| cemhsey_longitudinal_policy  | cemhsey      | cemhsey_forward_day_logo      | supporting | supporting_external | False                  | active_macro_f1     |                      |                  |                |                     0 |                      0 |                         1 |                       1 | missing_local_result | No local benchmark observation matched the configured dataset and split family. |
 
 ## Literature Anchor Ledger
 | anchor_id                                      | dataset_id   | citation                                                            | comparability   | protocol_family                                    | metric_name                     | metric_value   | spread_value   | unit              | url                                                                                                                                                 | targets                                                                                                     | note                                                                                                                                                        |
@@ -54,14 +54,13 @@
 | cemhsey_longitudinal_policy  | supporting_external    | False                         | shared_control_natcomms_2025 | Nature Communications shared human-machine prosthesis control, 2025 | boundary   | boundary                | different | related       | different     | related      | different    | different         | different | shared_control_natcomms_2025_boundary          | dataset|task_family|split_shift|population|adaptation|decision_object|metric |
 
 ## Dataset Coverage
-- Executed datasets: cemhsey, db10, grabmyo, hyser
-- Expansion candidates: capgmyo_dba, putemg
+- Executed datasets: <none>
+- Expansion candidates: hyser, cemhsey, grabmyo, capgmyo_dba, putemg
 
 ## Release Gate
 - Only primary targets marked `direct_sota_eligible = True` can ever release protocol-specific SOTA wording.
 - Comparator-only and benchmark-only targets remain benchmark language even if a direct numeric win appears later.
 
 ## Interpretation
-- The current repository supports a bounded benchmark contribution, not a blanket best-published claim.
-- Use the literature anchors to frame novelty around policy-layer benchmarking, matched-budget tradeoffs, and reproducibility.
-
+- The current evidence package is incomplete for manuscript-ready benchmarking claims.
+- Resolve the blocking readiness or primary-evidence gaps before making novelty or submission claims.

@@ -2,9 +2,9 @@ from dataclasses import asdict
 
 import pandas as pd
 
-from j2bench.metrics import summarize_by_policy
-from j2bench.policies import apply_policy_grid
-from j2bench.synthetic import make_synthetic_metadata, make_synthetic_traces
+from myoagency.metrics import summarize_by_policy
+from myoagency.policies import apply_policy_grid
+from myoagency.synthetic import make_synthetic_metadata, make_synthetic_traces
 
 
 def test_synthetic_pipeline_produces_metrics():

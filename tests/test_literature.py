@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from j2bench.literature import (
+from myoagency.literature import (
     build_comparability_rows,
     derive_comparison_classification,
     evaluate_target,

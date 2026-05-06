@@ -1,5 +1,5 @@
 metadata:
-  purpose: "Machine-readable literature anchor ledger for publication-safe J2 novelty and SOTA checks."
+  purpose: "Machine-readable literature anchor ledger for publication-safe novelty and direct-comparability checks."
   last_reviewed: "2026-04-20"
 
 guardrails:

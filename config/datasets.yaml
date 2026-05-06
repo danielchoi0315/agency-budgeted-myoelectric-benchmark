@@ -1,23 +1,4 @@
 datasets:
-  j1:
-    name: "J1 Open Benchmark Bundle"
-    role: "open_data_meta_bundle"
-    official_page: "docs/j1_open_plan.md"
-    access_date: "2026-04-21"
-    data_sources:
-      local_prepared_bundle: "Prepared benchmark bundle generated or handed off from other open-data workflows."
-    expected_modalities:
-      - "prepared_user_features"
-      - "prepared_assist_features"
-      - "optional_sequence_payloads"
-    expected_groups:
-      - "able_bodied"
-      - "amputee"
-      - "unknown"
-    paper_anchor:
-      citation: "J1-open internal bundle"
-      role: "First-class open-data benchmark bundle for the J1-open paper path."
-
   db10:
     name: "NinaPro DB10 / MeganePro"
     role: "primary"
@@ -25,11 +6,11 @@ datasets:
     canonical_doi: "10.1038/s41597-020-0380-3"
     access_date: "2026-04-15"
     data_sources:
-      mds1_required_for_j2: "https://doi.org/10.7910/DVN/1Z3IOM"
+      mds1_required: "https://doi.org/10.7910/DVN/1Z3IOM"
     optional_or_excluded:
       mds2: "https://doi.org/10.7910/DVN/78QFZH"
       mds4: "https://doi.org/10.7910/DVN/F9R33N"
-      mdsinfo: "clinical interview/neurocognitive data; excluded from J2 controller benchmark"
+      mdsinfo: "clinical interview/neurocognitive data; excluded from the policy-layer benchmark"
     expected_counts:
       amputee_subjects: 15
       able_bodied_subjects: 30

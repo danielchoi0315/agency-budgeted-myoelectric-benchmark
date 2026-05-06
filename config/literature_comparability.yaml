@@ -1,5 +1,5 @@
 metadata:
-  purpose: "Target-specific direct-comparability matrix for J2 claim gating."
+  purpose: "Target-specific direct-comparability matrix for claim gating."
   last_reviewed: "2026-04-20"
 
 papers:
@@ -130,7 +130,7 @@ comparisons:
       name: "accuracy_percent"
       value: 95.3
       unit: "percent"
-    note: "Same dataset, but the protocol contract does not match the J2 amputee-LOSO policy claim."
+    note: "Same dataset, but the protocol contract does not match the amputee-LOSO policy claim."
   - comparison_id: "hyser_toolbox_vs_cross_day_policy"
     paper_id: "hyser_tnsre_2021"
     target_id: "hyser_cross_day_policy"

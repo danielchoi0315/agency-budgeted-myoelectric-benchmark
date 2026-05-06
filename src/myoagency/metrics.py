@@ -105,7 +105,7 @@ def _active_subset(
     labels: np.ndarray,
     labels_axis: list[int],
 ) -> tuple[np.ndarray, list[int]]:
-    if dataset_id in {"db10", "j1"} and 0 in labels_axis:
+    if dataset_id == "db10" and 0 in labels_axis:
         active_mask = labels != 0
         active_axis = [label for label in labels_axis if label != 0]
     else:

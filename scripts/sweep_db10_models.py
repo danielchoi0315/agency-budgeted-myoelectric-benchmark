@@ -11,10 +11,10 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from j2bench.figures import save_policy_tradeoff  # noqa: E402
-from j2bench.model_selection import default_db10_candidate_pairs, evaluate_db10_candidate, infer_db10_candidate_lane  # noqa: E402
-from j2bench.real_benchmark import load_optional_sequence_payloads, run_dataset_benchmark  # noqa: E402
-from j2bench.realdata import load_prepared_dataset  # noqa: E402
+from myoagency.figures import save_policy_tradeoff  # noqa: E402
+from myoagency.model_selection import default_db10_candidate_pairs, evaluate_db10_candidate, infer_db10_candidate_lane  # noqa: E402
+from myoagency.real_benchmark import load_optional_sequence_payloads, run_dataset_benchmark  # noqa: E402
+from myoagency.realdata import load_prepared_dataset  # noqa: E402
 
 
 def main() -> None:

@@ -8,8 +8,8 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from j2bench.provenance import build_output_manifest, write_manifest  # noqa: E402
-from j2bench.stats import (  # noqa: E402
+from myoagency.provenance import build_output_manifest, write_manifest  # noqa: E402
+from myoagency.stats import (  # noqa: E402
     hierarchical_bootstrap_ci,
     holm_bonferroni,
     paired_policy_difference_test,
@@ -212,14 +212,10 @@ def compute_pairwise_rows(
 
 
 def primary_comparison_family(dataset_id: str) -> str:
-    if str(dataset_id) == "j1":
-        return "agency_vs_plain_conf"
     return "matched_tau"
 
 
 def primary_pairs_for_dataset(dataset_id: str, policies: pd.Series) -> list[tuple[str, str]]:
-    if str(dataset_id) == "j1":
-        return matched_plain_conf_pairs(policies)
     return matched_tau_pairs(policies)
 
 
@@ -231,17 +227,6 @@ def matched_tau_pairs(policies: pd.Series) -> list[tuple[str, str]]:
         set_acsa = f"set_acsa_tau_{tau}"
         if agency in policy_set and set_acsa in policy_set:
             pairs.append((agency, set_acsa))
-    return pairs
-
-
-def matched_plain_conf_pairs(policies: pd.Series) -> list[tuple[str, str]]:
-    policy_set = {str(policy) for policy in policies.astype(str)}
-    pairs: list[tuple[str, str]] = []
-    for tau in TAU_GRID:
-        agency = f"agency_margin_tau_{tau}"
-        plain_conf = f"plain_conf_threshold_matched_tau_{tau}"
-        if agency in policy_set and plain_conf in policy_set:
-            pairs.append((agency, plain_conf))
     return pairs
 
 

@@ -12,7 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 import requests
 
 
-DATA_ROOT = Path(os.environ.get("J2_DATA_ROOT", "data"))
+DATA_ROOT = Path(os.environ.get("MYOAGENCY_DATA_ROOT", "data"))
 RAW_ROOT = DATA_ROOT / "raw"
 ARCHIVE_ROOT = DATA_ROOT / "archives"
 
@@ -107,7 +107,7 @@ def write_blockers(blockers: list[str], path: Path) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Prepare one aria2 download queue for J2 open datasets.")
+    parser = argparse.ArgumentParser(description="Prepare one aria2 download queue for the benchmark open datasets.")
     parser.add_argument("--out", type=Path, default=Path("results/downloads/aria2_all_open_datasets.txt"))
     parser.add_argument("--blockers", type=Path, default=Path("results/downloads/manual_blockers.md"))
     args = parser.parse_args()

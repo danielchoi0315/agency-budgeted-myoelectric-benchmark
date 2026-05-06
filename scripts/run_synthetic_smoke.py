@@ -10,10 +10,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 import pandas as pd
 
-from j2bench.figures import save_policy_tradeoff
-from j2bench.metrics import summarize_by_policy
-from j2bench.policies import apply_policy_grid
-from j2bench.synthetic import make_synthetic_metadata, make_synthetic_traces
+from myoagency.figures import save_policy_tradeoff
+from myoagency.metrics import summarize_by_policy
+from myoagency.policies import apply_policy_grid
+from myoagency.synthetic import make_synthetic_metadata, make_synthetic_traces
 
 
 def main() -> None:

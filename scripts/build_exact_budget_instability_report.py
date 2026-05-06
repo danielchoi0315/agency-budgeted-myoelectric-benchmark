@@ -32,11 +32,6 @@ def main() -> None:
         default=Path("results/reports/publication_clean"),
     )
     parser.add_argument(
-        "--j1-root",
-        type=Path,
-        default=Path("results/reports/j1_open"),
-    )
-    parser.add_argument(
         "--out-root",
         type=Path,
         default=Path("results/reports/publication_clean"),
@@ -45,7 +40,6 @@ def main() -> None:
 
     payload = build_payload(
         publication_root=args.publication_root,
-        j1_root=args.j1_root,
     )
     out_root = args.out_root
     out_root.mkdir(parents=True, exist_ok=True)
@@ -67,7 +61,6 @@ def main() -> None:
 def build_payload(
     *,
     publication_root: Path,
-    j1_root: Path,
 ) -> dict[str, Any]:
     dataset_specs = [
         {
@@ -87,12 +80,6 @@ def build_payload(
             "confidence_pairwise": publication_root / "cemhsey_confidence_gate_exact_budget_pairwise.csv",
             "earliest_pairwise": publication_root / "cemhsey_earliest_safe_exact_budget_pairwise.csv",
             "required_families_path": None,
-        },
-        {
-            "dataset_id": "j1",
-            "confidence_pairwise": j1_root / "publication_clean" / "j1_confidence_gate_exact_budget_pairwise.csv",
-            "earliest_pairwise": j1_root / "publication_clean" / "j1_earliest_safe_exact_budget_pairwise.csv",
-            "required_families_path": j1_root / "j1_scorecard.json",
         },
     ]
 
@@ -330,7 +317,7 @@ def _build_dataset_overview(
         "lowest_earliest_exact_match_fraction": _min_or_none(required_rows["earliest_exact_match_fraction"]),
         "worst_safety_harmful_sig_metric_count": _max_or_none(required_rows["safety_harmful_sig_metric_count"]),
         "instability_story": "fixed_tau_supported" if universal_taus else "fixed_tau_unstable",
-        "required_scope": "scorecard_required" if dataset_id == "j1" else "all_split_families",
+        "required_scope": "all_split_families",
         "required_scope_missing_families": "|".join(
             sorted(required_set.difference(set(observed_families)))
         ),

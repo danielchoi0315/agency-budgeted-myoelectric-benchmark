@@ -282,7 +282,7 @@ make_flow_figure <- function() {
       x = 0.08,
       y = 3.12,
       hjust = 0,
-      label = "J2 benchmark architecture",
+      label = "Benchmark architecture",
       family = "Arial",
       fontface = "bold",
       size = 2.75

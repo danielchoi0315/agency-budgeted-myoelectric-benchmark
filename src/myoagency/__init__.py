@@ -1,4 +1,4 @@
-"""J2 agency-budget benchmark package."""
+"""Agency-budgeted myoelectric policy benchmark package."""
 
 __all__ = [
     "audit",

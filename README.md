@@ -1,14 +1,14 @@
-# J2 Agency-Budgeted Policy Benchmark
+# Agency-Budgeted Myoelectric Policy Benchmark
 
 Publication repository for the TNSRE manuscript:
 
 **Agency-Budgeted Policy Evaluation for Myoelectric Prosthetic Grasping Under Distribution Shift: An Offline Open-Data Benchmark**
 
-This repository contains the code, configuration, manuscript-facing derived outputs, audit manifests, and figure-generation scripts used for the J2 offline policy-layer benchmark. The repository is designed for reproducibility review: it does not redistribute raw participant data, but it includes the instructions and derived artifacts needed to inspect the benchmark claims and regenerate manuscript figures from the committed aggregate outputs.
+This repository contains the code, configuration, manuscript-facing derived outputs, audit manifests, and figure-generation scripts used for an offline policy-layer benchmark of agency-budgeted myoelectric prosthetic grasping under distribution shift. The repository is designed for reproducibility review: it does not redistribute raw participant data, but it includes the instructions and derived artifacts needed to inspect the benchmark claims and regenerate manuscript figures from the committed aggregate outputs.
 
 ## Scope
 
-J2 evaluates shared-autonomy intervention policies from calibrated posterior traces under declared distribution shifts. The primary claim-bearing dataset is DB10/MeganePro. Hyser and CEMHSEY are external high-density EMG robustness checks, and GRABMyo is supplementary.
+The benchmark evaluates shared-autonomy intervention policies from calibrated posterior traces under declared distribution shifts. The primary claim-bearing dataset is DB10/MeganePro. Hyser and CEMHSEY are external high-density EMG robustness checks, and GRABMyo is supplementary.
 
 Supported claims:
 
@@ -30,7 +30,7 @@ Unsupported claims:
 ```text
 config/                         Dataset, split, policy, and literature-comparability configuration
 docs/                           Reproducibility, data-access, claim-boundary, and source documentation
-src/j2bench/                    Reusable benchmark package
+src/myoagency/                   Reusable benchmark package
 scripts/                        Command-line entry points for audits, preparation, benchmarking, reports, and figures
 tests/                          Synthetic-data unit and integration tests
 workflow/                       Snakemake workflow rules
@@ -89,7 +89,7 @@ The Overleaf-ready source package is in [manuscript/tnsre_overleaf](manuscript/t
 
 Suggested manuscript text:
 
-> Code, configuration files, split and benchmark manifests, frozen aggregate outputs, figure-generation scripts, and manuscript source are available at `https://github.com/danielchoi0315/j2-agency-benchmark`. Raw public datasets are not redistributed and should be obtained from their original repositories.
+> Code, configuration files, split and benchmark manifests, frozen aggregate outputs, figure-generation scripts, and manuscript source are available at `https://github.com/danielchoi0315/agency-budgeted-myoelectric-benchmark`. Raw public datasets are not redistributed and should be obtained from their original repositories.
 
 ## Citation
 

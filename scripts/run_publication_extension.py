@@ -10,12 +10,11 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from j2bench.artifact_schemas import validate_j1_publication_manifest  # noqa: E402
-from j2bench.figures import save_earliest_safe_summary, save_matched_budget_ablation  # noqa: E402
-from j2bench.metrics import summarize_by_policy  # noqa: E402
-from j2bench.policies import apply_policy_grid, apply_rate_matched_confidence_gate  # noqa: E402
-from j2bench.provenance import build_output_manifest, write_manifest  # noqa: E402
-from j2bench.publication import (  # noqa: E402
+from myoagency.artifact_schemas import validate_publication_manifest  # noqa: E402
+from myoagency.figures import save_earliest_safe_summary, save_matched_budget_ablation  # noqa: E402
+from myoagency.metrics import summarize_by_policy  # noqa: E402
+from myoagency.policies import apply_policy_grid, apply_rate_matched_confidence_gate  # noqa: E402
+from myoagency.publication import (  # noqa: E402
     DEFAULT_ABLATION_METRICS,
     DEFAULT_EARLIEST_METRICS,
     DEFAULT_ISO_BUDGET_ABLATION_METRICS,
@@ -41,9 +40,9 @@ from j2bench.publication import (  # noqa: E402
     summarize_earliest_safe_by_unit,
     traces_to_frame,
 )
-from j2bench.real_benchmark import load_optional_sequence_payloads, score_dataset_traces  # noqa: E402
-from j2bench.realdata import load_prepared_dataset  # noqa: E402
-from j2bench.stats import annotate_holm_bonferroni  # noqa: E402
+from myoagency.real_benchmark import load_optional_sequence_payloads, score_dataset_traces  # noqa: E402
+from myoagency.realdata import load_prepared_dataset  # noqa: E402
+from myoagency.stats import annotate_holm_bonferroni  # noqa: E402
 
 
 def main() -> None:
@@ -53,7 +52,7 @@ def main() -> None:
             "DB10 can optionally emit local anchor reproductions."
         )
     )
-    parser.add_argument("--dataset", required=True, choices=["db10", "hyser", "cemhsey", "grabmyo", "j1"])
+    parser.add_argument("--dataset", required=True, choices=["db10", "hyser", "cemhsey", "grabmyo"])
     parser.add_argument("--prepared-root", type=Path, required=True)
     parser.add_argument("--out-root", type=Path, default=Path("results/reports/publication_clean"))
     parser.add_argument("--user-model", required=True)
@@ -353,23 +352,8 @@ def main() -> None:
         (args.out_root / "db10_anchor_reproductions.json").write_text(json.dumps(anchor_payload, indent=2), encoding="utf-8")
         (args.out_root / "db10_anchor_reproductions.md").write_text(build_anchor_markdown(anchor_payload), encoding="utf-8")
         manifest["db10_anchor_payload_keys"] = sorted(anchor_payload)
-    if args.dataset == "j1":
-        validate_j1_publication_manifest(manifest)
+    validate_publication_manifest(manifest, expected_dataset=args.dataset)
     (args.out_root / f"{prefix}publication_extension_manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
-    if args.dataset == "j1":
-        publication_provenance = build_output_manifest(
-            args.out_root,
-            output_kind="publication",
-            dataset_id="j1",
-            config_paths=(Path("config/config.yaml"),),
-            input_paths=(args.prepared_root,),
-            extra_metadata={
-                "publication_manifest_path": str(args.out_root / f"{prefix}publication_extension_manifest.json"),
-                "pairwise_repeats": int(args.pairwise_repeats),
-            },
-            exclude_paths=(args.out_root / f"{prefix}publication_provenance.json",),
-        )
-        write_manifest(publication_provenance, args.out_root / f"{prefix}publication_provenance.json")
     print(f"Wrote {args.dataset} publication extension outputs to {args.out_root}")
 
 

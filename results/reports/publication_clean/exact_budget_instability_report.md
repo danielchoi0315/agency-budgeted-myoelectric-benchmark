@@ -11,7 +11,6 @@
 | db10         |                             3 |                               0 | False                 |                    1 |                0.2 |            0.00447619  |                                 0        |                                       2 | fixed_tau_unstable  |
 | hyser        |                             2 |                               0 | False                 |                    1 |                0.2 |            0.000968616 |                                 0.3      |                                       0 | fixed_tau_unstable  |
 | cemhsey      |                             1 |                               0 | False                 |                    1 |                0.2 |            0.00155678  |                                 0.746154 |                                       1 | fixed_tau_unstable  |
-| j1           |                             4 |                               0 | False                 |                    1 |                0.2 |            0.00439683  |                                 0        |                                       3 | fixed_tau_unstable  |
 
 ## Required-Scope Tau Summary
 | dataset_id   | split_family                  |   tau | confidence_all_primary_metrics_sig_beneficial   |   safety_harmful_sig_metric_count |   confidence_mean_abs_intervention_rate_gap |   confidence_exact_match_fraction |
@@ -46,29 +45,8 @@
 | cemhsey      | cemhsey_forward_day_logo      |  0.1  | False                                           |                                 1 |                                 0.00100733  |                         0.830769  |
 | cemhsey      | cemhsey_forward_day_logo      |  0.15 | False                                           |                                 0 |                                 0.00155678  |                         0.746154  |
 | cemhsey      | cemhsey_forward_day_logo      |  0.2  | True                                            |                                 0 |                                 0.00141941  |                         0.761538  |
-| j1           | j1_able_to_amputee            |  0.02 | False                                           |                                 1 |                                 0.000952381 |                         0.333333  |
-| j1           | j1_able_to_amputee            |  0.05 | False                                           |                                 1 |                                 0.00122222  |                         0.0666667 |
-| j1           | j1_able_to_amputee            |  0.1  | False                                           |                                 1 |                                 0.000904762 |                         0.0666667 |
-| j1           | j1_able_to_amputee            |  0.15 | False                                           |                                 2 |                                 0.000920635 |                         0.133333  |
-| j1           | j1_able_to_amputee            |  0.2  | False                                           |                                 2 |                                 0.00120635  |                         0.0666667 |
-| j1           | j1_amputee_loso               |  0.02 | False                                           |                                 1 |                                 0.00196825  |                         0.2       |
-| j1           | j1_amputee_loso               |  0.05 | False                                           |                                 1 |                                 0.00125397  |                         0.266667  |
-| j1           | j1_amputee_loso               |  0.1  | False                                           |                                 2 |                                 0.00371429  |                         0.0666667 |
-| j1           | j1_amputee_loso               |  0.15 | False                                           |                                 2 |                                 0.00198413  |                         0.0666667 |
-| j1           | j1_amputee_loso               |  0.2  | False                                           |                                 2 |                                 0.00168254  |                         0.2       |
-| j1           | j1_mixed_to_amputee           |  0.02 | False                                           |                                 1 |                                 0.001       |                         0.0666667 |
-| j1           | j1_mixed_to_amputee           |  0.05 | False                                           |                                 1 |                                 0.00212698  |                         0.0666667 |
-| j1           | j1_mixed_to_amputee           |  0.1  | False                                           |                                 3 |                                 0.00439683  |                         0         |
-| j1           | j1_mixed_to_amputee           |  0.15 | False                                           |                                 1 |                                 0.00319048  |                         0.133333  |
-| j1           | j1_mixed_to_amputee           |  0.2  | False                                           |                                 2 |                                 0.00203175  |                         0.133333  |
-| j1           | j1_subject_logo               |  0.02 | False                                           |                                 1 |                                 0.00122751  |                         0.0444444 |
-| j1           | j1_subject_logo               |  0.05 | False                                           |                                 1 |                                 0.00158201  |                         0.0666667 |
-| j1           | j1_subject_logo               |  0.1  | False                                           |                                 3 |                                 0.0022381   |                         0.0222222 |
-| j1           | j1_subject_logo               |  0.15 | False                                           |                                 3 |                                 0.00171429  |                         0.0888889 |
-| j1           | j1_subject_logo               |  0.2  | False                                           |                                 2 |                                 0.00120106  |                         0.0888889 |
 
 ## Interpretation
 - `fixed_tau_supported = True` means at least one tau clears every required split family on both primary metrics with no harmful significant safety row under the exact-budget audit.
 - `n_unique_best_taus > 1` or non-empty `metric_disagreement_families` indicates operating-point instability even when a universal tau exists somewhere else.
 - Small residual budget gaps with no universal tau mean the fixed-policy story is failing on behavior, not on comparator mismatch.
-

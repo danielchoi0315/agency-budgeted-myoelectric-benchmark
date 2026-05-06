@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-import re
 from collections.abc import Mapping, Sequence
 from os import PathLike
 from pathlib import Path
@@ -14,7 +13,7 @@ from .realdata import PREPARED_BUNDLE_REQUIRED_FILES, load_saved_sequence_payloa
 
 
 class ArtifactSchemaError(ValueError):
-    """Raised when a J1 artifact does not match the expected schema."""
+    """Raised when a benchmark artifact does not match the expected schema."""
 
 
 PREPARED_BUNDLE_SUMMARY_REQUIRED_FIELDS = (
@@ -57,31 +56,8 @@ PUBLICATION_MANIFEST_REQUIRED_FIELDS = (
     "split_families",
 )
 
-SCORECARD_REQUIRED_SECTIONS = (
-    "decision banner",
-    "frozen candidate and operating point",
-    "primary db10 gate",
-    "safety timing panel",
-    "robustness panel",
-    "boundary conditions",
-    "readiness and reproducibility status",
-    "candidate provenance",
-    "decision log",
-)
-FRONTIER_PACKAGE_REQUIRED_SECTIONS = (
-    "bottom line",
-    "claim bearing families",
-    "frontier summary",
-    "universal tau regret",
-    "comparator integrity",
-    "artifact inventory",
-)
-
-_HEADING_PATTERN = re.compile(r"^\s{0,3}#{1,6}\s+(.*?)\s*$", re.MULTILINE)
-
-
 def summarize_prepared_bundle(root: str | PathLike[str]) -> dict[str, Any]:
-    """Build and validate a compact summary for a prepared J1 bundle."""
+    """Build and validate a compact summary for a prepared benchmark bundle."""
 
     bundle_root = Path(root)
     missing = [
@@ -99,7 +75,7 @@ def summarize_prepared_bundle(root: str | PathLike[str]) -> dict[str, Any]:
     label_vocab = np.load(bundle_root / "label_vocab.npy", mmap_mode="r")
     sequence_payloads = load_saved_sequence_payloads(bundle_root) or {}
 
-    dataset = "j1"
+    dataset = "unknown"
     if "dataset_id" in metadata.columns and not metadata.empty:
         dataset_values = metadata["dataset_id"].dropna().astype(str).unique().tolist()
         if dataset_values:
@@ -124,7 +100,7 @@ def summarize_prepared_bundle(root: str | PathLike[str]) -> dict[str, Any]:
 def validate_prepared_bundle_summary(
     summary: Mapping[str, Any] | str | PathLike[str],
     *,
-    expected_dataset: str | None = "j1",
+    expected_dataset: str | None = None,
 ) -> dict[str, Any]:
     payload = _coerce_json_mapping(summary, "prepared bundle summary")
     _require_fields(payload, PREPARED_BUNDLE_SUMMARY_REQUIRED_FIELDS, "prepared bundle summary")
@@ -168,7 +144,7 @@ def validate_prepared_bundle_summary(
 def validate_benchmark_manifest(
     manifest: Mapping[str, Any] | str | PathLike[str],
     *,
-    expected_dataset: str | None = "j1",
+    expected_dataset: str | None = None,
 ) -> dict[str, Any]:
     payload = _coerce_json_mapping(manifest, "benchmark manifest")
     _require_fields(payload, BENCHMARK_MANIFEST_REQUIRED_FIELDS, "benchmark manifest")
@@ -203,7 +179,7 @@ def validate_benchmark_manifest(
 def validate_publication_manifest(
     manifest: Mapping[str, Any] | str | PathLike[str],
     *,
-    expected_dataset: str | None = "j1",
+    expected_dataset: str | None = None,
 ) -> dict[str, Any]:
     payload = _coerce_json_mapping(manifest, "publication manifest")
     _require_fields(payload, PUBLICATION_MANIFEST_REQUIRED_FIELDS, "publication manifest")
@@ -222,128 +198,6 @@ def validate_publication_manifest(
     if "db10_anchor_payload_keys" in payload:
         _require_string_list(payload["db10_anchor_payload_keys"], "db10_anchor_payload_keys", allow_empty=True)
     return dict(payload)
-
-
-def validate_scorecard(
-    scorecard: str | PathLike[str],
-    *,
-    expected_title: str = "J1-open",
-) -> dict[str, Any]:
-    text = _coerce_text(scorecard, "scorecard")
-    matches = list(_HEADING_PATTERN.finditer(text))
-    if not matches:
-        raise ArtifactSchemaError("scorecard must contain markdown headings")
-
-    title = matches[0].group(1).strip()
-    if _normalize_heading(expected_title) not in _normalize_heading(title):
-        raise ArtifactSchemaError(f"scorecard title must contain {expected_title!r}")
-
-    sections: dict[str, str] = {}
-    for index, match in enumerate(matches):
-        heading = _normalize_heading(match.group(1))
-        body_start = match.end()
-        body_end = matches[index + 1].start() if index + 1 < len(matches) else len(text)
-        sections[heading] = text[body_start:body_end].strip()
-
-    missing_sections = [section for section in SCORECARD_REQUIRED_SECTIONS if section not in sections]
-    if missing_sections:
-        names = ", ".join(missing_sections)
-        raise ArtifactSchemaError(f"scorecard is missing required sections: {names}")
-
-    empty_sections = [section for section in SCORECARD_REQUIRED_SECTIONS if not sections[section]]
-    if empty_sections:
-        names = ", ".join(empty_sections)
-        raise ArtifactSchemaError(f"scorecard sections must not be empty: {names}")
-
-    return {
-        "title": title,
-        "sections": {section: sections[section] for section in SCORECARD_REQUIRED_SECTIONS},
-    }
-
-
-def validate_scorecard_markdown(
-    scorecard: str | PathLike[str],
-    *,
-    expected_title: str = "J1-open",
-) -> dict[str, Any]:
-    return validate_scorecard(scorecard, expected_title=expected_title)
-
-
-def validate_j1_prepared_bundle_summary(
-    summary: Mapping[str, Any] | str | PathLike[str],
-) -> dict[str, Any]:
-    return validate_prepared_bundle_summary(summary, expected_dataset="j1")
-
-
-def validate_j1_benchmark_manifest(
-    manifest: Mapping[str, Any] | str | PathLike[str],
-) -> dict[str, Any]:
-    return validate_benchmark_manifest(manifest, expected_dataset="j1")
-
-
-def validate_j1_publication_manifest(
-    manifest: Mapping[str, Any] | str | PathLike[str],
-) -> dict[str, Any]:
-    return validate_publication_manifest(manifest, expected_dataset="j1")
-
-
-def validate_j1_scorecard(
-    scorecard: str | PathLike[str],
-    *,
-    expected_title: str = "J1-open",
-) -> dict[str, Any]:
-    return validate_scorecard(scorecard, expected_title=expected_title)
-
-
-def validate_frontier_package_markdown(
-    package: str | PathLike[str],
-    *,
-    expected_title: str = "J1-Frontier Package",
-) -> dict[str, Any]:
-    text = _coerce_text(package, "frontier package")
-    matches = list(_HEADING_PATTERN.finditer(text))
-    if not matches:
-        raise ArtifactSchemaError("frontier package must contain markdown headings")
-
-    title = matches[0].group(1).strip()
-    if _normalize_heading(expected_title) not in _normalize_heading(title):
-        raise ArtifactSchemaError(f"frontier package title must contain {expected_title!r}")
-
-    sections: dict[str, str] = {}
-    for index, match in enumerate(matches):
-        heading = _normalize_heading(match.group(1))
-        body_start = match.end()
-        body_end = matches[index + 1].start() if index + 1 < len(matches) else len(text)
-        sections[heading] = text[body_start:body_end].strip()
-
-    missing_sections = [
-        section for section in FRONTIER_PACKAGE_REQUIRED_SECTIONS if section not in sections
-    ]
-    if missing_sections:
-        names = ", ".join(missing_sections)
-        raise ArtifactSchemaError(f"frontier package is missing required sections: {names}")
-
-    empty_sections = [
-        section for section in FRONTIER_PACKAGE_REQUIRED_SECTIONS if not sections[section]
-    ]
-    if empty_sections:
-        names = ", ".join(empty_sections)
-        raise ArtifactSchemaError(f"frontier package sections must not be empty: {names}")
-
-    return {
-        "title": title,
-        "sections": {
-            section: sections[section] for section in FRONTIER_PACKAGE_REQUIRED_SECTIONS
-        },
-    }
-
-
-def validate_j1_frontier_package(
-    package: str | PathLike[str],
-    *,
-    expected_title: str = "J1-Frontier Package",
-) -> dict[str, Any]:
-    return validate_frontier_package_markdown(package, expected_title=expected_title)
 
 
 def _coerce_json_mapping(
@@ -374,25 +228,6 @@ def _coerce_json_mapping(
     if not isinstance(payload, Mapping):
         raise ArtifactSchemaError(f"{artifact_name} must decode to a JSON object")
     return dict(payload)
-
-
-def _coerce_text(source: str | PathLike[str], artifact_name: str) -> str:
-    if isinstance(source, PathLike):
-        path = Path(source)
-        if not path.exists():
-            raise ArtifactSchemaError(f"{artifact_name} file does not exist: {path}")
-        return path.read_text(encoding="utf-8")
-    if isinstance(source, str):
-        if "\n" in source or "\r" in source:
-            return source
-        try:
-            path = Path(source)
-            if path.exists():
-                return path.read_text(encoding="utf-8")
-        except OSError:
-            return source
-        return source
-    raise ArtifactSchemaError(f"{artifact_name} must be text or a path")
 
 
 def _require_fields(
@@ -472,28 +307,14 @@ def _require_shape(value: Any, field_name: str, *, dims: int) -> list[int]:
     return [int(item) for item in shape]
 
 
-def _normalize_heading(text: str) -> str:
-    return re.sub(r"[^a-z0-9]+", " ", text.lower()).strip()
-
-
 __all__ = [
     "ArtifactSchemaError",
     "BENCHMARK_MANIFEST_REQUIRED_FIELDS",
-    "FRONTIER_PACKAGE_REQUIRED_SECTIONS",
     "PREPARED_BUNDLE_SUMMARY_REQUIRED_FIELDS",
     "PUBLICATION_MANIFEST_REQUIRED_FIELDS",
-    "SCORECARD_REQUIRED_SECTIONS",
     "summarize_prepared_bundle",
     "validate_benchmark_manifest",
-    "validate_frontier_package_markdown",
-    "validate_j1_benchmark_manifest",
-    "validate_j1_frontier_package",
-    "validate_j1_prepared_bundle_summary",
-    "validate_j1_publication_manifest",
-    "validate_j1_scorecard",
     "validate_prepared_bundle_summary",
     "validate_publication_manifest",
-    "validate_scorecard",
-    "validate_scorecard_markdown",
 ]
 

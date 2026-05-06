@@ -9,8 +9,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from j2bench.io import read_json, write_json  # noqa: E402
-from j2bench.realdata import (  # noqa: E402
+from myoagency.io import read_json, write_json  # noqa: E402
+from myoagency.realdata import (  # noqa: E402
     _append_cemhsey_features,
     _extract_td_features,
     _temporal_energy_features,

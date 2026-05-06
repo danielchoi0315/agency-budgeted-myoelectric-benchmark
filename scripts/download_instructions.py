@@ -6,7 +6,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from j2bench.datasets import dataset_download_instructions, load_dataset_configs
+from myoagency.datasets import dataset_download_instructions, load_dataset_configs
 
 
 def main() -> None:

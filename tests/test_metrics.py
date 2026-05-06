@@ -3,9 +3,9 @@ from dataclasses import asdict
 import numpy as np
 import pandas as pd
 
-from j2bench.calibration import expected_calibration_error, probability_temperature_scale
-from j2bench.metrics import multiclass_brier, risk_coverage_auc, summarize_by_policy
-from j2bench.schemas import PredictionTrace
+from myoagency.calibration import expected_calibration_error, probability_temperature_scale
+from myoagency.metrics import multiclass_brier, risk_coverage_auc, summarize_by_policy
+from myoagency.schemas import PredictionTrace
 
 
 def test_temperature_scaling_preserves_probability_rows():
@@ -82,7 +82,7 @@ def test_db10_active_macro_f1_excludes_rest():
             uncertainty=0.0,
         ),
     ]
-    from j2bench.policies import assist_only
+    from myoagency.policies import assist_only
 
     metrics = summarize_by_policy([assist_only(trace) for trace in traces])
     frame = pd.DataFrame([asdict(metric) for metric in metrics])

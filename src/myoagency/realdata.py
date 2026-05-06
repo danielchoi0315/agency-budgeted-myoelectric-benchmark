@@ -17,7 +17,6 @@ from stream_unzip import stream_unzip
 
 from .features import time_domain_features, window_signal
 from .io import load_yaml
-from .j1_contract import validate_j1_metadata, validate_j1_prepared_bundle
 from .preprocess import bandpass_emg, notch_filter
 
 
@@ -48,18 +47,6 @@ PREPARED_BUNDLE_REQUIRED_FILES = (
     "labels.npy",
     "label_vocab.npy",
 )
-J1_REQUIRED_STRING_METADATA_COLUMNS = (
-    "source_dataset_id",
-    "subject_id",
-    "group",
-    "session",
-    "task",
-    "record_id",
-    "episode_id",
-)
-J1_REQUIRED_NUMERIC_METADATA_COLUMNS = ("prefix_time_s", "timestamp_s")
-
-
 @dataclass(frozen=True)
 class PreparedDataset:
     metadata: pd.DataFrame
@@ -157,52 +144,6 @@ def load_saved_sequence_payloads(root: Path) -> dict[str, np.ndarray] | None:
     return None
 
 
-def prepare_j1_dataset(root: Path) -> PreparedDataset:
-    bundle_root = _resolve_prepared_bundle_root(root)
-    source_bundle = load_prepared_dataset(bundle_root)
-    dataset_ids = (
-        source_bundle.metadata["dataset_id"].dropna().astype(str).str.strip().unique().tolist()
-        if "dataset_id" in source_bundle.metadata.columns
-        else []
-    )
-    if dataset_ids == ["j1"]:
-        validate_j1_prepared_bundle(bundle_root)
-        return source_bundle
-    metadata = source_bundle.metadata.drop(columns=["label"], errors="ignore").copy()
-    if "source_dataset_id" in metadata.columns:
-        source_dataset = metadata["source_dataset_id"]
-    elif "dataset_id" in metadata.columns:
-        source_dataset = metadata["dataset_id"]
-    else:
-        raise ValueError("J1 prepared bundle must expose source_dataset_id or dataset_id provenance")
-    metadata["source_dataset_id"] = source_dataset
-    metadata["dataset_id"] = "j1"
-    metadata["source_prepared_root"] = str(bundle_root)
-
-    if "label_raw" not in metadata.columns:
-        if "label" not in source_bundle.metadata.columns:
-            raise ValueError("J1 prepared bundle must expose label_raw or label")
-        label_indices = source_bundle.metadata["label"].astype(int).to_numpy()
-        label_vocab = np.asarray(source_bundle.label_vocab, dtype=int)
-        if np.any(label_indices < 0) or np.any(label_indices >= label_vocab.shape[0]):
-            raise ValueError("J1 prepared bundle label indices are out of bounds for label_vocab")
-        metadata["label_raw"] = label_vocab[label_indices]
-    metadata = validate_j1_metadata_frame(metadata)
-    bundle = _prepared_dataset_from_arrays(
-        metadata,
-        source_bundle.user_features,
-        source_bundle.assist_features,
-        sequence_payloads=source_bundle.sequence_payloads,
-    )
-    bundle.validate()
-    validate_j1_metadata(
-        bundle.metadata.reset_index(drop=True),
-        labels=np.asarray(bundle.labels, dtype=np.int64),
-        label_vocab=np.asarray(bundle.label_vocab, dtype=np.int64),
-    )
-    return bundle
-
-
 def db10_subject_group(subject_id: str) -> str:
     match = re.search(r"S(\d+)", subject_id)
     if not match:
@@ -273,90 +214,6 @@ def build_db10_manifest(root: Path) -> pd.DataFrame:
             }
         )
     return pd.DataFrame(rows)
-
-
-def _resolve_prepared_bundle_root(root: Path) -> Path:
-    if _is_prepared_bundle_root(root):
-        return root
-    candidates = [path for path in sorted(root.iterdir()) if path.is_dir() and _is_prepared_bundle_root(path)]
-    if not candidates:
-        required = ", ".join(PREPARED_BUNDLE_REQUIRED_FILES)
-        raise FileNotFoundError(
-            f"expected J1 prepared bundle files ({required}) under {root} or exactly one child bundle directory"
-        )
-    if len(candidates) > 1:
-        names = ", ".join(path.name for path in candidates)
-        raise ValueError(f"multiple prepared bundles found under {root}; choose one explicitly: {names}")
-    return candidates[0]
-
-
-def _is_prepared_bundle_root(root: Path) -> bool:
-    return all((root / name).exists() for name in PREPARED_BUNDLE_REQUIRED_FILES)
-
-
-def validate_j1_metadata_frame(metadata: pd.DataFrame) -> pd.DataFrame:
-    normalized = metadata.copy()
-    missing = [
-        column
-        for column in (*J1_REQUIRED_STRING_METADATA_COLUMNS, *J1_REQUIRED_NUMERIC_METADATA_COLUMNS, "label_raw")
-        if column not in normalized.columns
-    ]
-    if missing:
-        raise ValueError(f"J1 metadata is missing required columns: {missing}")
-
-    for column in J1_REQUIRED_STRING_METADATA_COLUMNS:
-        series = normalized[column].astype("object")
-        if series.isna().any():
-            raise ValueError(f"J1 metadata column '{column}' contains missing values")
-        values = series.astype(str).str.strip()
-        invalid = values.eq("") | values.str.lower().isin({"nan", "none", "<na>"})
-        if invalid.any():
-            raise ValueError(f"J1 metadata column '{column}' contains empty values")
-        normalized[column] = values
-
-    if "day" in normalized.columns:
-        normalized["day"] = (
-            normalized["day"]
-            .astype("object")
-            .where(normalized["day"].notna(), "")
-            .astype(str)
-            .str.strip()
-        )
-
-    for column in J1_REQUIRED_NUMERIC_METADATA_COLUMNS:
-        numeric = pd.to_numeric(normalized[column], errors="coerce")
-        if numeric.isna().any():
-            raise ValueError(f"J1 metadata column '{column}' must be numeric")
-        if not np.isfinite(numeric.to_numpy(dtype=float)).all():
-            raise ValueError(f"J1 metadata column '{column}' must be finite")
-        normalized[column] = numeric.astype(float)
-
-    label_raw = pd.to_numeric(normalized["label_raw"], errors="coerce")
-    if label_raw.isna().any():
-        raise ValueError("J1 metadata column 'label_raw' must be numeric")
-    normalized["label_raw"] = label_raw.astype(int)
-
-    duplicate_keys = ["source_dataset_id", "subject_id", "record_id", "episode_id", "prefix_time_s"]
-    duplicate_mask = normalized.duplicated(subset=duplicate_keys, keep=False)
-    if duplicate_mask.any():
-        raise ValueError(f"J1 metadata contains duplicated rows for keys {duplicate_keys}")
-
-    grouped = normalized.sort_values(
-        ["source_dataset_id", "subject_id", "episode_id", "prefix_time_s", "timestamp_s"],
-        kind="mergesort",
-    )
-    for episode_keys, episode_df in grouped.groupby(["source_dataset_id", "subject_id", "episode_id"], sort=False):
-        prefix_times = episode_df["prefix_time_s"].to_numpy(dtype=float)
-        timestamps = episode_df["timestamp_s"].to_numpy(dtype=float)
-        if np.any(np.diff(prefix_times) < -1e-12):
-            raise ValueError(f"J1 prefix_time_s must be nondecreasing within episode {episode_keys}")
-        if np.any(np.diff(timestamps) < -1e-12):
-            raise ValueError(f"J1 timestamp_s must be nondecreasing within episode {episode_keys}")
-        if np.any(prefix_times < 0.0):
-            raise ValueError(f"J1 prefix_time_s must be nonnegative within episode {episode_keys}")
-        if np.any(timestamps < prefix_times - 1e-12):
-            raise ValueError(f"J1 timestamp_s must be >= prefix_time_s within episode {episode_keys}")
-    return normalized
 
 
 def _coerce_metadata_column(

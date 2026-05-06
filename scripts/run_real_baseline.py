@@ -8,11 +8,11 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from j2bench.artifact_schemas import validate_j1_benchmark_manifest  # noqa: E402
-from j2bench.figures import save_policy_tradeoff  # noqa: E402
-from j2bench.provenance import build_output_manifest, write_manifest  # noqa: E402
-from j2bench.real_benchmark import load_optional_sequence_payloads, run_dataset_benchmark  # noqa: E402
-from j2bench.realdata import load_prepared_dataset  # noqa: E402
+from myoagency.artifact_schemas import validate_benchmark_manifest  # noqa: E402
+from myoagency.figures import save_policy_tradeoff  # noqa: E402
+from myoagency.provenance import build_output_manifest, write_manifest  # noqa: E402
+from myoagency.real_benchmark import load_optional_sequence_payloads, run_dataset_benchmark  # noqa: E402
+from myoagency.realdata import load_prepared_dataset  # noqa: E402
 
 
 def infer_available_sequence_keys(payloads: dict[str, object]) -> list[str]:
@@ -33,7 +33,7 @@ def infer_available_sequence_keys(payloads: dict[str, object]) -> list[str]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run baseline policy benchmarks on prepared real data.")
-    parser.add_argument("--dataset", choices=["db10", "hyser", "cemhsey", "grabmyo", "j1"], required=True)
+    parser.add_argument("--dataset", choices=["db10", "hyser", "cemhsey", "grabmyo"], required=True)
     parser.add_argument("--prepared-root", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--user-model", default="lda")
@@ -83,8 +83,7 @@ def main() -> None:
         "max_splits_per_family": args.max_splits_per_family,
         "n_rows": int(len(bundle.metadata)),
     }
-    if args.dataset == "j1":
-        validate_j1_benchmark_manifest(benchmark_manifest)
+    validate_benchmark_manifest(benchmark_manifest, expected_dataset=args.dataset)
     (args.out / "benchmark_manifest.json").write_text(
         json.dumps(benchmark_manifest, indent=2),
         encoding="utf-8",

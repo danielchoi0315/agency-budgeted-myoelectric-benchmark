@@ -1,17 +1,14 @@
 # Workflow
 
-The top-level `Snakefile` currently runs the synthetic smoke pipeline. Real
-dataset rules should be added after raw datasets are downloaded and audited.
+The top-level `Snakefile` provides a lightweight publication workflow for regenerating reviewer-facing figures from committed aggregate outputs and running release checks.
 
-The rule order for real data should remain:
+Full raw-data reproduction remains a staged process because raw datasets are not redistributed in this repository:
 
-1. audit raw dataset roots
-2. create manifests and modality maps
-3. preprocess windows/features
-4. train dataset-specific decoders
-5. calibrate prediction traces
-6. run shared policy grid
-7. aggregate subject/session/day metrics
-8. generate figures and tables
-
-
+1. Audit original public dataset roots.
+2. Prepare dataset-specific feature bundles outside git.
+3. Train dataset-specific user and assistive decoders.
+4. Calibrate posterior traces.
+5. Run shared policy-layer comparisons.
+6. Aggregate subject/session/day-level metrics.
+7. Regenerate publication figures and tables.
+8. Run release integrity, raw-data, figure, and test checks.

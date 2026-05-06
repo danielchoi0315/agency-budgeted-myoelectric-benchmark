@@ -1,14 +1,14 @@
 import pandas as pd
 import pytest
 
-from j2bench.real_benchmark import _hyser_splits
-from j2bench.splits import (
+from myoagency.real_benchmark import _hyser_splits
+from myoagency.splits import (
     assert_no_leakage,
     group_k_fold_splits,
     held_out_group_with_background_splits,
     leave_one_group_out_splits,
 )
-from j2bench.synthetic import make_synthetic_metadata
+from myoagency.synthetic import make_synthetic_metadata
 
 
 def test_leave_one_day_out_has_no_day_leakage():

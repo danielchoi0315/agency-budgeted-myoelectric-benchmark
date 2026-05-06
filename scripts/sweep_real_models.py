@@ -11,20 +11,20 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from j2bench.figures import save_policy_tradeoff  # noqa: E402
-from j2bench.model_selection import (  # noqa: E402
+from myoagency.figures import save_policy_tradeoff  # noqa: E402
+from myoagency.model_selection import (  # noqa: E402
     default_db10_candidate_pairs,
     default_real_candidate_pairs,
     evaluate_candidate,
     infer_candidate_lane,
 )
-from j2bench.real_benchmark import load_optional_sequence_payloads, run_dataset_benchmark  # noqa: E402
-from j2bench.realdata import load_prepared_dataset  # noqa: E402
+from myoagency.real_benchmark import load_optional_sequence_payloads, run_dataset_benchmark  # noqa: E402
+from myoagency.realdata import load_prepared_dataset  # noqa: E402
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run model sweeps and rank candidates for a prepared real dataset.")
-    parser.add_argument("--dataset", choices=["db10", "hyser", "cemhsey", "grabmyo", "j1"], required=True)
+    parser.add_argument("--dataset", choices=["db10", "hyser", "cemhsey", "grabmyo"], required=True)
     parser.add_argument("--prepared-root", type=Path, required=True)
     parser.add_argument("--out-root", type=Path, required=True)
     parser.add_argument(

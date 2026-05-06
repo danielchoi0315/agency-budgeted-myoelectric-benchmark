@@ -3,11 +3,18 @@ requires = ["setuptools>=69", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "j2-agency-benchmark"
+name = "agency-budgeted-myoelectric-benchmark"
 version = "0.1.0"
 description = "Open-data agency-budget benchmark for myoelectric prosthetic shared autonomy"
 requires-python = ">=3.11"
-authors = [{ name = "J2 Benchmark Team" }]
+authors = [
+  { name = "Daniel Choi" },
+  { name = "Andrew Choi" },
+  { name = "Cordelia Yip" },
+  { name = "Benjamin Funk" },
+  { name = "Quan Lam" },
+  { name = "Junho Park" },
+]
 dependencies = [
   "numpy>=1.26",
   "pandas>=2.2",

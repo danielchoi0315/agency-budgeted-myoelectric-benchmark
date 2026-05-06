@@ -7,7 +7,7 @@ import scipy.io as sio
 import wfdb
 
 try:
-    from j2bench.real_benchmark import load_optional_sequence_payloads, run_dataset_benchmark
+    from myoagency.real_benchmark import load_optional_sequence_payloads, run_dataset_benchmark
 except ModuleNotFoundError as exc:
     load_optional_sequence_payloads = None
     run_dataset_benchmark = None
@@ -15,7 +15,7 @@ except ModuleNotFoundError as exc:
 else:
     REAL_BENCHMARK_IMPORT_ERROR = None
 
-from j2bench.realdata import (
+from myoagency.realdata import (
     DB10_CONTEXT_MODES,
     _db10_context_features,
     PreparedDataset,
@@ -28,7 +28,6 @@ from j2bench.realdata import (
     parse_grabmyo_record_path,
     parse_cemhsey_grasp_member,
     parse_hyser_label_text,
-    prepare_j1_dataset,
     prepare_db10_dataset,
     prepare_grabmyo_dataset,
     save_prepared_dataset,
@@ -425,129 +424,6 @@ def test_merge_prepared_datasets() -> None:
     assert merged.assist_features.shape == (2, 3)
 
 
-def test_prepare_j1_dataset_from_prepared_bundle(tmp_path) -> None:
-    source_root = tmp_path / "handoff_bundle"
-    source_bundle = PreparedDataset(
-        metadata=pd.DataFrame(
-            [
-                {
-                    "dataset_id": "db10",
-                    "subject_id": "S101",
-                    "group": "amputee",
-                    "session": "session1",
-                    "day": "D01",
-                    "task": "grasp",
-                    "episode_id": "ep_a",
-                    "record_id": "rec_a",
-                    "label_raw": 1,
-                    "prefix_time_s": 0.2,
-                    "timestamp_s": 0.2,
-                },
-                {
-                    "dataset_id": "db10",
-                    "subject_id": "S010",
-                    "group": "able_bodied",
-                    "session": "session1",
-                    "day": "D01",
-                    "task": "grasp",
-                    "episode_id": "ep_b",
-                    "record_id": "rec_b",
-                    "label_raw": 2,
-                    "prefix_time_s": 0.4,
-                    "timestamp_s": 0.4,
-                },
-            ]
-        ),
-        user_features=np.array([[1.0, 2.0], [3.0, 4.0]], dtype=np.float32),
-        assist_features=np.array([[5.0, 6.0, 7.0], [8.0, 9.0, 10.0]], dtype=np.float32),
-        labels=np.array([0, 1], dtype=int),
-        label_vocab=[1, 2],
-        sequence_payloads={"user_emg": np.arange(12, dtype=np.float32).reshape(2, 2, 3)},
-    )
-    save_prepared_dataset(source_bundle, source_root)
-
-    j1_bundle = prepare_j1_dataset(source_root)
-    assert set(j1_bundle.metadata["dataset_id"].astype(str)) == {"j1"}
-    assert set(j1_bundle.metadata["source_dataset_id"].astype(str)) == {"db10"}
-    assert "source_prepared_root" in j1_bundle.metadata.columns
-    assert j1_bundle.sequence_payloads is not None
-    np.testing.assert_array_equal(j1_bundle.user_features, source_bundle.user_features)
-    np.testing.assert_array_equal(j1_bundle.assist_features, source_bundle.assist_features)
-    assert j1_bundle.label_vocab == [1, 2]
-
-
-def test_prepare_j1_dataset_rejects_missing_required_metadata(tmp_path) -> None:
-    source_root = tmp_path / "handoff_bundle_missing_subject"
-    source_bundle = PreparedDataset(
-        metadata=pd.DataFrame(
-            [
-                {
-                    "dataset_id": "db10",
-                    "group": "amputee",
-                    "session": "session1",
-                    "day": "D01",
-                    "task": "grasp",
-                    "episode_id": "ep_a",
-                    "record_id": "rec_a",
-                    "label_raw": 1,
-                    "prefix_time_s": 0.2,
-                    "timestamp_s": 0.2,
-                }
-            ]
-        ),
-        user_features=np.array([[1.0, 2.0]], dtype=np.float32),
-        assist_features=np.array([[5.0, 6.0, 7.0]], dtype=np.float32),
-        labels=np.array([0], dtype=int),
-        label_vocab=[1],
-    )
-    save_prepared_dataset(source_bundle, source_root)
-
-    with pytest.raises(ValueError, match="missing required columns"):
-        prepare_j1_dataset(source_root)
-
-
-def test_prepare_j1_dataset_rejects_nonmonotone_episode_times(tmp_path) -> None:
-    source_root = tmp_path / "handoff_bundle_bad_prefix"
-    source_bundle = PreparedDataset(
-        metadata=pd.DataFrame(
-            [
-                {
-                    "dataset_id": "db10",
-                    "subject_id": "S101",
-                    "group": "amputee",
-                    "session": "session1",
-                    "day": "D01",
-                    "task": "grasp",
-                    "episode_id": "ep_a",
-                    "record_id": "rec_a",
-                    "label_raw": 1,
-                    "prefix_time_s": 0.4,
-                    "timestamp_s": 0.4,
-                },
-                {
-                    "dataset_id": "db10",
-                    "subject_id": "S101",
-                    "group": "amputee",
-                    "session": "session1",
-                    "day": "D01",
-                    "task": "grasp",
-                    "episode_id": "ep_a",
-                    "record_id": "rec_a",
-                    "label_raw": 1,
-                    "prefix_time_s": 0.2,
-                    "timestamp_s": 0.2,
-                },
-            ]
-        ),
-        user_features=np.array([[1.0, 2.0], [3.0, 4.0]], dtype=np.float32),
-        assist_features=np.array([[5.0, 6.0, 7.0], [8.0, 9.0, 10.0]], dtype=np.float32),
-        labels=np.array([0, 0], dtype=int),
-        label_vocab=[1],
-    )
-    save_prepared_dataset(source_bundle, source_root)
-
-    with pytest.raises(ValueError, match="duplicated rows|nondecreasing|strictly increasing"):
-        prepare_j1_dataset(source_root)
 def test_run_dataset_benchmark_hyser_smoke() -> None:
     benchmark_fn = _require_run_dataset_benchmark()
     rows = []
@@ -930,60 +806,4 @@ def test_run_dataset_benchmark_respects_split_family_filters() -> None:
     assert metrics_df["split_id"].astype(str).nunique() == 1
 
 
-def test_run_dataset_benchmark_j1_smoke() -> None:
-    benchmark_fn = _require_run_dataset_benchmark()
-    rows = []
-    user_features = []
-    assist_features = []
-    labels = []
-    subjects = [
-        ("S010", "able_bodied", -1.5),
-        ("S011", "able_bodied", -0.5),
-        ("S101", "amputee", 0.5),
-        ("S102", "amputee", 1.5),
-    ]
-    for subject_id, group, base in subjects:
-        for label in [0, 1]:
-            for rep in [0, 1]:
-                prefix_time_s = 0.2 + 0.2 * rep
-                rows.append(
-                    {
-                        "dataset_id": "j1",
-                        "source_dataset_id": "db10",
-                        "subject_id": subject_id,
-                        "group": group,
-                        "session": "session1",
-                        "day": "D01",
-                        "task": "grasp",
-                        "episode_id": f"{subject_id}_{label}_{rep}",
-                        "record_id": f"{subject_id}_{label}_{rep}",
-                        "label_raw": label + 1,
-                        "prefix_time_s": prefix_time_s,
-                        "timestamp_s": prefix_time_s,
-                    }
-                )
-                feat = np.array([base, float(label), prefix_time_s], dtype=np.float32)
-                user_features.append(np.array([feat[0], feat[1] * 2.0], dtype=np.float32))
-                assist_features.append(np.array([feat[0], feat[1] * 3.0, feat[2]], dtype=np.float32))
-                labels.append(label)
-    bundle = PreparedDataset(
-        metadata=pd.DataFrame(rows),
-        user_features=np.vstack(user_features),
-        assist_features=np.vstack(assist_features),
-        labels=np.asarray(labels, dtype=int),
-        label_vocab=[1, 2],
-    )
-
-    metrics_df, aggregate_df = benchmark_fn(
-        bundle,
-        dataset_id="j1",
-        user_model_name="logistic",
-        assist_model_name="logistic",
-    )
-
-    assert not metrics_df.empty
-    assert not aggregate_df.empty
-    assert "j1_amputee_loso" in set(metrics_df["split_family"])
-    assert "j1_subject_logo" in set(metrics_df["split_family"])
-    assert metrics_df["policy"].astype(str).str.startswith("plain_conf_threshold_matched_tau_").any()
 

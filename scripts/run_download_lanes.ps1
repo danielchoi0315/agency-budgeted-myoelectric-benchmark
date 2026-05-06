@@ -4,7 +4,7 @@ param(
     [int]$PhysioNetJobs = 32,
     [int]$NinaProJobs = 6,
     [int]$HttpFreshWorkers = 2,
-    [string]$DataRoot = $env:J2_DATA_ROOT
+    [string]$DataRoot = $env:MYOAGENCY_DATA_ROOT
 )
 
 $ErrorActionPreference = "Stop"

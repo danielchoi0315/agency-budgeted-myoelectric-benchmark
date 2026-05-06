@@ -2,5 +2,3 @@ dataset_id,observed_split_family_count,required_split_family_count,required_spli
 db10,3,3,db10_able_to_amputee|db10_amputee_loso|db10_mixed_to_amputee,,0,False,1,0.20,,0.0044761904761904,0.0044761904761904,0.0,0.0,2.0,fixed_tau_unstable,all_split_families,
 hyser,2,2,hyser_subject_logo|hyser_within_subject_dayshift,,0,False,1,0.20,,0.0009686157012131,0.0009686157012131,0.3,0.3,0.0,fixed_tau_unstable,all_split_families,
 cemhsey,1,1,cemhsey_forward_day_logo,,0,False,1,0.20,,0.0015567765567765,0.0015567765567765,0.7461538461538462,0.7461538461538462,1.0,fixed_tau_unstable,all_split_families,
-j1,4,4,j1_able_to_amputee|j1_amputee_loso|j1_mixed_to_amputee|j1_subject_logo,,0,False,1,0.20,,0.0043968253968253,0.0043968253968253,0.0,0.0,3.0,fixed_tau_unstable,scorecard_required,
-
