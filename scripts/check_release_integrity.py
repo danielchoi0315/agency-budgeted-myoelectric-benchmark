@@ -95,6 +95,8 @@ def iter_repo_files(root: Path):
     for path in root.rglob("*"):
         if ".git" in path.parts or ".venv" in path.parts:
             continue
+        if any(part.endswith(".egg-info") for part in path.parts):
+            continue
         if path.is_file():
             yield path
 
