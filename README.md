@@ -52,10 +52,10 @@ Create a Python 3.11 environment:
 python -m venv .venv
 source .venv/bin/activate  # Windows PowerShell: .\.venv\Scripts\Activate.ps1
 python -m pip install -U pip
-python -m pip install -e ".[dev]"
+python -m pip install -e ".[dev,deep]"
 ```
 
-Run the release safety checks:
+Run the release safety checks and tests:
 
 ```bash
 python scripts/check_no_raw_data.py --root .

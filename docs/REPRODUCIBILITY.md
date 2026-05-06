@@ -10,7 +10,7 @@ Install the package and run tests:
 python -m venv .venv
 source .venv/bin/activate  # Windows PowerShell: .\.venv\Scripts\Activate.ps1
 python -m pip install -U pip
-python -m pip install -e ".[dev]"
+python -m pip install -e ".[dev,deep]"
 python scripts/check_no_raw_data.py --root .
 python scripts/check_release_integrity.py --root .
 pytest
