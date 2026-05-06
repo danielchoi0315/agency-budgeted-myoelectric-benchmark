@@ -383,9 +383,14 @@ def _coerce_text(source: str | PathLike[str], artifact_name: str) -> str:
             raise ArtifactSchemaError(f"{artifact_name} file does not exist: {path}")
         return path.read_text(encoding="utf-8")
     if isinstance(source, str):
-        path = Path(source)
-        if path.exists():
-            return path.read_text(encoding="utf-8")
+        if "\n" in source or "\r" in source:
+            return source
+        try:
+            path = Path(source)
+            if path.exists():
+                return path.read_text(encoding="utf-8")
+        except OSError:
+            return source
         return source
     raise ArtifactSchemaError(f"{artifact_name} must be text or a path")
 

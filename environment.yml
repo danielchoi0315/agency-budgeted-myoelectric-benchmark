@@ -15,6 +15,7 @@ dependencies:
   - pydantic
   - tqdm
   - joblib
+  - tabulate
   - pytest
   - pip
   - pip:
