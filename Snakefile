@@ -34,4 +34,5 @@ rule tnsre_figures:
     shell:
         "Rscript scripts/build_tnsre_figures.R --repo-root . && "
         "python scripts/check_tnsre_figures.py --out-dir results/reports/tnsre_figures --recursive "
-        "--min-pdfs 11 --min-width 1800 --min-height 1800 --min-dpi 300"
+        "--min-pdfs 11 --min-width 1800 --min-height 1800 --min-dpi 300 "
+        "--report {output}"

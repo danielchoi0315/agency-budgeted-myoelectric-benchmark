@@ -1,6 +1,6 @@
 # Release QA Record
 
-Validation run on 2026-05-05 from the curated publication repository.
+Validation run on 2026-05-06 from the curated publication repository and a fresh extraction of the Overleaf package.
 
 ## Repository Safety
 
@@ -11,21 +11,26 @@ Validation run on 2026-05-05 from the curated publication repository.
 
 ## Code Tests
 
-- `python -m pytest`: 151 passed, 9 warnings.
+- `python -m pytest`: 93 passed, 9 warnings.
 - Warnings were PyTorch nested-tensor informational warnings in model smoke tests, not assertion failures.
 
 ## Figure QA
 
 - `Rscript scripts/build_tnsre_figures.R --repo-root .`: regenerated 22 assets.
-- `python scripts/check_tnsre_figures.py --out-dir results/reports/tnsre_figures --recursive --min-pdfs 11 --min-width 1800 --min-height 1800 --min-dpi 300`: passed.
+- `python scripts/check_tnsre_figures.py --out-dir results/reports/tnsre_figures --recursive --min-pdfs 11 --min-width 1800 --min-height 1800 --min-dpi 300 --report results/reports/tnsre_figures/tnsre_figure_qa.json`: passed.
+- `python scripts/check_figure_fonts.py --pdf-dir results/reports/tnsre_figures/pdf`: passed.
 - Final committed figure set: 11 PDF assets and 11 PNG assets.
 - PNG DPI: approximately 600 dpi for all assets.
 
 ## Manuscript Compile
 
+- The final Overleaf ZIP was extracted into a clean verification directory.
+- Package manifest check: passed.
+- Package figure check: 11 PDF assets and 11 PNG assets; all PNGs at least 1800 px in both dimensions and at least 300 dpi.
 - `main.tex`: compiled with pdfLaTeX + BibTeX + two pdfLaTeX passes.
-- `supplement.tex`: compiled with pdfLaTeX.
-- Final local compile check: main manuscript 10 pages; supplement 5 pages; no undefined citations or references in final logs.
+- `supplement.tex`: compiled with two pdfLaTeX passes.
+- Final local compile check: main manuscript 9 pages; supplement 5 pages; no undefined citations or references in final logs.
+- Rendered page check: Fig. 1 appears centered at full text width with no clipping, overlap, or caption collision.
 
 ## Remaining Human Checks
 

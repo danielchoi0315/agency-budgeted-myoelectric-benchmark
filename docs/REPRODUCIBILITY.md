@@ -30,7 +30,7 @@ Run:
 
 ```bash
 Rscript scripts/build_tnsre_figures.R --repo-root .
-python scripts/check_tnsre_figures.py --out-dir results/reports/tnsre_figures --recursive --min-pdfs 11 --min-width 1800 --min-height 1800 --min-dpi 300
+python scripts/check_tnsre_figures.py --out-dir results/reports/tnsre_figures --recursive --min-pdfs 11 --min-width 1800 --min-height 1800 --min-dpi 300 --report results/reports/tnsre_figures/tnsre_figure_qa.json
 ```
 
 Expected result: 11 PDF and 11 PNG figure assets pass QA in `results/reports/tnsre_figures/`.

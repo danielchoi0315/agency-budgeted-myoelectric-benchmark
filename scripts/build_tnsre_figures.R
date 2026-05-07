@@ -275,112 +275,100 @@ policy_ordered <- function(df) {
 }
 
 make_flow_figure <- function() {
-  ellipse_points <- function(cx, cy, rx, ry, id, n = 64) {
-    theta <- seq(0, 2 * pi, length.out = n)
-    tibble(x = cx + rx * cos(theta), y = cy + ry * sin(theta), id = id)
-  }
-
   stage_cards <- tribble(
-    ~stage, ~x, ~title, ~subtitle, ~fill, ~stroke,
-    "data", 1.15, "Open data\nhierarchy", "DB10 claim-bearing;\nHyser/CEMHSEY\nstress tests", "#E8F1FA", "#4C7EA8",
-    "traces", 3.35, "Frozen decoder\ntraces", "user EMG branch;\ncontext branch;\ncalibrated posteriors", "#F7F7F7", "#767676",
-    "policy", 5.55, "Policy replay", "agency-margin;\nSetACSA;\nconfidence gates", "#EAF6EF", "#4F9A72",
-    "inference", 7.75, "Unit-level\ninference", "active macro-F1;\nrisk-coverage AUC;\nALI; paired units", "#FFF3D8", "#B38A2E",
-    "boundary", 9.95, "Claim\nboundary", "offline evidence;\nno online, clinical,\nhaptic, or user-study\nclaim", "#F8E9E6", "#B46B60"
+    ~stage, ~letter, ~x, ~title, ~accent, ~tint,
+    "data", "A", 1.15, "Data\ncontract", "#4C7EA8", "#F8FAFC",
+    "traces", "B", 3.35, "Frozen\ntraces", "#5D7692", "#FAFAFA",
+    "policy", "C", 5.55, "Policy\nreplay", "#3F8A63", "#F8FCF9",
+    "inference", "D", 7.75, "Unit-level\nevaluation", "#A07D2B", "#FFFDF7",
+    "boundary", "E", 9.95, "Evidence\nboundary", "#A45E58", "#FFF9F8"
   ) %>%
-    mutate(y = 2.48, w = 1.75, h = 2.78)
+    mutate(y = 1.98, w = 1.90, h = 2.64)
 
   stage_arrows <- tibble(
-    x = head(stage_cards$x + stage_cards$w / 2, -1) + 0.10,
-    xend = tail(stage_cards$x - stage_cards$w / 2, -1) - 0.10,
-    y = 2.50,
-    yend = 2.50
+    x = head(stage_cards$x + stage_cards$w / 2, -1) + 0.07,
+    xend = tail(stage_cards$x - stage_cards$w / 2, -1) - 0.07,
+    y = 1.98,
+    yend = 1.98
   )
 
-  data_db <- bind_rows(
-    ellipse_points(0.93, 3.42, 0.32, 0.08, "top"),
-    ellipse_points(0.93, 3.17, 0.32, 0.08, "mid"),
-    ellipse_points(0.93, 2.92, 0.32, 0.08, "bottom")
-  )
-
-  data_db_rects <- tibble(
-    xmin = 0.61, xmax = 1.25,
-    ymin = c(3.17, 2.92),
-    ymax = c(3.42, 3.17),
-    fill = c("#89B9D8", "#6FA6C9")
-  )
-
-  waveform <- bind_rows(
-    tibble(
-      x = seq(2.78, 3.92, length.out = 120),
-      y = 3.33 + 0.10 * sin(seq(0, 7 * pi, length.out = 120)) + 0.035 * sin(seq(0, 19 * pi, length.out = 120)),
-      branch = "User EMG"
-    ),
-    tibble(
-      x = seq(2.78, 3.92, length.out = 120),
-      y = 2.92 + 0.08 * sin(seq(0.8, 6.6 * pi, length.out = 120)),
-      branch = "Context"
-    )
-  )
-
-  branch_labels <- tribble(
-    ~x, ~y, ~label, ~color,
-    2.70, 3.33, "U", "#0072B2",
-    2.70, 2.92, "A", "#009E73"
-  )
-
-  nn_edges <- expand_grid(
-    x = c(5.05, 5.55),
-    y = c(3.10, 2.78),
-    xend = c(5.55, 6.05),
-    yend = c(3.30, 3.00, 2.70)
+  card_rows <- tribble(
+    ~stage, ~row, ~label,
+    "data", 1, "DB10 primary",
+    "data", 2, "Hyser/CEMHSEY\nstress tests",
+    "data", 3, "fixed split\nfamilies",
+    "traces", 1, "user EMG\nposterior",
+    "traces", 2, "assist/context\nposterior",
+    "traces", 3, "calibrated\ntraces",
+    "traces", 4, "no adaptation",
+    "policy", 1, "agency\nmargin",
+    "policy", 2, "SetACSA",
+    "policy", 3, "confidence\ngate",
+    "policy", 4, "matched\nbudgets",
+    "inference", 1, "macro-F1",
+    "inference", 2, "risk-coverage\nAUC",
+    "inference", 3, "expected\nALI",
+    "inference", 4, "paired\nunits",
+    "boundary", 1, "offline\nreplay",
+    "boundary", 2, "no online\ncontrol",
+    "boundary", 3, "no clinical /\nuser study",
+    "boundary", 4, "no haptic /\ntrust claim"
   ) %>%
-    filter(xend > x)
+    left_join(stage_cards %>% select(stage, x, w, accent), by = "stage") %>%
+    mutate(
+      y = case_when(
+        row == 1 ~ 2.38,
+        row == 2 ~ 2.02,
+        row == 3 ~ 1.66,
+        TRUE ~ 1.30
+      ),
+      row_h = 0.34,
+      text_x = case_when(
+        (stage == "traces" & row %in% c(1, 2)) |
+          (stage == "policy" & row %in% c(1, 2, 3, 4)) |
+          (stage == "inference" & row %in% c(1, 2, 3)) ~ x - w / 2 + 0.41,
+        TRUE ~ x - w / 2 + 0.29
+      )
+    )
 
-  nn_nodes <- tibble(
-    x = c(5.05, 5.05, 5.55, 5.55, 6.05, 6.05, 6.05),
-    y = c(3.10, 2.78, 3.30, 3.00, 3.38, 3.04, 2.70)
-  )
-
-  gate <- tibble(
-    x = c(5.55, 6.02, 5.55, 5.08),
-    y = c(2.42, 2.12, 1.82, 2.12)
-  )
-
-  metrics_axes <- tibble(
-    x = c(7.22, 7.22, 7.22, 7.22),
-    y = c(2.72, 2.06, 2.06, 2.06),
-    xend = c(7.22, 8.32, 7.55, 7.88),
-    yend = c(2.06, 2.06, 2.34, 2.53)
-  )
-
-  metric_points <- tibble(
-    x = c(7.48, 7.68, 7.88, 8.08, 8.25),
-    y = c(2.20, 2.38, 2.48, 2.61, 2.71),
-    color = c("#7F7F7F", "#009E73", "#D55E00", "#0072B2", "#0072B2")
-  )
-
-  shield <- tibble(
-    x = c(9.95, 10.42, 10.32, 9.95, 9.58, 9.48),
-    y = c(3.55, 3.36, 2.88, 2.58, 2.88, 3.36)
-  )
-
-  bottom_rail <- tibble(
-    x = stage_cards$x,
-    y = 0.82,
-    label = c("fixed splits", "no adaptation", "matched budgets", "paired units", "bounded claim")
-  )
+  role_dots <- tribble(
+    ~stage, ~row, ~dot_color,
+    "traces", 1, "#0072B2",
+    "traces", 2, "#009E73",
+    "policy", 1, "#0072B2",
+    "policy", 2, "#D55E00",
+    "policy", 3, "#009E73",
+    "policy", 4, "#6A51A3",
+    "inference", 1, "#0072B2",
+    "inference", 2, "#D55E00",
+    "inference", 3, "#009E73"
+  ) %>%
+    left_join(card_rows %>% select(stage, row, x, w, y), by = c("stage", "row")) %>%
+    mutate(x = x - w / 2 + 0.26)
 
   ggplot() +
-    annotate("rect", xmin = 0.18, xmax = 10.92, ymin = 0.38, ymax = 4.72, fill = "#FBFBFB", color = "#D7D7D7", linewidth = 0.28) +
-    annotate("rect", xmin = 0.18, xmax = 10.92, ymin = 4.28, ymax = 4.72, fill = "#F1F5F8", color = "#D7D7D7", linewidth = 0.28) +
-    annotate("text", x = 0.42, y = 4.51, hjust = 0, label = "Offline policy-layer benchmark for myoelectric shared autonomy", family = figure_font_family, fontface = "bold", size = 3.25, color = "#111111") +
-    annotate("text", x = 10.68, y = 4.51, hjust = 1, label = "reproducible, open-data, claim-bounded", family = figure_font_family, size = 2.45, color = "#3A3A3A") +
     geom_rect(
       data = stage_cards,
-      aes(xmin = x - w / 2, xmax = x + w / 2, ymin = y - h / 2, ymax = y + h / 2, fill = fill),
-      color = "#777777",
-      linewidth = 0.34
+      aes(xmin = x - w / 2, xmax = x + w / 2, ymin = y - h / 2, ymax = y + h / 2, fill = tint),
+      color = "#3F3F3F",
+      linewidth = 0.32
+    ) +
+    geom_rect(
+      data = stage_cards,
+      aes(xmin = x - w / 2, xmax = x + w / 2, ymin = y + h / 2 - 0.55, ymax = y + h / 2),
+      fill = "#EEF1F3",
+      color = NA
+    ) +
+    geom_rect(
+      data = stage_cards,
+      aes(xmin = x - w / 2, xmax = x - w / 2 + 0.08, ymin = y - h / 2, ymax = y + h / 2, fill = accent),
+      color = NA
+    ) +
+    geom_segment(
+      data = stage_cards,
+      aes(x = x - w / 2, xend = x + w / 2, y = y + h / 2 - 0.55, yend = y + h / 2 - 0.55),
+      color = "#D0D0D0",
+      linewidth = 0.22
     ) +
     scale_fill_identity() +
     geom_segment(
@@ -392,48 +380,51 @@ make_flow_figure <- function() {
     ) +
     geom_text(
       data = stage_cards,
-      aes(x = x, y = 3.64, label = title),
+      aes(x = x - w / 2 + 0.20, y = y + h / 2 - 0.27, label = letter),
       family = figure_font_family,
       fontface = "bold",
-      size = 2.95,
-      lineheight = 0.88,
-      color = "#111111"
+      size = 3.35,
+      hjust = 0,
+      color = "#262626"
     ) +
     geom_text(
       data = stage_cards,
-      aes(x = x, y = 1.36, label = subtitle),
+      aes(x = x - w / 2 + 0.49, y = y + h / 2 - 0.27, label = title),
       family = figure_font_family,
-      size = 2.22,
-      lineheight = 0.88,
+      fontface = "bold",
+      size = 3.20,
+      hjust = 0,
+      lineheight = 0.83,
       color = "#262626"
     ) +
-    geom_rect(data = data_db_rects, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = fill), color = "#436E8B", linewidth = 0.22, inherit.aes = FALSE) +
-    geom_polygon(data = data_db, aes(x = x, y = y, group = id), fill = "#A8CDE4", color = "#436E8B", linewidth = 0.22) +
-    annotate("text", x = 1.33, y = 3.40, hjust = 0, label = "DB10", family = figure_font_family, fontface = "bold", size = 2.15, color = "#1E4258") +
-    annotate("text", x = 1.33, y = 3.12, hjust = 0, label = "Hyser", family = figure_font_family, size = 2.05, color = "#1E4258") +
-    annotate("text", x = 1.33, y = 2.86, hjust = 0, label = "CEMHSEY", family = figure_font_family, size = 2.05, color = "#1E4258") +
-    geom_path(data = waveform, aes(x = x, y = y, color = branch), linewidth = 0.54, show.legend = FALSE) +
-    scale_color_manual(values = c("User EMG" = "#0072B2", "Context" = "#009E73"), guide = "none") +
-    geom_point(data = branch_labels, aes(x = x, y = y), size = 6.3, shape = 21, fill = "white", color = branch_labels$color, stroke = 0.55) +
-    geom_text(data = branch_labels, aes(x = x, y = y, label = label), family = figure_font_family, fontface = "bold", size = 2.15, color = branch_labels$color) +
-    geom_segment(data = nn_edges, aes(x = x, y = y, xend = xend, yend = yend), color = "#8C8C8C", linewidth = 0.25) +
-    geom_point(data = nn_nodes, aes(x = x, y = y), size = 2.4, shape = 21, fill = "#FFFFFF", color = "#3B7F5A", stroke = 0.45) +
-    geom_polygon(data = gate, aes(x = x, y = y), fill = "#D7EFE2", color = "#3B7F5A", linewidth = 0.30) +
-    annotate("text", x = 5.55, y = 2.13, label = "budget\ngate", family = figure_font_family, fontface = "bold", size = 2.08, lineheight = 0.85, color = "#234D35") +
-    geom_segment(aes(x = 4.77, y = 2.45, xend = 5.08, yend = 2.12), color = "#3B7F5A", linewidth = 0.36, arrow = arrow(type = "closed", length = unit(0.055, "in"))) +
-    geom_segment(aes(x = 6.02, y = 2.12, xend = 6.32, yend = 2.45), color = "#3B7F5A", linewidth = 0.36, arrow = arrow(type = "closed", length = unit(0.055, "in"))) +
-    geom_segment(data = metrics_axes, aes(x = x, y = y, xend = xend, yend = yend), color = "#4F4F4F", linewidth = 0.28) +
-    geom_point(data = metric_points, aes(x = x, y = y), size = 2.0, shape = 21, fill = metric_points$color, color = "white", stroke = 0.20) +
-    annotate("text", x = 7.82, y = 3.08, label = "F1   AUC   ALI", family = figure_font_family, fontface = "bold", size = 2.10, color = "#4C3612") +
-    geom_polygon(data = shield, aes(x = x, y = y), fill = "#F3C7C0", color = "#9F554C", linewidth = 0.32) +
-    annotate("text", x = 9.95, y = 3.16, label = "OFFLINE", family = figure_font_family, fontface = "bold", size = 2.42, color = "#7B342D") +
-    annotate("text", x = 9.95, y = 2.91, label = "benchmark", family = figure_font_family, size = 2.08, color = "#7B342D") +
-    geom_segment(aes(x = 0.78, y = 0.82, xend = 10.35, yend = 0.82), color = "#C8C8C8", linewidth = 0.30) +
-    geom_point(data = bottom_rail, aes(x = x, y = y), size = 2.1, shape = 21, fill = "#FFFFFF", color = "#585858", stroke = 0.35) +
-    geom_text(data = bottom_rail, aes(x = x, y = y - 0.24, label = label), family = figure_font_family, size = 1.88, color = "#333333") +
-    coord_cartesian(xlim = c(0.12, 10.98), ylim = c(0.32, 4.82), expand = FALSE, clip = "off") +
+    geom_rect(
+      data = card_rows,
+      aes(xmin = x - w / 2 + 0.16, xmax = x + w / 2 - 0.12, ymin = y - row_h / 2, ymax = y + row_h / 2),
+      fill = "#FFFFFF",
+      color = "#D7D7D7",
+      linewidth = 0.18
+    ) +
+    geom_text(
+      data = card_rows,
+      aes(x = text_x, y = y, label = label),
+      family = figure_font_family,
+      size = 2.82,
+      hjust = 0,
+      lineheight = 0.80,
+      color = "#262626"
+    ) +
+    geom_point(
+      data = role_dots,
+      aes(x = x, y = y),
+      color = role_dots$dot_color,
+      fill = role_dots$dot_color,
+      shape = 21,
+      size = 2.25,
+      stroke = 0
+    ) +
+    coord_cartesian(xlim = c(0.12, 10.98), ylim = c(0.56, 3.42), expand = FALSE, clip = "off") +
     theme_void(base_family = figure_font_family) +
-    theme(plot.margin = margin(5, 6, 5, 6))
+    theme(plot.margin = margin(4, 6, 4, 6))
 }
 
 frontier_panel <- function(data, metric_col, panel_title, y_title, show_x, include_references = TRUE, fixed_x = NULL) {
@@ -839,7 +830,7 @@ hyser_aggregate <- prepare_aggregate(read_pub("hyser_publication_aggregate_polic
 cemhsey_aggregate <- prepare_aggregate(read_pub("cemhsey_publication_aggregate_policy_metrics.csv"), "cemhsey")
 
 manifest <- bind_rows(
-  save_figure(make_flow_figure(), "fig1_benchmark_flow", width = 7.16, height = 3.55),
+  save_figure(make_flow_figure(), "fig1_benchmark_flow", width = 7.16, height = 3.10),
   save_figure(
     make_frontier_plot(
       db10_aggregate,

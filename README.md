@@ -59,7 +59,7 @@ Run the release safety checks and tests:
 ```bash
 python scripts/check_no_raw_data.py --root .
 python scripts/check_release_integrity.py --root .
-python scripts/check_tnsre_figures.py --out-dir results/reports/tnsre_figures --recursive --min-pdfs 11 --min-width 1800 --min-height 1800 --min-dpi 300
+python scripts/check_tnsre_figures.py --out-dir results/reports/tnsre_figures --recursive --min-pdfs 11 --min-width 1800 --min-height 1800 --min-dpi 300 --report results/reports/tnsre_figures/tnsre_figure_qa.json
 pytest
 ```
 
@@ -67,7 +67,7 @@ Regenerate the TNSRE figure package from committed aggregate outputs:
 
 ```bash
 Rscript scripts/build_tnsre_figures.R --repo-root .
-python scripts/check_tnsre_figures.py --out-dir results/reports/tnsre_figures --recursive --min-pdfs 11 --min-width 1800 --min-height 1800 --min-dpi 300
+python scripts/check_tnsre_figures.py --out-dir results/reports/tnsre_figures --recursive --min-pdfs 11 --min-width 1800 --min-height 1800 --min-dpi 300 --report results/reports/tnsre_figures/tnsre_figure_qa.json
 ```
 
 The figure command uses `results/reports/publication_clean/` as input and writes PDF/PNG assets plus a manifest to `results/reports/tnsre_figures/`.
