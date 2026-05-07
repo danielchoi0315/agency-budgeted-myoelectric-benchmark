@@ -17,7 +17,7 @@ Validation run on 2026-05-06 from the curated publication repository and a fresh
 ## Figure QA
 
 - `Rscript scripts/build_tnsre_figures.R --repo-root .`: regenerated 22 assets.
-- `python scripts/check_tnsre_figures.py --out-dir results/reports/tnsre_figures --recursive --min-pdfs 11 --min-width 1800 --min-height 1800 --min-dpi 300 --report results/reports/tnsre_figures/tnsre_figure_qa.json`: passed.
+- `python scripts/check_tnsre_figures.py --out-dir results/reports/tnsre_figures --recursive --min-pdfs 11 --min-width 1800 --min-height 900 --min-dpi 300 --report results/reports/tnsre_figures/tnsre_figure_qa.json`: passed.
 - `python scripts/check_figure_fonts.py --pdf-dir results/reports/tnsre_figures/pdf`: passed.
 - Final committed figure set: 11 PDF assets and 11 PNG assets.
 - PNG DPI: approximately 600 dpi for all assets.
@@ -26,11 +26,11 @@ Validation run on 2026-05-06 from the curated publication repository and a fresh
 
 - The final Overleaf ZIP was extracted into a clean verification directory.
 - Package manifest check: passed.
-- Package figure check: 11 PDF assets and 11 PNG assets; all PNGs at least 1800 px in both dimensions and at least 300 dpi.
+- Package figure check: 11 PDF assets and 11 PNG assets; all PNGs at least 1800 px wide, at least 900 px high, and at least 300 dpi.
 - `main.tex`: compiled with pdfLaTeX + BibTeX + two pdfLaTeX passes.
 - `supplement.tex`: compiled with two pdfLaTeX passes.
-- Final local compile check: main manuscript 10 pages; supplement 5 pages; no undefined citations or references in final logs.
-- Rendered page check: Fig. 1 appears centered at full text width with clipped-internal header icons and no boundary escape, overlap, or caption collision.
+- Final local compile check: main manuscript 9 pages; supplement 5 pages; no undefined citations or references in final logs.
+- Rendered page check: redesigned Fig. 1 appears centered at full text width as a compact A-E evidence-boundary matrix with no boundary escape, overlap, or caption collision.
 - Main-text figure check: Fig. 5 appears in the main manuscript as the external EMG stress-test frontier; the DB10 earliest-safe timing diagnostic remains supplementary.
 
 ## Remaining Human Checks

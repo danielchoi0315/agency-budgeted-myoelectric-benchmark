@@ -275,216 +275,206 @@ policy_ordered <- function(df) {
 }
 
 make_flow_figure <- function() {
-  stage_cards <- tribble(
-    ~stage, ~letter, ~x, ~title, ~accent, ~tint,
-    "data", "A", 1.15, "Data\ncontract", "#4C7EA8", "#F8FAFC",
-    "traces", "B", 3.35, "Frozen\ntraces", "#5D7692", "#FAFAFA",
-    "policy", "C", 5.55, "Policy\nreplay", "#3F8A63", "#F8FCF9",
-    "inference", "D", 7.75, "Unit-level\nmetrics", "#A07D2B", "#FFFDF7",
-    "boundary", "E", 9.95, "Evidence\nboundary", "#A45E58", "#FFF9F8"
+  stage_cols <- tribble(
+    ~stage, ~letter, ~x, ~title, ~accent, ~tint, ~border,
+    "data", "A", 1.16, "Data\ncontract", "#2F6F9F", "#F8FBFD", "#AFC4D4",
+    "traces", "B", 3.32, "Frozen\ntraces", "#556B82", "#F8FAFC", "#BBC5CE",
+    "policy", "C", 5.48, "Policy\nreplay", "#2F7F5A", "#F8FCFA", "#B7D2C4",
+    "metrics", "D", 7.64, "Unit-level\nmetrics", "#9A741E", "#FFFDF8", "#D2C296",
+    "boundary", "E", 9.80, "Evidence\nboundary", "#9B4F4A", "#FFF8F7", "#D0ADAA"
   ) %>%
-    mutate(y = 1.98, w = 1.90, h = 2.64)
-
-  stage_arrows <- tibble(
-    x = head(stage_cards$x + stage_cards$w / 2, -1) + 0.07,
-    xend = tail(stage_cards$x - stage_cards$w / 2, -1) - 0.07,
-    y = 1.98,
-    yend = 1.98
-  )
-
-  card_rows <- tribble(
-    ~stage, ~row, ~label,
-    "data", 1, "DB10 primary",
-    "data", 2, "Hyser/CEMHSEY\nstress tests",
-    "data", 3, "fixed split\nfamilies",
-    "traces", 1, "user EMG\nposterior",
-    "traces", 2, "assist/context\nposterior",
-    "traces", 3, "calibrated\ntraces",
-    "traces", 4, "no adaptation",
-    "policy", 1, "agency\nmargin",
-    "policy", 2, "SetACSA",
-    "policy", 3, "confidence\ngate",
-    "policy", 4, "matched\nbudgets",
-    "inference", 1, "macro-F1",
-    "inference", 2, "risk-coverage\nAUC",
-    "inference", 3, "expected\nALI",
-    "inference", 4, "paired\nunits",
-    "boundary", 1, "offline\nreplay",
-    "boundary", 2, "no online\ncontrol",
-    "boundary", 3, "no clinical /\nuser study",
-    "boundary", 4, "no haptic /\ntrust claim"
-  ) %>%
-    left_join(stage_cards %>% select(stage, x, w, accent), by = "stage") %>%
     mutate(
-      y = case_when(
-        row == 1 ~ 2.38,
-        row == 2 ~ 2.02,
-        row == 3 ~ 1.66,
-        TRUE ~ 1.30
-      ),
-      row_h = 0.34,
-      text_x = case_when(
-        (stage == "traces" & row %in% c(1, 2)) |
-          (stage == "policy" & row %in% c(1, 2, 3, 4)) |
-          (stage == "inference" & row %in% c(1, 2, 3)) ~ x - w / 2 + 0.41,
-        TRUE ~ x - w / 2 + 0.29
-      )
+      w = 1.82,
+      top = 2.38,
+      bottom = 0.50,
+      header_bottom = 1.94,
+      left = x - w / 2,
+      right = x + w / 2
     )
 
-  role_dots <- tribble(
-    ~stage, ~row, ~dot_color,
-    "traces", 1, "#0072B2",
-    "traces", 2, "#009E73",
-    "policy", 1, "#0072B2",
-    "policy", 2, "#D55E00",
-    "policy", 3, "#009E73",
-    "policy", 4, "#6A51A3",
-    "inference", 1, "#0072B2",
-    "inference", 2, "#D55E00",
-    "inference", 3, "#009E73"
-  ) %>%
-    left_join(card_rows %>% select(stage, row, x, w, y), by = c("stage", "row")) %>%
-    mutate(x = x - w / 2 + 0.26)
+  stage_arrows <- stage_cols %>%
+    filter(stage %in% c("data", "traces", "policy")) %>%
+    transmute(
+      x = right + 0.08,
+      xend = lead(left) - 0.08,
+      y = 2.16,
+      yend = 2.16
+    ) %>%
+    filter(!is.na(xend))
 
-  icon_bays <- stage_cards %>%
+  item_rows <- tribble(
+    ~stage, ~row, ~label, ~dot_color,
+    "data", 1, "DB10/MeganePro\nprimary claim set", "#2F6F9F",
+    "data", 2, "Hyser/CEMHSEY\nexternal stress tests", "#2F6F9F",
+    "data", 3, "predeclared\nsplit families", "#2F6F9F",
+    "traces", 1, "user-branch EMG\nposterior", "#0072B2",
+    "traces", 2, "assistive/context\nposterior", "#009E73",
+    "traces", 3, "calibrated traces", "#556B82",
+    "traces", 4, "no adaptation", "#556B82",
+    "policy", 1, "agency-margin\npolicy", "#0072B2",
+    "policy", 2, "SetACSA-style\npolicy", "#D55E00",
+    "policy", 3, "confidence gate", "#009E73",
+    "metrics", 1, "macro-F1", "#0072B2",
+    "metrics", 2, "risk-coverage\nAUC (lower)", "#D55E00",
+    "metrics", 3, "mean ALI", "#009E73",
+    "metrics", 4, "subject/session/day\npaired units", "#9A741E",
+    "boundary", 1, "offline replay\nonly", "#9B4F4A",
+    "boundary", 2, "no online\ncontrol", "#9B4F4A",
+    "boundary", 3, "no clinical /\nuser study", "#9B4F4A",
+    "boundary", 4, "no haptic /\ntrust claim", "#9B4F4A"
+  ) %>%
+    left_join(stage_cols %>% select(stage, left, right, top, bottom, header_bottom, accent), by = "stage") %>%
+    group_by(stage) %>%
+    mutate(
+      n_rows = n(),
+      body_top = header_bottom - 0.17,
+      body_bottom = bottom + 0.20,
+      row_step = (body_top - body_bottom) / n_rows,
+      y = body_top - (row - 0.5) * row_step,
+      dot_x = left + 0.19,
+      text_x = left + 0.34
+    ) %>%
+    ungroup()
+
+  row_rules <- item_rows %>%
+    filter(row < n_rows) %>%
     transmute(
       stage,
-      xmin = x + w / 2 - 0.43,
-      xmax = x + w / 2 - 0.15,
-      ymin = y + h / 2 - 0.42,
-      ymax = y + h / 2 - 0.14
+      x = left + 0.13,
+      xend = right - 0.13,
+      y = body_top - row * row_step,
+      yend = body_top - row * row_step
     )
 
-  trace_icon <- tibble(
-    x = seq(3.95, 4.08, length.out = 80),
-    y = 3.02 + 0.022 * sin(seq(0, 4 * pi, length.out = 80)) + 0.009 * sin(seq(0, 13 * pi, length.out = 80))
-  )
+  budget_note <- stage_cols %>%
+    filter(stage %in% c("policy", "metrics")) %>%
+    summarise(
+      xmin = min(left) + 0.05,
+      xmax = max(right) - 0.05,
+      ymin = 0.22,
+      ymax = 0.40,
+      .groups = "drop"
+    ) %>%
+    mutate(
+      x = (xmin + xmax) / 2,
+      y = (ymin + ymax) / 2,
+      label = "matched intervention budgets for paired replay"
+    )
 
-  policy_icon_edges <- tribble(
-    ~x, ~y, ~xend, ~yend,
-    6.14, 3.02, 6.25, 3.08,
-    6.14, 3.02, 6.25, 3.02,
-    6.14, 3.02, 6.25, 2.96
-  )
-
-  policy_icon_nodes <- tribble(
-    ~x, ~y,
-    6.14, 3.02,
-    6.25, 3.08,
-    6.25, 3.02,
-    6.25, 2.96
-  )
-
-  metric_icon_bars <- tribble(
-    ~xmin, ~xmax, ~ymin, ~ymax,
-    8.36, 8.39, 2.96, 3.04,
-    8.41, 8.44, 2.96, 3.10,
-    8.46, 8.49, 2.96, 3.01
-  )
-
-  lock_icon_arc <- tibble(
-    x = 10.58 + 0.060 * cos(seq(pi, 0, length.out = 50)),
-    y = 3.025 + 0.062 * sin(seq(pi, 0, length.out = 50))
+  boundary_separator <- tibble(
+    x = mean(c(
+      stage_cols$right[stage_cols$stage == "metrics"],
+      stage_cols$left[stage_cols$stage == "boundary"]
+    )),
+    y = 0.45,
+    yend = 2.42
   )
 
   ggplot() +
     geom_rect(
-      data = stage_cards,
-      aes(xmin = x - w / 2, xmax = x + w / 2, ymin = y - h / 2, ymax = y + h / 2, fill = tint),
-      color = "#3F3F3F",
-      linewidth = 0.32
+      data = stage_cols,
+      aes(xmin = left, xmax = right, ymin = bottom, ymax = top, fill = tint, color = border),
+      linewidth = 0.22
     ) +
     geom_rect(
-      data = stage_cards,
-      aes(xmin = x - w / 2, xmax = x + w / 2, ymin = y + h / 2 - 0.55, ymax = y + h / 2),
-      fill = "#EEF1F3",
+      data = stage_cols,
+      aes(xmin = left, xmax = right, ymin = top - 0.075, ymax = top, fill = accent),
       color = NA
     ) +
     geom_rect(
-      data = stage_cards,
-      aes(xmin = x - w / 2, xmax = x - w / 2 + 0.08, ymin = y - h / 2, ymax = y + h / 2, fill = accent),
+      data = stage_cols,
+      aes(xmin = left, xmax = right, ymin = header_bottom, ymax = top - 0.075),
+      fill = "#FFFFFF",
       color = NA
     ) +
     geom_segment(
-      data = stage_cards,
-      aes(x = x - w / 2, xend = x + w / 2, y = y + h / 2 - 0.55, yend = y + h / 2 - 0.55),
-      color = "#D0D0D0",
-      linewidth = 0.22
+      data = stage_cols,
+      aes(x = left, xend = right, y = header_bottom, yend = header_bottom),
+      color = "#D5DADD",
+      linewidth = 0.18
     ) +
     scale_fill_identity() +
+    scale_color_identity() +
     geom_segment(
       data = stage_arrows,
       aes(x = x, y = y, xend = xend, yend = yend),
-      linewidth = 0.48,
-      color = "#343434",
-      arrow = arrow(type = "closed", length = unit(0.075, "in"))
+      linewidth = 0.34,
+      color = "#3D444A",
+      arrow = arrow(type = "closed", length = unit(0.060, "in"))
     ) +
-    geom_text(
-      data = stage_cards,
-      aes(x = x - w / 2 + 0.20, y = y + h / 2 - 0.27, label = letter),
-      family = figure_font_family,
-      fontface = "bold",
-      size = 3.35,
-      hjust = 0,
-      color = "#262626"
+    geom_segment(
+      data = boundary_separator,
+      aes(x = x, xend = x, y = y, yend = yend),
+      color = "#9B4F4A",
+      linewidth = 0.26,
+      linetype = "22"
     ) +
-    geom_text(
-      data = stage_cards,
-      aes(x = x - w / 2 + 0.49, y = y + h / 2 - 0.27, label = title),
-      family = figure_font_family,
-      fontface = "bold",
-      size = 3.20,
-      hjust = 0,
-      lineheight = 0.83,
-      color = "#262626"
+    geom_segment(
+      data = row_rules,
+      aes(x = x, xend = xend, y = y, yend = yend),
+      color = "#E4E8EB",
+      linewidth = 0.14
     ) +
     geom_rect(
-      data = icon_bays,
+      data = budget_note,
       aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
-      fill = "#FFFFFF",
-      color = "#C9CFD4",
+      fill = "#F7F7F7",
+      color = "#CDD2D6",
       linewidth = 0.16
     ) +
-    annotate("rect", xmin = 1.77, xmax = 1.90, ymin = 2.96, ymax = 3.09, fill = "#FFFFFF", color = "#4C7EA8", linewidth = 0.23) +
-    annotate("segment", x = 1.77, xend = 1.90, y = c(2.995, 3.035, 3.07), yend = c(2.995, 3.035, 3.07), color = "#4C7EA8", linewidth = 0.14) +
-    annotate("segment", x = c(1.81, 1.86), xend = c(1.81, 1.86), y = 2.96, yend = 3.09, color = "#4C7EA8", linewidth = 0.14) +
-    geom_path(data = trace_icon, aes(x = x, y = y), color = "#5D7692", linewidth = 0.35, lineend = "round") +
-    geom_segment(data = policy_icon_edges, aes(x = x, y = y, xend = xend, yend = yend), color = "#3F8A63", linewidth = 0.22) +
-    geom_point(data = policy_icon_nodes, aes(x = x, y = y), shape = 21, fill = "#FFFFFF", color = "#3F8A63", size = 1.10, stroke = 0.26) +
-    annotate("segment", x = 8.34, xend = 8.51, y = 2.96, yend = 2.96, color = "#A07D2B", linewidth = 0.20) +
-    annotate("segment", x = 8.34, xend = 8.34, y = 2.96, yend = 3.11, color = "#A07D2B", linewidth = 0.20) +
-    geom_rect(data = metric_icon_bars, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), fill = "#FFFFFF", color = "#A07D2B", linewidth = 0.24) +
-    geom_path(data = lock_icon_arc, aes(x = x, y = y), color = "#A45E58", linewidth = 0.25, lineend = "round") +
-    annotate("rect", xmin = 10.52, xmax = 10.64, ymin = 2.94, ymax = 3.03, fill = "#FFFFFF", color = "#A45E58", linewidth = 0.25) +
-    annotate("segment", x = 10.58, xend = 10.58, y = 2.975, yend = 3.000, color = "#A45E58", linewidth = 0.22) +
-    geom_rect(
-      data = card_rows,
-      aes(xmin = x - w / 2 + 0.16, xmax = x + w / 2 - 0.12, ymin = y - row_h / 2, ymax = y + row_h / 2),
-      fill = "#FFFFFF",
-      color = "#D7D7D7",
-      linewidth = 0.18
-    ) +
     geom_text(
-      data = card_rows,
-      aes(x = text_x, y = y, label = label),
+      data = budget_note,
+      aes(x = x, y = y, label = label),
       family = figure_font_family,
-      size = 2.82,
-      hjust = 0,
-      lineheight = 0.80,
-      color = "#262626"
+      size = 1.90,
+      color = "#3F454A"
     ) +
     geom_point(
-      data = role_dots,
-      aes(x = x, y = y),
-      color = role_dots$dot_color,
-      fill = role_dots$dot_color,
+      data = stage_cols,
+      aes(x = left + 0.22, y = (top + header_bottom) / 2, fill = accent),
       shape = 21,
-      size = 2.25,
-      stroke = 0
+      color = "#FFFFFF",
+      size = 4.0,
+      stroke = 0.22
     ) +
-    coord_cartesian(xlim = c(0.12, 10.98), ylim = c(0.56, 3.42), expand = FALSE, clip = "on") +
+    geom_text(
+      data = stage_cols,
+      aes(x = left + 0.22, y = (top + header_bottom) / 2, label = letter),
+      family = figure_font_family,
+      fontface = "bold",
+      size = 2.35,
+      color = "#FFFFFF"
+    ) +
+    geom_text(
+      data = stage_cols,
+      aes(x = left + 0.42, y = (top + header_bottom) / 2, label = title),
+      family = figure_font_family,
+      fontface = "bold",
+      size = 2.45,
+      hjust = 0,
+      lineheight = 0.82,
+      color = "#1F2529"
+    ) +
+    geom_point(
+      data = item_rows,
+      aes(x = dot_x, y = y, fill = dot_color),
+      shape = 21,
+      color = "#FFFFFF",
+      size = 1.25,
+      stroke = 0.12
+    ) +
+    geom_text(
+      data = item_rows,
+      aes(x = text_x, y = y, label = label),
+      family = figure_font_family,
+      size = 2.22,
+      hjust = 0,
+      lineheight = 0.80,
+      color = "#222629"
+    ) +
+    coord_cartesian(xlim = c(0.16, 10.78), ylim = c(0.17, 2.48), expand = FALSE, clip = "on") +
     theme_void(base_family = figure_font_family) +
-    theme(plot.margin = margin(4, 6, 4, 6))
+    theme(plot.margin = margin(3, 5, 3, 5))
 }
 
 frontier_panel <- function(data, metric_col, panel_title, y_title, show_x, include_references = TRUE, fixed_x = NULL) {
@@ -890,7 +880,7 @@ hyser_aggregate <- prepare_aggregate(read_pub("hyser_publication_aggregate_polic
 cemhsey_aggregate <- prepare_aggregate(read_pub("cemhsey_publication_aggregate_policy_metrics.csv"), "cemhsey")
 
 manifest <- bind_rows(
-  save_figure(make_flow_figure(), "fig1_benchmark_flow", width = 7.16, height = 3.10),
+  save_figure(make_flow_figure(), "fig1_benchmark_flow", width = 7.16, height = 2.45),
   save_figure(
     make_frontier_plot(
       db10_aggregate,
