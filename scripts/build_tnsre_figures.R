@@ -275,56 +275,163 @@ policy_ordered <- function(df) {
 }
 
 make_flow_figure <- function() {
-  main_nodes <- tribble(
-    ~x, ~heading, ~body, ~fill,
-    1.05, "Open data\nand splits", "DB10 primary;\nHyser/CEMHSEY\nstress tests;\npredeclared units", "#E8F1FA",
-    3.05, "Frozen\ndecoder traces", "user posterior;\nassistive/context\nposterior;\nno online adaptation", "#F7F7F7",
-    5.05, "Policy replay\nand audits", "agency-margin,\nSetACSA, confidence\ngates; matched and\nexact-budget checks", "#EAF6EF",
-    7.05, "Unit-level\ninference", "active macro-F1;\nrisk-coverage AUC;\nALI and paired\nunit tests", "#FFF3D8",
-    9.05, "Claim\nboundary", "offline evidence only;\nno online, clinical,\nhaptic, or user-study\nclaim", "#F8E9E6"
-  ) %>%
-    mutate(y = 2.35, w = 1.62, h = 1.20)
+  ellipse_points <- function(cx, cy, rx, ry, id, n = 64) {
+    theta <- seq(0, 2 * pi, length.out = n)
+    tibble(x = cx + rx * cos(theta), y = cy + ry * sin(theta), id = id)
+  }
 
-  main_arrows <- tibble(
-    x = head(main_nodes$x + main_nodes$w / 2, -1) + 0.06,
-    y = main_nodes$y[1],
-    xend = tail(main_nodes$x - main_nodes$w / 2, -1) - 0.06,
-    yend = main_nodes$y[1]
+  stage_cards <- tribble(
+    ~stage, ~x, ~title, ~subtitle, ~fill, ~stroke,
+    "data", 1.15, "Open data\nhierarchy", "DB10 claim-bearing;\nHyser/CEMHSEY\nstress tests", "#E8F1FA", "#4C7EA8",
+    "traces", 3.35, "Frozen decoder\ntraces", "user EMG branch;\ncontext branch;\ncalibrated posteriors", "#F7F7F7", "#767676",
+    "policy", 5.55, "Policy replay", "agency-margin;\nSetACSA;\nconfidence gates", "#EAF6EF", "#4F9A72",
+    "inference", 7.75, "Unit-level\ninference", "active macro-F1;\nrisk-coverage AUC;\nALI; paired units", "#FFF3D8", "#B38A2E",
+    "boundary", 9.95, "Claim\nboundary", "offline evidence;\nno online, clinical,\nhaptic, or user-study\nclaim", "#F8E9E6", "#B46B60"
+  ) %>%
+    mutate(y = 2.48, w = 1.75, h = 2.78)
+
+  stage_arrows <- tibble(
+    x = head(stage_cards$x + stage_cards$w / 2, -1) + 0.10,
+    xend = tail(stage_cards$x - stage_cards$w / 2, -1) - 0.10,
+    y = 2.50,
+    yend = 2.50
+  )
+
+  data_db <- bind_rows(
+    ellipse_points(0.93, 3.42, 0.32, 0.08, "top"),
+    ellipse_points(0.93, 3.17, 0.32, 0.08, "mid"),
+    ellipse_points(0.93, 2.92, 0.32, 0.08, "bottom")
+  )
+
+  data_db_rects <- tibble(
+    xmin = 0.61, xmax = 1.25,
+    ymin = c(3.17, 2.92),
+    ymax = c(3.42, 3.17),
+    fill = c("#89B9D8", "#6FA6C9")
+  )
+
+  waveform <- bind_rows(
+    tibble(
+      x = seq(2.78, 3.92, length.out = 120),
+      y = 3.33 + 0.10 * sin(seq(0, 7 * pi, length.out = 120)) + 0.035 * sin(seq(0, 19 * pi, length.out = 120)),
+      branch = "User EMG"
+    ),
+    tibble(
+      x = seq(2.78, 3.92, length.out = 120),
+      y = 2.92 + 0.08 * sin(seq(0.8, 6.6 * pi, length.out = 120)),
+      branch = "Context"
+    )
+  )
+
+  branch_labels <- tribble(
+    ~x, ~y, ~label, ~color,
+    2.70, 3.33, "U", "#0072B2",
+    2.70, 2.92, "A", "#009E73"
+  )
+
+  nn_edges <- expand_grid(
+    x = c(5.05, 5.55),
+    y = c(3.10, 2.78),
+    xend = c(5.55, 6.05),
+    yend = c(3.30, 3.00, 2.70)
+  ) %>%
+    filter(xend > x)
+
+  nn_nodes <- tibble(
+    x = c(5.05, 5.05, 5.55, 5.55, 6.05, 6.05, 6.05),
+    y = c(3.10, 2.78, 3.30, 3.00, 3.38, 3.04, 2.70)
+  )
+
+  gate <- tibble(
+    x = c(5.55, 6.02, 5.55, 5.08),
+    y = c(2.42, 2.12, 1.82, 2.12)
+  )
+
+  metrics_axes <- tibble(
+    x = c(7.22, 7.22, 7.22, 7.22),
+    y = c(2.72, 2.06, 2.06, 2.06),
+    xend = c(7.22, 8.32, 7.55, 7.88),
+    yend = c(2.06, 2.06, 2.34, 2.53)
+  )
+
+  metric_points <- tibble(
+    x = c(7.48, 7.68, 7.88, 8.08, 8.25),
+    y = c(2.20, 2.38, 2.48, 2.61, 2.71),
+    color = c("#7F7F7F", "#009E73", "#D55E00", "#0072B2", "#0072B2")
+  )
+
+  shield <- tibble(
+    x = c(9.95, 10.42, 10.32, 9.95, 9.58, 9.48),
+    y = c(3.55, 3.36, 2.88, 2.58, 2.88, 3.36)
+  )
+
+  bottom_rail <- tibble(
+    x = stage_cards$x,
+    y = 0.82,
+    label = c("fixed splits", "no adaptation", "matched budgets", "paired units", "bounded claim")
   )
 
   ggplot() +
+    annotate("rect", xmin = 0.18, xmax = 10.92, ymin = 0.38, ymax = 4.72, fill = "#FBFBFB", color = "#D7D7D7", linewidth = 0.28) +
+    annotate("rect", xmin = 0.18, xmax = 10.92, ymin = 4.28, ymax = 4.72, fill = "#F1F5F8", color = "#D7D7D7", linewidth = 0.28) +
+    annotate("text", x = 0.42, y = 4.51, hjust = 0, label = "Offline policy-layer benchmark for myoelectric shared autonomy", family = figure_font_family, fontface = "bold", size = 3.25, color = "#111111") +
+    annotate("text", x = 10.68, y = 4.51, hjust = 1, label = "reproducible, open-data, claim-bounded", family = figure_font_family, size = 2.45, color = "#3A3A3A") +
+    geom_rect(
+      data = stage_cards,
+      aes(xmin = x - w / 2, xmax = x + w / 2, ymin = y - h / 2, ymax = y + h / 2, fill = fill),
+      color = "#777777",
+      linewidth = 0.34
+    ) +
+    scale_fill_identity() +
     geom_segment(
-      data = main_arrows,
+      data = stage_arrows,
       aes(x = x, y = y, xend = xend, yend = yend),
-      linewidth = 0.42,
-      color = "#303030",
+      linewidth = 0.48,
+      color = "#343434",
       arrow = arrow(type = "closed", length = unit(0.075, "in"))
     ) +
-    geom_rect(
-      data = main_nodes,
-      aes(xmin = x - w / 2, xmax = x + w / 2, ymin = y - h / 2, ymax = y + h / 2),
-      fill = main_nodes$fill,
-      color = "#303030",
-      linewidth = 0.30
-    ) +
     geom_text(
-      data = main_nodes,
-      aes(x = x, y = y + 0.26, label = heading),
+      data = stage_cards,
+      aes(x = x, y = 3.64, label = title),
       family = figure_font_family,
-      size = 3.05,
-      lineheight = 0.86,
       fontface = "bold",
+      size = 2.95,
+      lineheight = 0.88,
       color = "#111111"
     ) +
     geom_text(
-      data = main_nodes,
-      aes(x = x, y = y - 0.24, label = body),
+      data = stage_cards,
+      aes(x = x, y = 1.36, label = subtitle),
       family = figure_font_family,
-      size = 2.28,
+      size = 2.22,
       lineheight = 0.88,
-      color = "#222222"
+      color = "#262626"
     ) +
-    coord_cartesian(xlim = c(0.12, 9.90), ylim = c(1.64, 3.06), expand = FALSE, clip = "off") +
+    geom_rect(data = data_db_rects, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = fill), color = "#436E8B", linewidth = 0.22, inherit.aes = FALSE) +
+    geom_polygon(data = data_db, aes(x = x, y = y, group = id), fill = "#A8CDE4", color = "#436E8B", linewidth = 0.22) +
+    annotate("text", x = 1.33, y = 3.40, hjust = 0, label = "DB10", family = figure_font_family, fontface = "bold", size = 2.15, color = "#1E4258") +
+    annotate("text", x = 1.33, y = 3.12, hjust = 0, label = "Hyser", family = figure_font_family, size = 2.05, color = "#1E4258") +
+    annotate("text", x = 1.33, y = 2.86, hjust = 0, label = "CEMHSEY", family = figure_font_family, size = 2.05, color = "#1E4258") +
+    geom_path(data = waveform, aes(x = x, y = y, color = branch), linewidth = 0.54, show.legend = FALSE) +
+    scale_color_manual(values = c("User EMG" = "#0072B2", "Context" = "#009E73"), guide = "none") +
+    geom_point(data = branch_labels, aes(x = x, y = y), size = 6.3, shape = 21, fill = "white", color = branch_labels$color, stroke = 0.55) +
+    geom_text(data = branch_labels, aes(x = x, y = y, label = label), family = figure_font_family, fontface = "bold", size = 2.15, color = branch_labels$color) +
+    geom_segment(data = nn_edges, aes(x = x, y = y, xend = xend, yend = yend), color = "#8C8C8C", linewidth = 0.25) +
+    geom_point(data = nn_nodes, aes(x = x, y = y), size = 2.4, shape = 21, fill = "#FFFFFF", color = "#3B7F5A", stroke = 0.45) +
+    geom_polygon(data = gate, aes(x = x, y = y), fill = "#D7EFE2", color = "#3B7F5A", linewidth = 0.30) +
+    annotate("text", x = 5.55, y = 2.13, label = "budget\ngate", family = figure_font_family, fontface = "bold", size = 2.08, lineheight = 0.85, color = "#234D35") +
+    geom_segment(aes(x = 4.77, y = 2.45, xend = 5.08, yend = 2.12), color = "#3B7F5A", linewidth = 0.36, arrow = arrow(type = "closed", length = unit(0.055, "in"))) +
+    geom_segment(aes(x = 6.02, y = 2.12, xend = 6.32, yend = 2.45), color = "#3B7F5A", linewidth = 0.36, arrow = arrow(type = "closed", length = unit(0.055, "in"))) +
+    geom_segment(data = metrics_axes, aes(x = x, y = y, xend = xend, yend = yend), color = "#4F4F4F", linewidth = 0.28) +
+    geom_point(data = metric_points, aes(x = x, y = y), size = 2.0, shape = 21, fill = metric_points$color, color = "white", stroke = 0.20) +
+    annotate("text", x = 7.82, y = 3.08, label = "F1   AUC   ALI", family = figure_font_family, fontface = "bold", size = 2.10, color = "#4C3612") +
+    geom_polygon(data = shield, aes(x = x, y = y), fill = "#F3C7C0", color = "#9F554C", linewidth = 0.32) +
+    annotate("text", x = 9.95, y = 3.16, label = "OFFLINE", family = figure_font_family, fontface = "bold", size = 2.42, color = "#7B342D") +
+    annotate("text", x = 9.95, y = 2.91, label = "benchmark", family = figure_font_family, size = 2.08, color = "#7B342D") +
+    geom_segment(aes(x = 0.78, y = 0.82, xend = 10.35, yend = 0.82), color = "#C8C8C8", linewidth = 0.30) +
+    geom_point(data = bottom_rail, aes(x = x, y = y), size = 2.1, shape = 21, fill = "#FFFFFF", color = "#585858", stroke = 0.35) +
+    geom_text(data = bottom_rail, aes(x = x, y = y - 0.24, label = label), family = figure_font_family, size = 1.88, color = "#333333") +
+    coord_cartesian(xlim = c(0.12, 10.98), ylim = c(0.32, 4.82), expand = FALSE, clip = "off") +
     theme_void(base_family = figure_font_family) +
     theme(plot.margin = margin(5, 6, 5, 6))
 }
@@ -732,7 +839,7 @@ hyser_aggregate <- prepare_aggregate(read_pub("hyser_publication_aggregate_polic
 cemhsey_aggregate <- prepare_aggregate(read_pub("cemhsey_publication_aggregate_policy_metrics.csv"), "cemhsey")
 
 manifest <- bind_rows(
-  save_figure(make_flow_figure(), "fig1_benchmark_flow", width = 7.16, height = 3.05),
+  save_figure(make_flow_figure(), "fig1_benchmark_flow", width = 7.16, height = 3.55),
   save_figure(
     make_frontier_plot(
       db10_aggregate,
