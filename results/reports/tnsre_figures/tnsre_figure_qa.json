@@ -4,7 +4,7 @@
   "recursive": true,
   "thresholds": {
     "min_width_px": 1800,
-    "min_height_px": 900,
+    "min_height_px": 1800,
     "min_dpi": 300.0,
     "dpi_tolerance": 0.5,
     "allow_missing_dpi": false,
@@ -44,11 +44,11 @@
       "issues": [],
       "warnings": [],
       "details": {
-        "size_bytes": 266632,
-        "width_px": 4296,
-        "height_px": 1470,
-        "x_dpi": 599.999,
-        "y_dpi": 599.999
+        "size_bytes": 370002,
+        "width_px": 5728,
+        "height_px": 1960,
+        "x_dpi": 799.998,
+        "y_dpi": 799.998
       }
     },
     {
@@ -88,7 +88,7 @@
       "issues": [],
       "warnings": [],
       "details": {
-        "size_bytes": 42012
+        "size_bytes": 42013
       }
     },
     {
@@ -116,7 +116,7 @@
       "issues": [],
       "warnings": [],
       "details": {
-        "size_bytes": 45845
+        "size_bytes": 45846
       }
     },
     {
@@ -144,7 +144,7 @@
       "issues": [],
       "warnings": [],
       "details": {
-        "size_bytes": 46597
+        "size_bytes": 46596
       }
     },
     {
@@ -172,7 +172,7 @@
       "issues": [],
       "warnings": [],
       "details": {
-        "size_bytes": 41567
+        "size_bytes": 41566
       }
     },
     {

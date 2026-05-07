@@ -880,7 +880,7 @@ hyser_aggregate <- prepare_aggregate(read_pub("hyser_publication_aggregate_polic
 cemhsey_aggregate <- prepare_aggregate(read_pub("cemhsey_publication_aggregate_policy_metrics.csv"), "cemhsey")
 
 manifest <- bind_rows(
-  save_figure(make_flow_figure(), "fig1_benchmark_flow", width = 7.16, height = 2.45),
+  save_figure(make_flow_figure(), "fig1_benchmark_flow", width = 7.16, height = 2.45, dpi = 800),
   save_figure(
     make_frontier_plot(
       db10_aggregate,
