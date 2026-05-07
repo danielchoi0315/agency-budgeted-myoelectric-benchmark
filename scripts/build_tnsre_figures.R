@@ -280,7 +280,7 @@ make_flow_figure <- function() {
     "data", "A", 1.15, "Data\ncontract", "#4C7EA8", "#F8FAFC",
     "traces", "B", 3.35, "Frozen\ntraces", "#5D7692", "#FAFAFA",
     "policy", "C", 5.55, "Policy\nreplay", "#3F8A63", "#F8FCF9",
-    "inference", "D", 7.75, "Unit-level\nevaluation", "#A07D2B", "#FFFDF7",
+    "inference", "D", 7.75, "Unit-level\nmetrics", "#A07D2B", "#FFFDF7",
     "boundary", "E", 9.95, "Evidence\nboundary", "#A45E58", "#FFF9F8"
   ) %>%
     mutate(y = 1.98, w = 1.90, h = 2.64)
@@ -346,6 +346,47 @@ make_flow_figure <- function() {
     left_join(card_rows %>% select(stage, row, x, w, y), by = c("stage", "row")) %>%
     mutate(x = x - w / 2 + 0.26)
 
+  icon_bays <- stage_cards %>%
+    transmute(
+      stage,
+      xmin = x + w / 2 - 0.43,
+      xmax = x + w / 2 - 0.15,
+      ymin = y + h / 2 - 0.42,
+      ymax = y + h / 2 - 0.14
+    )
+
+  trace_icon <- tibble(
+    x = seq(3.95, 4.08, length.out = 80),
+    y = 3.02 + 0.022 * sin(seq(0, 4 * pi, length.out = 80)) + 0.009 * sin(seq(0, 13 * pi, length.out = 80))
+  )
+
+  policy_icon_edges <- tribble(
+    ~x, ~y, ~xend, ~yend,
+    6.14, 3.02, 6.25, 3.08,
+    6.14, 3.02, 6.25, 3.02,
+    6.14, 3.02, 6.25, 2.96
+  )
+
+  policy_icon_nodes <- tribble(
+    ~x, ~y,
+    6.14, 3.02,
+    6.25, 3.08,
+    6.25, 3.02,
+    6.25, 2.96
+  )
+
+  metric_icon_bars <- tribble(
+    ~xmin, ~xmax, ~ymin, ~ymax,
+    8.36, 8.39, 2.96, 3.04,
+    8.41, 8.44, 2.96, 3.10,
+    8.46, 8.49, 2.96, 3.01
+  )
+
+  lock_icon_arc <- tibble(
+    x = 10.58 + 0.060 * cos(seq(pi, 0, length.out = 50)),
+    y = 3.025 + 0.062 * sin(seq(pi, 0, length.out = 50))
+  )
+
   ggplot() +
     geom_rect(
       data = stage_cards,
@@ -398,6 +439,25 @@ make_flow_figure <- function() {
       color = "#262626"
     ) +
     geom_rect(
+      data = icon_bays,
+      aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
+      fill = "#FFFFFF",
+      color = "#C9CFD4",
+      linewidth = 0.16
+    ) +
+    annotate("rect", xmin = 1.77, xmax = 1.90, ymin = 2.96, ymax = 3.09, fill = "#FFFFFF", color = "#4C7EA8", linewidth = 0.23) +
+    annotate("segment", x = 1.77, xend = 1.90, y = c(2.995, 3.035, 3.07), yend = c(2.995, 3.035, 3.07), color = "#4C7EA8", linewidth = 0.14) +
+    annotate("segment", x = c(1.81, 1.86), xend = c(1.81, 1.86), y = 2.96, yend = 3.09, color = "#4C7EA8", linewidth = 0.14) +
+    geom_path(data = trace_icon, aes(x = x, y = y), color = "#5D7692", linewidth = 0.35, lineend = "round") +
+    geom_segment(data = policy_icon_edges, aes(x = x, y = y, xend = xend, yend = yend), color = "#3F8A63", linewidth = 0.22) +
+    geom_point(data = policy_icon_nodes, aes(x = x, y = y), shape = 21, fill = "#FFFFFF", color = "#3F8A63", size = 1.10, stroke = 0.26) +
+    annotate("segment", x = 8.34, xend = 8.51, y = 2.96, yend = 2.96, color = "#A07D2B", linewidth = 0.20) +
+    annotate("segment", x = 8.34, xend = 8.34, y = 2.96, yend = 3.11, color = "#A07D2B", linewidth = 0.20) +
+    geom_rect(data = metric_icon_bars, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), fill = "#FFFFFF", color = "#A07D2B", linewidth = 0.24) +
+    geom_path(data = lock_icon_arc, aes(x = x, y = y), color = "#A45E58", linewidth = 0.25, lineend = "round") +
+    annotate("rect", xmin = 10.52, xmax = 10.64, ymin = 2.94, ymax = 3.03, fill = "#FFFFFF", color = "#A45E58", linewidth = 0.25) +
+    annotate("segment", x = 10.58, xend = 10.58, y = 2.975, yend = 3.000, color = "#A45E58", linewidth = 0.22) +
+    geom_rect(
       data = card_rows,
       aes(xmin = x - w / 2 + 0.16, xmax = x + w / 2 - 0.12, ymin = y - row_h / 2, ymax = y + row_h / 2),
       fill = "#FFFFFF",
@@ -422,7 +482,7 @@ make_flow_figure <- function() {
       size = 2.25,
       stroke = 0
     ) +
-    coord_cartesian(xlim = c(0.12, 10.98), ylim = c(0.56, 3.42), expand = FALSE, clip = "off") +
+    coord_cartesian(xlim = c(0.12, 10.98), ylim = c(0.56, 3.42), expand = FALSE, clip = "on") +
     theme_void(base_family = figure_font_family) +
     theme(plot.margin = margin(4, 6, 4, 6))
 }

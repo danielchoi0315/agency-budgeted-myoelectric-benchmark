@@ -29,8 +29,9 @@ Validation run on 2026-05-06 from the curated publication repository and a fresh
 - Package figure check: 11 PDF assets and 11 PNG assets; all PNGs at least 1800 px in both dimensions and at least 300 dpi.
 - `main.tex`: compiled with pdfLaTeX + BibTeX + two pdfLaTeX passes.
 - `supplement.tex`: compiled with two pdfLaTeX passes.
-- Final local compile check: main manuscript 9 pages; supplement 5 pages; no undefined citations or references in final logs.
-- Rendered page check: Fig. 1 appears centered at full text width with no clipping, overlap, or caption collision.
+- Final local compile check: main manuscript 10 pages; supplement 5 pages; no undefined citations or references in final logs.
+- Rendered page check: Fig. 1 appears centered at full text width with clipped-internal header icons and no boundary escape, overlap, or caption collision.
+- Main-text figure check: Fig. 5 appears in the main manuscript as the external EMG stress-test frontier; the DB10 earliest-safe timing diagnostic remains supplementary.
 
 ## Remaining Human Checks
 
