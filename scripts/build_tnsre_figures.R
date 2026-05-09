@@ -303,25 +303,25 @@ make_flow_figure <- function() {
     filter(!is.na(xend))
 
   item_rows <- tribble(
-    ~stage, ~row, ~label, ~dot_color,
-    "data", 1, "DB10/MeganePro\nprimary claim set", "#2F6F9F",
-    "data", 2, "Hyser/CEMHSEY\nexternal stress tests", "#2F6F9F",
-    "data", 3, "predeclared\nsplit families", "#2F6F9F",
-    "traces", 1, "user-branch EMG\nposterior", "#0072B2",
-    "traces", 2, "assistive/context\nposterior", "#009E73",
-    "traces", 3, "calibrated traces", "#556B82",
-    "traces", 4, "no adaptation", "#556B82",
-    "policy", 1, "agency-margin\npolicy", "#0072B2",
-    "policy", 2, "SetACSA-style\npolicy", "#D55E00",
-    "policy", 3, "confidence gate", "#009E73",
-    "metrics", 1, "macro-F1", "#0072B2",
-    "metrics", 2, "risk-coverage\nAUC (lower)", "#D55E00",
-    "metrics", 3, "mean ALI", "#009E73",
-    "metrics", 4, "subject/session/day\npaired units", "#9A741E",
-    "boundary", 1, "offline replay\nonly", "#9B4F4A",
-    "boundary", 2, "no online\ncontrol", "#9B4F4A",
-    "boundary", 3, "no clinical /\nuser study", "#9B4F4A",
-    "boundary", 4, "no haptic /\ntrust claim", "#9B4F4A"
+    ~stage, ~row, ~label,
+    "data", 1, "DB10/MeganePro\nprimary claim set",
+    "data", 2, "Hyser/CEMHSEY\nexternal stress tests",
+    "data", 3, "predeclared\nsplit families",
+    "traces", 1, "user-branch EMG\nposterior",
+    "traces", 2, "assistive/context\nposterior",
+    "traces", 3, "calibrated traces",
+    "traces", 4, "no adaptation",
+    "policy", 1, "agency-margin\npolicy",
+    "policy", 2, "SetACSA-style\npolicy",
+    "policy", 3, "confidence gate",
+    "metrics", 1, "macro-F1",
+    "metrics", 2, "risk-coverage\nAUC (lower)",
+    "metrics", 3, "mean ALI",
+    "metrics", 4, "subject/session/day\npaired units",
+    "boundary", 1, "offline replay\nonly",
+    "boundary", 2, "no online\ncontrol",
+    "boundary", 3, "no clinical /\nuser study",
+    "boundary", 4, "no haptic /\ntrust claim"
   ) %>%
     left_join(stage_cols %>% select(stage, left, right, top, bottom, header_bottom, accent), by = "stage") %>%
     group_by(stage) %>%
@@ -457,11 +457,10 @@ make_flow_figure <- function() {
     ) +
     geom_point(
       data = item_rows,
-      aes(x = dot_x, y = y, fill = dot_color),
-      shape = 21,
-      color = "#FFFFFF",
-      size = 1.25,
-      stroke = 0.12
+      aes(x = dot_x, y = y),
+      shape = 16,
+      color = "#48515A",
+      size = 0.82
     ) +
     geom_text(
       data = item_rows,
